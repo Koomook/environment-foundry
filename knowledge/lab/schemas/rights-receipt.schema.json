@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "rights-receipt.schema.json",
+  "type": "object",
+  "required": ["receipt_id", "purpose", "grants", "retention", "revocation", "reviewed_at"],
+  "properties": {
+    "receipt_id": {"type": "string", "minLength": 1},
+    "purpose": {"type": "string", "minLength": 1},
+    "grants": {
+      "type": "object",
+      "required": ["access", "operations", "evaluation", "training", "derivative", "resale", "export"]
+    },
+    "retention": {"type": "string", "minLength": 1},
+    "revocation": {"type": "string", "minLength": 1},
+    "deletion_propagation": {"type": "string"},
+    "reviewed_at": {"type": "string", "format": "date-time"}
+  },
+  "additionalProperties": true
+}

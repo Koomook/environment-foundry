@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "trajectory.schema.json",
+  "type": "object",
+  "required": ["episode_id", "decision_time_observation", "action", "state_changes", "outcomes", "provenance", "rights_receipt"],
+  "properties": {
+    "episode_id": {"type": "string", "minLength": 1},
+    "decision_time_observation": {"type": "object"},
+    "action": {"type": "object"},
+    "state_changes": {"type": "array"},
+    "outcomes": {"type": "array"},
+    "provenance": {"type": "array", "minItems": 1},
+    "rights_receipt": {"type": "string", "minLength": 1},
+    "uncertainty": {"type": "object"}
+  },
+  "additionalProperties": true
+}

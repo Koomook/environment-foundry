@@ -1,0 +1,9 @@
+[project]
+name = "environment-foundry-company-os"
+version = "0.1.0"
+description = "File-native company operating system and knowledge validators"
+requires-python = ">=3.12"
+dependencies = ["pyyaml>=6.0.2,<7"]
+
+[tool.uv]
+package = false

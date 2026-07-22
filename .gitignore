@@ -1,0 +1,22 @@
+.DS_Store
+.env
+.env.*
+!.env.example
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+
+# Private company/person payloads never enter Git.
+private-plane/payload/
+private-plane/locators.local.*
+private-plane/**/*.audio
+private-plane/**/*.video
+private-plane/**/*.csv
+private-plane/**/*.jsonl
+
+# Generated local artifacts.
+dist/
+build/
+tmp/
