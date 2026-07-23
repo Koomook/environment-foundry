@@ -10,6 +10,7 @@ This directory explains how Environment Foundry works. Durable claims belong in 
 ## Daily company versions
 
 - [2026-07-23 V2 — Executable Proof](versions/2026-07-23-v2-executable-proof.md)
+- [2026-07-23 V2.1 — Owner-Builder Environment Thesis](versions/2026-07-23-v2.1-owner-builder-environment.md)
 
 ## Active portfolio plans
 
