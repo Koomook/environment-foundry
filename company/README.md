@@ -14,3 +14,10 @@ This directory explains how Environment Foundry works. Durable claims belong in 
 ## Active portfolio plans
 
 - [2026-07-23 through 2026-08-29](roadmaps/2026-07-23-to-2026-08-29-portfolio-plan.md)
+- [Founder Command Board — Jul 23 through Aug 31](roadmaps/2026-07-23-founder-command-board.md)
+
+## Founder operating system
+
+- [Daily company, content, and communication loop](operating-system/founder-daily-loop.md)
+- [Feedback system](feedback/README.md)
+- [Conversation feedback template](feedback/templates/conversation-feedback.md)
