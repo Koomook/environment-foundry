@@ -23,11 +23,26 @@ Environment Foundry turns authorized company operations into bounded environment
 - `company/` — identity, operating model, roadmap, proof ladder
 - `functions/` — every company function and its outputs
 - `products/` — executable product surfaces; code may later move to dedicated repos
+- `founder-companion/` — founder life and family decision protocols; raw
+  personal material remains in the ignored private plane
 - `knowledge/wiki/` — source-backed canonical truth
 - `knowledge/okf/` — compact progressive-disclosure reading layer
 - `knowledge/workstreams/` — scope, live status, immutable handoffs
 - `knowledge/lab/` — rights-cleared task, trajectory, grader, and eval artifacts
 - `private-plane/` — policy only; private payload stays outside Git
+
+## Founder Companion
+
+Personal strategy work starts at
+[`founder-companion/README.md`](founder-companion/README.md). The company may
+receive only sanitized capacity constraints; it must not ingest family
+explanations, private memories, or health narratives as company data.
+
+The company operating rules are collected in
+[`company/constitution.md`](company/constitution.md). The separation among the
+company Constitution, Founder Constitution, private Health & Training OS, and
+Decision Studio is defined in
+[`founder-companion/system-map.md`](founder-companion/system-map.md).
 
 ## Validate
 
