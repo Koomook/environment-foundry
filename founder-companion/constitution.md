@@ -7,6 +7,12 @@ under `../private-plane/payload/founder-companion/constitution/`. These twelve
 statements remain useful prompts, but none is an L3 law merely because it is
 listed here. For live application use `runtime-protocol.md`.
 
+All additions, amendments, retirement requests, interpretations, and
+binding-level changes must use
+[`constitution-deliberation-protocol.md`](constitution-deliberation-protocol.md).
+A Companion rephrase becomes accepted meaning only after the founder explicitly
+confirms it; that confirmation alone still does not enact an L3 rule.
+
 ## North star
 
 Build an ambitious life that creates more space for health, family, deep

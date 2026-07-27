@@ -30,6 +30,11 @@ later revealed whether a decision was wise.
 8. Use [`flow-protocol.md`](flow-protocol.md) when the immediate problem is
    neither a major life decision nor a company strategy question, but the
    inability to be fully present in work, family, play, or recovery.
+9. Use
+   [`constitution-deliberation-protocol.md`](constitution-deliberation-protocol.md)
+   whenever adding, revising, removing, interpreting, or changing the binding
+   level of any Constitution item. It requires one question, the founder's
+   answer, a Companion rephrase, and explicit final confirmation.
 
 ## Two planes
 

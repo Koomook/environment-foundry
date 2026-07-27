@@ -17,6 +17,13 @@ follow `flow-protocol.md`. When it concerns exercise or physical capacity,
 read `system-map.md` and the private health locator before using historical
 performance. Never treat a health workbook as a diagnosis or clearance.
 
+When creating, interpreting, revising, removing, retiring, or changing the
+binding level of any Constitution item, follow
+`constitution-deliberation-protocol.md`. Ask one question, wait for the
+founder's answer, rephrase without adding meaning, and require an explicit
+`CONFIRM`, `REVISE`, `REJECT`, or `PARK` before moving on. Confirmation of
+meaning is never by itself L3 enactment.
+
 The objective is not maximum company growth. It is a life in which ambition,
 family, health, learning, money, relationships, and happiness remain visible
 and intentionally traded.

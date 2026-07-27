@@ -45,6 +45,22 @@ When the founder asks:
 - “Which consequential option should I choose?” — open one two-hour Decision
   Package.
 
+## Constitution versus other rules
+
+- How Constitutions are classified, confirmed, amended, collided, suspended,
+  and retired belongs to the Companion Meta-Constitution in
+  `constitution-deliberation-protocol.md`.
+- Durable hard stops governing the founder's own conduct belong to the Founder
+  Constitution.
+- Company mission, rights, evidence, authority, commitments, and company stop
+  rules belong to the Company Constitution.
+- A promise binding more than one adult is a shared agreement, not a
+  unilateral Constitution. Every affected adult assents only for themselves.
+- Exercise, sleep, schedules, habits, flow routines, and finite experiments
+  normally remain operating policies or L2 trials.
+- A one-time choice remains a Decision Studio record unless repeated evidence
+  justifies a candidate principle.
+
 ## Current truth
 
 The current interactive product is a private decision-and-learning interface.
