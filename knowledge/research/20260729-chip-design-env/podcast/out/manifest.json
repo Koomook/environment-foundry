@@ -1,0 +1,418 @@
+{
+  "schema_version": 3,
+  "generated_at": "2026-07-29T15:53:15.883389+00:00",
+  "mode": "generate",
+  "title": "AI가 칩을 설계하려면 — 시뮬레이터, 데이터, 그리고 한국 디자인하우스",
+  "style": "two-speaker",
+  "model": "gpt-4o-mini-tts-2025-12-15",
+  "voices": {
+    "진행자": "marin",
+    "연구자": "cedar"
+  },
+  "speaker_count": 2,
+  "speed": 1.0,
+  "time_stretch_applied": false,
+  "credential_source": "macos_keychain",
+  "ai_generated_voice_disclosure": true,
+  "ai_generated_voice_count": 2,
+  "source_segment_count": 33,
+  "generated_segment_count": 33,
+  "boundary_segment_indices": [
+    1,
+    17,
+    33
+  ],
+  "target": {
+    "target_minutes": 13.0,
+    "actual_minutes": 11.633,
+    "tolerance_minutes": 2.0,
+    "within_target_tolerance": true,
+    "difference_minutes": -1.367
+  },
+  "media": {
+    "file": "podcast.mp4",
+    "sha256": "9ab9c36cf88f4f44a4e624731867f33eedc50bd8af8b741a8cbd2b9c8467bb4f",
+    "duration_seconds": 698.0,
+    "format": "mp4",
+    "probe": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "codec_name": "h264",
+          "codec_type": "video",
+          "width": 1920,
+          "height": 1080,
+          "pix_fmt": "yuv420p",
+          "avg_frame_rate": "30/1",
+          "duration": "697.933333"
+        },
+        {
+          "codec_name": "aac",
+          "codec_type": "audio",
+          "sample_rate": "48000",
+          "channels": 1,
+          "avg_frame_rate": "0/0",
+          "duration": "698.000000"
+        }
+      ],
+      "format": {
+        "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+        "duration": "698.000000",
+        "bit_rate": "197961",
+        "tags": {
+          "title": "AI가 칩을 설계하려면 — 시뮬레이터, 데이터, 그리고 한국 디자인하우스",
+          "artist": "Team Attention",
+          "album": "OpenAI Korean Podcast",
+          "comment": "Both AI-generated voices use OpenAI TTS. Full-frame text video."
+        }
+      }
+    }
+  },
+  "audio_master": {
+    "file": "generate-audio-master.m4a",
+    "sha256": "c7e5362b83be3e5fa95f2a4c0ab990df559771370393ceb0d751c97771e7a17e",
+    "duration_seconds": 698.0,
+    "expected_duration_seconds": 697.94,
+    "format": "m4a",
+    "probe": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "codec_name": "aac",
+          "codec_type": "audio",
+          "sample_rate": "48000",
+          "channels": 1,
+          "avg_frame_rate": "0/0",
+          "duration": "698.000000"
+        }
+      ],
+      "format": {
+        "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+        "duration": "698.000000",
+        "bit_rate": "131189",
+        "tags": {
+          "title": "AI가 칩을 설계하려면 — 시뮬레이터, 데이터, 그리고 한국 디자인하우스",
+          "artist": "Team Attention",
+          "album": "OpenAI Korean Podcast",
+          "comment": "Both AI-generated voices use OpenAI TTS."
+        }
+      }
+    }
+  },
+  "visual": {
+    "background": "#000000",
+    "foreground": "#FFFFFF",
+    "layout": "full-frame-centered-typography",
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "page_count": 54,
+    "plan_file": "video-plan.json",
+    "plan_sha256": "ed884cd433b4a8f56b020a2bb2d9f6d0ebdeeda3219d3f8f5621df14c802f706",
+    "frames_dir": "assembly/generate-frames",
+    "frame_count": 54,
+    "concat_file": "assembly/generate-video-concat.txt",
+    "concat_sha256": "6a14e184531638d18dbc67cce37d0e9b582ac13f7b642fb048699e86f5799209"
+  },
+  "segments": [
+    {
+      "index": 1,
+      "source_index": 1,
+      "speaker": "진행자",
+      "fingerprint": "89f5e32a3231a3908358304f5a6b7d66eec135c9082433e166ab14d141c245dd",
+      "cache_file": "gpt-4o-mini-tts-2025-12-15/marin/89f5e32a3231a3908358304f5a6b7d66eec135c9082433e166ab14d141c245dd.wav",
+      "sha256": "b8497327999cec0018a9b2bf6682fe513190fc62e24839facbe8a3a0a0472fef",
+      "duration_seconds": 20.75
+    },
+    {
+      "index": 2,
+      "source_index": 2,
+      "speaker": "연구자",
+      "fingerprint": "a5a7ecb42610b6c9a27890624eb69a8d8888169c16b24a57045a0e5a9dd70779",
+      "cache_file": "gpt-4o-mini-tts-2025-12-15/cedar/a5a7ecb42610b6c9a27890624eb69a8d8888169c16b24a57045a0e5a9dd70779.wav",
+      "sha256": "d9048a7da24d459db033da2f3fa8dbad5b979e1a03e9e078232160dbc8a37337",
+      "duration_seconds": 28.25
+    },
+    {
+      "index": 3,
+      "source_index": 3,
+      "speaker": "진행자",
+      "fingerprint": "c73f86ea75d575757950cd8c5ebc65188b92986aaae44d41a737f93c18f0d7f0",
+      "cache_file": "gpt-4o-mini-tts-2025-12-15/marin/c73f86ea75d575757950cd8c5ebc65188b92986aaae44d41a737f93c18f0d7f0.wav",
+      "sha256": "44804d4ff760d3d5304f484fb9e6d4d40cb347c4261e06ffea5a2da57a724339",
+      "duration_seconds": 5.25
+    },
+    {
+      "index": 4,
+      "source_index": 4,
+      "speaker": "연구자",
+      "fingerprint": "8c339bdbacdd3ba0f1188056e7a1e39bf81ad26aa2b6f0e410556669171f160a",
+      "cache_file": "gpt-4o-mini-tts-2025-12-15/cedar/8c339bdbacdd3ba0f1188056e7a1e39bf81ad26aa2b6f0e410556669171f160a.wav",
+      "sha256": "ce26d9ebf39f28d93f79cf5598aad6b90bbc33d25d3eb84bf894a6d56b407b2c",
+      "duration_seconds": 27.4
+    },
+    {
+      "index": 5,
+      "source_index": 5,
+      "speaker": "진행자",
+      "fingerprint": "0b773ecec78e64fc70af839b51138f1b033d3caebce5f50ac4ae5b1264512992",
+      "cache_file": "gpt-4o-mini-tts-2025-12-15/marin/0b773ecec78e64fc70af839b51138f1b033d3caebce5f50ac4ae5b1264512992.wav",
+      "sha256": "c1b6ce2c832d1574068d86a79555d73a8a78e80f122c6f41bf79d68f0bdf65f5",
+      "duration_seconds": 2.4
+    },
+    {
+      "index": 6,
+      "source_index": 6,
+      "speaker": "연구자",
+      "fingerprint": "3c06910916bc6a1c42dbd94f006ba8b86482075a477b2467170ada59a362078c",
+      "cache_file": "gpt-4o-mini-tts-2025-12-15/cedar/3c06910916bc6a1c42dbd94f006ba8b86482075a477b2467170ada59a362078c.wav",
+      "sha256": "11a37bc36a37f7c75e6cd15dec604904d3aaba507663653e5d2f11a4d2df79fc",
+      "duration_seconds": 41.85
+    },
+    {
+      "index": 7,
+      "source_index": 7,
+      "speaker": "진행자",
+      "fingerprint": "77084fca43b33be83f3dec18a733f9a5a70e90c9f2f555d6967ff8b14990534b",
+      "cache_file": "gpt-4o-mini-tts-2025-12-15/marin/77084fca43b33be83f3dec18a733f9a5a70e90c9f2f555d6967ff8b14990534b.wav",
+      "sha256": "b3f7ea45993fda815c57edcf2563ea6644c2203530be8a43f3fa2af90516c8bf",
+      "duration_seconds": 6.6
+    },
+    {
+      "index": 8,
+      "source_index": 8,
+      "speaker": "연구자",
+      "fingerprint": "d6a95c9b21faee205038b6916d22bff7b1b0c87547a35be5b366f1582447f955",
+      "cache_file": "gpt-4o-mini-tts-2025-12-15/cedar/d6a95c9b21faee205038b6916d22bff7b1b0c87547a35be5b366f1582447f955.wav",
+      "sha256": "c57f578397d4ed092e52872dceb4249ee54d1141b8814f8e1c428237ebccdea3",
+      "duration_seconds": 49.7
+    },
+    {
+      "index": 9,
+      "source_index": 9,
+      "speaker": "진행자",
+      "fingerprint": "ed8419162e8fe89cfb2066ffe739699fd9026016a7a14e576e2d11a6ccef4686",
+      "cache_file": "gpt-4o-mini-tts-2025-12-15/marin/ed8419162e8fe89cfb2066ffe739699fd9026016a7a14e576e2d11a6ccef4686.wav",
+      "sha256": "736fd193693196d2b7427a26ff9a77b1ca773530da803022fcff89bf8b8f5f01",
+      "duration_seconds": 3.7
+    },
+    {
+      "index": 10,
+      "source_index": 10,
+      "speaker": "연구자",
+      "fingerprint": "77b04b1da757806cdebbfd93a11d90b1ac4afbf15687a07b5c63c2122282a5ae",
+      "cache_file": "gpt-4o-mini-tts-2025-12-15/cedar/77b04b1da757806cdebbfd93a11d90b1ac4afbf15687a07b5c63c2122282a5ae.wav",
+      "sha256": "8d517081d3075d64faec820cf494b531a59830a7ed70c096402450a6e6f0d755",
+      "duration_seconds": 42.15
+    },
+    {
+      "index": 11,
+      "source_index": 11,
+      "speaker": "진행자",
+      "fingerprint": "244483e1e6710d3ab4bd1ee8df2168a52c356f693c95e6fbea101429a7502ef4",
+      "cache_file": "gpt-4o-mini-tts-2025-12-15/marin/244483e1e6710d3ab4bd1ee8df2168a52c356f693c95e6fbea101429a7502ef4.wav",
+      "sha256": "1e4d65134466466a53e786c96a2bdf044e1051ce14f85192e356f824e4ed91a2",
+      "duration_seconds": 5.2
+    },
+    {
+      "index": 12,
+      "source_index": 12,
+      "speaker": "연구자",
+      "fingerprint": "5f5a50b02a8db66792c71f6eb49483c70d1b81a1bfec7207cbde8cdc00bd4140",
+      "cache_file": "gpt-4o-mini-tts-2025-12-15/cedar/5f5a50b02a8db66792c71f6eb49483c70d1b81a1bfec7207cbde8cdc00bd4140.wav",
+      "sha256": "261b8691b10f211a8587656b87b2a799a452fe331cd3186ee06a30234e9dffcb",
+      "duration_seconds": 23.9
+    },
+    {
+      "index": 13,
+      "source_index": 13,
+      "speaker": "진행자",
+      "fingerprint": "149b8c1ed2779870fbe343813eee445b42214c2221128a894e4fc1bb51923cca",
+      "cache_file": "gpt-4o-mini-tts-2025-12-15/marin/149b8c1ed2779870fbe343813eee445b42214c2221128a894e4fc1bb51923cca.wav",
+      "sha256": "2693f3e5b96362c1ca6668a5ba04a1eda7210866a1976170b32dee6abc75c2d8",
+      "duration_seconds": 5.2
+    },
+    {
+      "index": 14,
+      "source_index": 14,
+      "speaker": "연구자",
+      "fingerprint": "5b9cc01368ec582effb3c6fa32165a8062be1f1590c8b5644e14cd7b26de3d77",
+      "cache_file": "gpt-4o-mini-tts-2025-12-15/cedar/5b9cc01368ec582effb3c6fa32165a8062be1f1590c8b5644e14cd7b26de3d77.wav",
+      "sha256": "867af799573811e982392a1267b64cee481dd794c1ec8e5eb873cfde1b95f8c3",
+      "duration_seconds": 45.85
+    },
+    {
+      "index": 15,
+      "source_index": 15,
+      "speaker": "진행자",
+      "fingerprint": "8b9425e9c44f289c175e2c90aaac87be1912b90ea8d37b651f179621a196854e",
+      "cache_file": "gpt-4o-mini-tts-2025-12-15/marin/8b9425e9c44f289c175e2c90aaac87be1912b90ea8d37b651f179621a196854e.wav",
+      "sha256": "2bcc206451af867e9bf9f6fd3affab1e5f28150e70f08653b05dbf8b8b99c4d0",
+      "duration_seconds": 5.3
+    },
+    {
+      "index": 16,
+      "source_index": 16,
+      "speaker": "연구자",
+      "fingerprint": "c6906ebde3b2c29f53a9e3808fcdb27dbc350bda90aa6369da687da3ed2e1136",
+      "cache_file": "gpt-4o-mini-tts-2025-12-15/cedar/c6906ebde3b2c29f53a9e3808fcdb27dbc350bda90aa6369da687da3ed2e1136.wav",
+      "sha256": "04ef2d69263aa8580c851249bcdfec007e1e91d8c60f8dbe26ffce5cadc2f4d0",
+      "duration_seconds": 44.25
+    },
+    {
+      "index": 17,
+      "source_index": 17,
+      "speaker": "진행자",
+      "fingerprint": "103cfe102bef398ad0fcf5a782f109c606801b49aa78165c2589fdc605c13c9f",
+      "cache_file": "gpt-4o-mini-tts-2025-12-15/marin/103cfe102bef398ad0fcf5a782f109c606801b49aa78165c2589fdc605c13c9f.wav",
+      "sha256": "ed37c3e23b445cbc9f5415dfea313aa5ac131db937bb80dbaf097a2d980da3a0",
+      "duration_seconds": 5.15
+    },
+    {
+      "index": 18,
+      "source_index": 18,
+      "speaker": "연구자",
+      "fingerprint": "e6d737c357586c2b4f4dbcff49a89dc969eec11d01aea3bdb77d05011be5380e",
+      "cache_file": "gpt-4o-mini-tts-2025-12-15/cedar/e6d737c357586c2b4f4dbcff49a89dc969eec11d01aea3bdb77d05011be5380e.wav",
+      "sha256": "813b8830568d2fbd79c525c0d018f46791b9fff04cd7e3d7e02c95186da3823a",
+      "duration_seconds": 35.05
+    },
+    {
+      "index": 19,
+      "source_index": 19,
+      "speaker": "진행자",
+      "fingerprint": "a20bd118976d8f66c319a80ecd73c34d8dee2e55dfca3fc09f8503d625eb9f56",
+      "cache_file": "gpt-4o-mini-tts-2025-12-15/marin/a20bd118976d8f66c319a80ecd73c34d8dee2e55dfca3fc09f8503d625eb9f56.wav",
+      "sha256": "3f8e3253d3387fc5e73a59aac559cba71f29b8d47aee5fd3a75ddc61a55a469a",
+      "duration_seconds": 6.5
+    },
+    {
+      "index": 20,
+      "source_index": 20,
+      "speaker": "연구자",
+      "fingerprint": "395fd923bc2ee60df2676b31291b4907d0148a6b607b1738ac1fd76b84d989f5",
+      "cache_file": "gpt-4o-mini-tts-2025-12-15/cedar/395fd923bc2ee60df2676b31291b4907d0148a6b607b1738ac1fd76b84d989f5.wav",
+      "sha256": "86e70c4a3ed4b04323924b717554c2aa9991a19e25455f2d35d576acf465bc47",
+      "duration_seconds": 58.75
+    },
+    {
+      "index": 21,
+      "source_index": 21,
+      "speaker": "진행자",
+      "fingerprint": "986dcb1e044f3b9fb64e2e2017e5012b5374968ca50dade0b39034b7bfedbb90",
+      "cache_file": "gpt-4o-mini-tts-2025-12-15/marin/986dcb1e044f3b9fb64e2e2017e5012b5374968ca50dade0b39034b7bfedbb90.wav",
+      "sha256": "9347f6f5b47f1eacc016f1034769aac9c430b3cdcabeff499a36067a8bec3681",
+      "duration_seconds": 6.45
+    },
+    {
+      "index": 22,
+      "source_index": 22,
+      "speaker": "연구자",
+      "fingerprint": "78c60b2011e3771c183df749b252f5a7de403c15e7fe152975648f7aab7810f2",
+      "cache_file": "gpt-4o-mini-tts-2025-12-15/cedar/78c60b2011e3771c183df749b252f5a7de403c15e7fe152975648f7aab7810f2.wav",
+      "sha256": "347afa17a541e5ef2e07b4080f31e80f243371e59f6dd3c8e8c49e2f352b3e27",
+      "duration_seconds": 41.45
+    },
+    {
+      "index": 23,
+      "source_index": 23,
+      "speaker": "진행자",
+      "fingerprint": "a83ef3282a0224160fb974cb9f7d44db1d5b8c2eefe530d65893594cafad54f8",
+      "cache_file": "gpt-4o-mini-tts-2025-12-15/marin/a83ef3282a0224160fb974cb9f7d44db1d5b8c2eefe530d65893594cafad54f8.wav",
+      "sha256": "84138cae20fe87ae79e5c74cd87d0fdc232d795e25e7468c98dcc6bedad955f4",
+      "duration_seconds": 9.65
+    },
+    {
+      "index": 24,
+      "source_index": 24,
+      "speaker": "연구자",
+      "fingerprint": "89c986c5846f44389543ecd58db9583347da8ad6be4016bc05c1e38c67397c6c",
+      "cache_file": "gpt-4o-mini-tts-2025-12-15/cedar/89c986c5846f44389543ecd58db9583347da8ad6be4016bc05c1e38c67397c6c.wav",
+      "sha256": "d71ec364a039e422ec6610e87e3470ba4754916d0816f28d942e286c4b62b2e7",
+      "duration_seconds": 35.05
+    },
+    {
+      "index": 25,
+      "source_index": 25,
+      "speaker": "진행자",
+      "fingerprint": "ac18d2058f7ffc9b9247500b69e832f28a174adb7fc72fd6fa4b5274b7021239",
+      "cache_file": "gpt-4o-mini-tts-2025-12-15/marin/ac18d2058f7ffc9b9247500b69e832f28a174adb7fc72fd6fa4b5274b7021239.wav",
+      "sha256": "e4b31e0fd8cc8f876261af5cf255f81fb90ae344faa98440d191cb71c99e5470",
+      "duration_seconds": 3.55
+    },
+    {
+      "index": 26,
+      "source_index": 26,
+      "speaker": "연구자",
+      "fingerprint": "8932e9f6fd9aaede5b284517dc60cca967238185f4bee1be68e5cf9bf412dafb",
+      "cache_file": "gpt-4o-mini-tts-2025-12-15/cedar/8932e9f6fd9aaede5b284517dc60cca967238185f4bee1be68e5cf9bf412dafb.wav",
+      "sha256": "989c2c570c8fea8bac1cda73c6efb5e3fad404b14532dea881154639d0d2ffb8",
+      "duration_seconds": 35.8
+    },
+    {
+      "index": 27,
+      "source_index": 27,
+      "speaker": "진행자",
+      "fingerprint": "79f763b9def64b1b2f90928d3880b1f914b5a0942a67d066a12bb365ced3530b",
+      "cache_file": "gpt-4o-mini-tts-2025-12-15/marin/79f763b9def64b1b2f90928d3880b1f914b5a0942a67d066a12bb365ced3530b.wav",
+      "sha256": "a7d55780e9a25f4ce53506fb8eea550d84dce53158178bc04d52dfb9ed49bb40",
+      "duration_seconds": 2.5
+    },
+    {
+      "index": 28,
+      "source_index": 28,
+      "speaker": "연구자",
+      "fingerprint": "bc0c859e9835bb34057d4a8069ada328e72a2cf9d0d10b14b1439a6d75c2811c",
+      "cache_file": "gpt-4o-mini-tts-2025-12-15/cedar/bc0c859e9835bb34057d4a8069ada328e72a2cf9d0d10b14b1439a6d75c2811c.wav",
+      "sha256": "ca0396164e9b166830d5d8c50d0367cd2073af520134bb5bbffaaa597941e588",
+      "duration_seconds": 21.8
+    },
+    {
+      "index": 29,
+      "source_index": 29,
+      "speaker": "진행자",
+      "fingerprint": "f739b2acef5d52815a913213b5db3e5c8de87248e3c0ea17455c753c0faf6364",
+      "cache_file": "gpt-4o-mini-tts-2025-12-15/marin/f739b2acef5d52815a913213b5db3e5c8de87248e3c0ea17455c753c0faf6364.wav",
+      "sha256": "ef25c78d22a3cf1ab6ab8bae9943bfa92b52a8e0864da83e225330ba45547a00",
+      "duration_seconds": 3.4
+    },
+    {
+      "index": 30,
+      "source_index": 30,
+      "speaker": "연구자",
+      "fingerprint": "50e0d93b80c92791d2557eac7a87cca8cbec29385f9a943c14d0f53c8ae97a5e",
+      "cache_file": "gpt-4o-mini-tts-2025-12-15/cedar/50e0d93b80c92791d2557eac7a87cca8cbec29385f9a943c14d0f53c8ae97a5e.wav",
+      "sha256": "e4cc4025f07610c1526487b2d73e0c2c71244de34bdc4dee99d6149df7ff1710",
+      "duration_seconds": 31.2
+    },
+    {
+      "index": 31,
+      "source_index": 31,
+      "speaker": "진행자",
+      "fingerprint": "4a5cb4475c360792e1415a18fe81f46300fb7953cb20e7819ac59b80c3a61965",
+      "cache_file": "gpt-4o-mini-tts-2025-12-15/marin/4a5cb4475c360792e1415a18fe81f46300fb7953cb20e7819ac59b80c3a61965.wav",
+      "sha256": "a9563c7807bb16bd851085ee7a00d9879d0b57f81fd2d2449bc5db5950976b78",
+      "duration_seconds": 2.6
+    },
+    {
+      "index": 32,
+      "source_index": 32,
+      "speaker": "연구자",
+      "fingerprint": "02066abd5b79e9e5699fde55789e311b9551c29ad12dd14e1ea6776180c5b585",
+      "cache_file": "gpt-4o-mini-tts-2025-12-15/cedar/02066abd5b79e9e5699fde55789e311b9551c29ad12dd14e1ea6776180c5b585.wav",
+      "sha256": "034425ec960a56458849aec899e4aabe56300340b92709ad01d1a5f1d69f0d3a",
+      "duration_seconds": 19.35
+    },
+    {
+      "index": 33,
+      "source_index": 33,
+      "speaker": "진행자",
+      "fingerprint": "6074738cdf5c7098d8ccfd92c824705b7364e84d777433d1eb4d22b8dac47065",
+      "cache_file": "gpt-4o-mini-tts-2025-12-15/marin/6074738cdf5c7098d8ccfd92c824705b7364e84d777433d1eb4d22b8dac47065.wav",
+      "sha256": "b560a761172f83e3fde93557e6677e2a1a7c29596a7ae7becfd5bc544a322419",
+      "duration_seconds": 11.7
+    }
+  ]
+}

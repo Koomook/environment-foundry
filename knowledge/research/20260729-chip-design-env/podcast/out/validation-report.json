@@ -1,0 +1,30 @@
+{
+  "validated_at": "2026-07-29T15:53:57.026303+00:00",
+  "manifest": "manifest.json",
+  "passed": true,
+  "checks": {
+    "full_ffmpeg_decode": "pass",
+    "manifest_json": "pass",
+    "source_segment_count": 33,
+    "generated_segment_count": 33,
+    "style": "two-speaker",
+    "speaker_count": 2,
+    "boundary_segments": [
+      1,
+      17,
+      33
+    ],
+    "checksum_verification": "pass",
+    "secret_pattern_scan": "pass",
+    "time_stretch_applied": false,
+    "full_frame_text_video": "pass",
+    "target": {
+      "target_minutes": 13.0,
+      "actual_minutes": 11.633,
+      "tolerance_minutes": 2.0,
+      "within_target_tolerance": true,
+      "difference_minutes": -1.367
+    }
+  },
+  "errors": []
+}

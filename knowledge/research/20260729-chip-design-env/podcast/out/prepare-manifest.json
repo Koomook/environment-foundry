@@ -1,0 +1,24 @@
+{
+  "prepared_at": "2026-07-29T15:52:11.074611+00:00",
+  "title": "AI가 칩을 설계하려면 — 시뮬레이터, 데이터, 그리고 한국 디자인하우스",
+  "style": "two-speaker",
+  "source_mode": "dialogue",
+  "source_sha256": "b1263e53a108c79e4075f2c7bd472a8573bbc907296ee103d51c2aaef703fe50",
+  "transcript": "transcript.md",
+  "transcript_sha256": "e01c87582b189ece96a05b83007d29899bbb900f2f35c4ce0b18dfc91d372cf6",
+  "segments": "segments.json",
+  "segments_sha256": "7e91960d7aa5aa9de3accb7864674eca21ece655736cb568dfe3f7ca28686e74",
+  "turn_count": 33,
+  "segment_count": 33,
+  "total_characters": 4998,
+  "estimated_natural_minutes": 11.28,
+  "target_minutes": 13.0,
+  "model": "gpt-4o-mini-tts-2025-12-15",
+  "voices": {
+    "진행자": "marin",
+    "연구자": "cedar"
+  },
+  "speaker_count": 2,
+  "time_stretch_applied": false,
+  "credential_required": false
+}
