@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>덱 3 — 90일: 실행과 중단 조건</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{
+  --bg:#07090c; --panel:#0c1016; --line:#1b232e; --fg:#eef2f6; --dim:#93a0ae;
+  --accent:#ffd84d;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-snap-type:y mandatory;scroll-behavior:smooth}
+body{background:var(--bg);color:var(--fg);
+  font-family:"Pretendard Variable",Pretendard,-apple-system,sans-serif;
+  line-height:1.5;-webkit-font-smoothing:antialiased}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.slide{min-height:100vh;scroll-snap-align:start;display:flex;flex-direction:column;
+  justify-content:center;gap:2.2rem;padding:9vh 8vw 12vh;position:relative;
+  border-bottom:1px solid var(--line)}
+.kicker{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.8rem;
+  letter-spacing:.24em;text-transform:uppercase;color:var(--accent)}
+h1{font-size:clamp(2.4rem,7vw,5.5rem);font-weight:800;line-height:1.08;letter-spacing:-.02em}
+h2{font-size:clamp(2rem,5.2vw,4.2rem);font-weight:800;line-height:1.12;letter-spacing:-.02em}
+h1 em,h2 em{font-style:normal;color:var(--accent)}
+.lead{font-size:clamp(1.05rem,1.6vw,1.35rem);color:var(--dim);max-width:64ch}
+.lead b{color:var(--fg)}
+.quote{border-left:6px solid var(--accent);padding:1.3rem 1.7rem;
+  background:linear-gradient(90deg,rgba(255,216,77,.07),transparent);
+  font-size:clamp(1.3rem,2.4vw,2rem);font-weight:700;line-height:1.4;max-width:40ch}
+.tl{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.2rem}
+.phase{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:1.4rem 1.5rem;
+  display:flex;flex-direction:column;gap:.6rem}
+.phase .d{font-family:ui-monospace,Menlo,monospace;font-size:clamp(1.5rem,2.6vw,2.2rem);
+  font-weight:800;color:var(--accent)}
+.phase h3{font-size:1.05rem;font-weight:800}
+.phase p{color:#cdd7e0;font-size:.9rem}
+.phase .gate{margin-top:auto;border-top:1px dashed var(--line);padding-top:.6rem;
+  font-family:ui-monospace,Menlo,monospace;font-size:.74rem;color:var(--accent);
+  letter-spacing:.05em}
+table{width:100%;border-collapse:collapse;font-size:clamp(.8rem,1vw,.96rem)}
+th{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--accent);
+  text-align:left;font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;
+  padding:.55rem .8rem;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:.62rem .8rem;border-bottom:1px solid var(--line);vertical-align:top;color:#cdd7e0}
+td b{color:var(--fg)}
+td .it{font-family:ui-monospace,Menlo,monospace;color:var(--accent);white-space:nowrap}
+.scn{background:var(--panel);border:1px solid var(--line);border-left:6px solid var(--accent);
+  border-radius:12px;padding:1.6rem 1.8rem;max-width:1100px}
+.scn h3{font-size:clamp(1.2rem,1.9vw,1.6rem);font-weight:800;margin-bottom:1rem}
+.scn h3 span{color:var(--accent);font-family:ui-monospace,Menlo,monospace;margin-right:.5rem}
+.scn dl{display:grid;grid-template-columns:8.5rem 1fr;gap:.55rem 1.2rem}
+.scn dt{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--accent);
+  font-size:.76rem;letter-spacing:.1em;text-transform:uppercase;padding-top:.2rem}
+.scn dd{color:#cdd7e0;font-size:clamp(.92rem,1.15vw,1.05rem)}
+.scn dd b{color:var(--fg)}
+.stop{display:flex;flex-direction:column;gap:.9rem;max-width:1100px}
+.stoprow{display:grid;grid-template-columns:9rem 1fr;gap:1.2rem;align-items:baseline;
+  background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:1rem 1.3rem}
+.stoprow .k{font-family:ui-monospace,Menlo,monospace;color:var(--accent);font-weight:700;font-size:.95rem}
+.stoprow .v{color:#cdd7e0;font-size:.95rem}
+.stoprow .v b{color:var(--fg)}
+.foot{position:absolute;left:8vw;right:8vw;bottom:3.2vh;display:flex;
+  justify-content:space-between;gap:2rem;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.7rem;
+  color:#5f6b78;letter-spacing:.06em}
+.foot .pg{color:var(--accent);white-space:nowrap}
+.src{display:flex;flex-direction:column;gap:.45rem;font-family:ui-monospace,Menlo,monospace;
+  font-size:.82rem;color:#8b98a6}
+.src b{color:var(--accent);font-weight:600}
+@media print{
+  html{scroll-snap-type:auto}
+  body{background:#fff;color:#111}
+  .slide{min-height:100vh;page-break-after:always;border-bottom:none}
+}
+</style>
+</head>
+<body>
+
+<!-- 01 -->
+<section class="slide">
+  <div class="kicker">Environment Foundry · 칩 설계 환경 전략 · Deck 3 / 3</div>
+  <h1>90일<br><em>실행과 중단 조건</em></h1>
+  <p class="lead">이번 분기의 단일 베팅: 디자인하우스 reference-design signoff closure 환경 1개 —
+    허가된 제약/설정/Tcl 행동만 허용하고, 최종 라우팅 타이밍·DRC·혼잡·실행시간·엔지니어
+    투입시간으로 채점하는 20-에피소드 경로. 데이터가 아니라 <b>과제 스펙</b>을 산다.</p>
+  <div class="foot"><span>goal-map.md · synthesis-and-recommendation.md §6</span><span class="pg">01 / 09</span></div>
+</section>
+
+<!-- 02 -->
+<section class="slide">
+  <div class="kicker">타임라인</div>
+  <h2>4개 페이즈, <em>4개 게이트</em></h2>
+  <div class="tl">
+    <div class="phase">
+      <div class="d">0–14</div>
+      <h3>과제 스펙 구매</h3>
+      <p>데이터 구매가 아니다. 채점기 mutation audit과 노이즈 플로어 요구를 스펙 양식에 포함.</p>
+      <div class="gate">GATE · 구매자 작성 스펙 3건 또는 유료 디자인 파일럿 1건</div>
+    </div>
+    <div class="phase">
+      <div class="d">15–30</div>
+      <h3>공개 골격 완성</h3>
+      <p>RTL repair 5블록 확장, formal/mutation 보호 표준화, ORFS 소형 디자인 2개 final-route 채점(v2-3의 NOT YET 해소), 2명 운영자 재현 + revocation 드릴.</p>
+      <div class="gate">GATE · final-route 채점 2개 가동 + 독립 재현 통과</div>
+    </div>
+    <div class="phase">
+      <div class="d">31–60</div>
+      <h3>파트너 shadow 에피소드</h3>
+      <p>파트너 측 enclave 실행 20건. export는 허가 필드만(episode ID, 타입화된 행동, 스칼라 채점, 실행시간, 영수증).</p>
+      <div class="gate">GATE · 권리 유효 20-에피소드 경로 존재 확인</div>
+    </div>
+    <div class="phase">
+      <div class="d">61–90</div>
+      <h3>순위 상관 테스트</h3>
+      <p>인간/규칙 vs 랜덤·BO vs 범용모델 vs 에이전트 — 동일 툴-시간 예산으로 prospective 순위 상관 측정.</p>
+      <div class="gate">GATE · prospective 상관 + 보호된 채점기 + 구매자 가격</div>
+    </div>
+  </div>
+  <div class="foot"><span>synthesis §6 (수정된 90일 계획)</span><span class="pg">02 / 09</span></div>
+</section>
+
+<!-- 03 -->
+<section class="slide">
+  <div class="kicker">Stop rules — 게이트 미달 시 행동</div>
+  <h2>멈춤도 <em>실행</em>이다</h2>
+  <div class="stop">
+    <div class="stoprow"><span class="k">Day 14</span><span class="v">스펙 3건/유료 파일럿 1건이 없으면 → 세그먼트 가정 재검토. <b>구매자가 없는 환경은 환경이 아니다.</b></span></div>
+    <div class="stoprow"><span class="k">Day 30</span><span class="v">final-route 채점이 안 서면 → 스코프를 시나리오 A(최소 오픈 스택)로 축소하고 사다리 상승은 파트너 요구 시로 미룸.</span></div>
+    <div class="stoprow"><span class="k">Day 60</span><span class="v">권리 유효 20-에피소드 경로가 안 나오면 → 권리 단편화 판정, <b>IP 벤더 피벗(시나리오 B)</b> 또는 중단 평가.</span></div>
+    <div class="stoprow"><span class="k">Day 90</span><span class="v">8주 안에 ① 권리 유효 20-에피소드 경로 ② 보호된 prospective 채점기 ③ 구매자 가격 — 셋 중 하나라도 없으면 <b>세그먼트 중단</b>.</span></div>
+  </div>
+  <div class="quote">희소성을 무시하고 진행하는 것이 가장 비싼 실패다.</div>
+  <div class="foot"><span>synthesis §6, §7 · onepager.md 10번</span><span class="pg">03 / 09</span></div>
+</section>
+
+<!-- 04 -->
+<section class="slide">
+  <div class="kicker">우리가 이미 증명한 것 — 8회 이터레이션 아크</div>
+  <h2>v1 5회 + v2 3회 <em>(OBSERVED)</em></h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>가설</th><th>결과</th><th>다음 가설</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><span class="it">v1-1</span></td><td>컴파일 전이가 무효 RTL을 거부</td><td>성공 (문법 오류 격리)</td><td>컴파일은 행동을 못 본다</td></tr>
+      <tr><td><span class="it">v1-2</span></td><td>공개 예제는 틀린 구현도 통과시킴</td><td>gamer 통과 확인</td><td>히든 행동 필요</td></tr>
+      <tr><td><span class="it">v1-3</span></td><td>히든 전수가 게이밍 격리</td><td>828/1024 조합에서 격리</td><td>정답 게이트 후 품질 신호</td></tr>
+      <tr><td><span class="it">v1-4</span></td><td>제네릭 합성이 동등 RTL을 순위화</td><td>41 vs 36셀</td><td>홀드아웃 파라미터 생존?</td></tr>
+      <tr><td><span class="it">v1-5</span></td><td>계약이 width 5로 전이</td><td>전이 성공</td><td>다른 블록 패밀리 + 라우팅 상관</td></tr>
+      <tr><td><span class="it">v2-1</span></td><td><b>순차 블록에도 계약 전이</b></td><td><b>gamer 히든 격리(오버랩 시점), gold·onehot 통과</b></td><td>채점기 자체를 감사하라</td></tr>
+      <tr><td><span class="it">v2-2</span></td><td><b>행동 변경 돌연변이는 100% 격리돼야</b></td><td><b>7/7 kill, 동등 돌연변이 생존(캘리브레이션)</b></td><td>프록시의 충실도 한계 측정</td></tr>
+      <tr><td><span class="it">v2-3</span></td><td><b>제네릭 프록시는 순위를 왜곡</b></td><td><b>격차 7.7배 과장 · 동등쌍 2.13배 · 지연 순위 반전</b></td><td>RTL-to-GDS 상관 (NOT YET)</td></tr>
+    </tbody>
+  </table>
+  <p class="lead">게이트 순서가 곧 환경 설계 계약: <span class="mono" style="color:var(--accent)">컴파일 → 공개 → 히든 전수 → 돌연변이 감사 → 품질 프록시 → 사다리 상승 → prospective 상관</span></p>
+  <div class="foot"><span>synthesis §4 · knowledge/lab/experiments/ai-chip-foundry{,-v2}/</span><span class="pg">04 / 09</span></div>
+</section>
+
+<!-- 05 -->
+<section class="slide">
+  <div class="kicker">시나리오 분기 — 어느 경로도 정답으로 미리 고르지 않는다</div>
+  <h2>시나리오 <em>A</em> — 성공 경로</h2>
+  <div class="scn">
+    <h3><span>A</span>prospective 상관 확인</h3>
+    <dl>
+      <dt>bet</dt>
+      <dd>20 shadow 에피소드에서 오프라인 순위가 prospective live 순위를 예측하면, replay가 simulator로 승격된다. 회사 proof ladder의 다음 게이트(두 번째 어댑터가 더 빠르고 싸다)로 진입할 자격을 얻는다.</dd>
+      <dt>drop</dt>
+      <dd>코퍼스 확장·계층 확장·두 번째 도메인 유혹 — 상관 확인 전에는 어떤 스케일업도 하지 않는다.</dd>
+      <dt>switch-signal</dt>
+      <dd>상관은 있으나 에피소드 수가 구조적으로 부족하면(독립 결정 20건 미만) → C로 전환해 세그먼트 지속 여부를 다시 묻는다.</dd>
+      <dt>worst ending</dt>
+      <dd>성공의 함정: 상관은 나왔지만 DSO.ai/Cerebrus급 기존주자 대비 동일 예산 우위를 입증 못 해 세그먼트 중단 — <b>기술은 되고 사업은 안 되는</b> 결론.</dd>
+    </dl>
+  </div>
+  <div class="foot"><span>synthesis §6–7 · goal-map.md 장기 게이트</span><span class="pg">05 / 09</span></div>
+</section>
+
+<!-- 06 -->
+<section class="slide">
+  <div class="kicker">시나리오 분기</div>
+  <h2>시나리오 <em>B</em> — 권리 단편화로 막힘 → IP 벤더 피벗</h2>
+  <div class="scn">
+    <h3><span>B</span>디자인하우스 봉쇄 시 재조립</h3>
+    <dl>
+      <dt>bet</dt>
+      <dd>중소기업 데이터가 고객·파운드리·EDA 벤더·IP 벤더·수출통제의 공동 소유라는 최강 반론이 현실화될 때, 블록 단위 라이선스 구조가 이미 있는 IP 벤더(퀄리타스/오픈엣지)로 권리를 재조립한다. 타임라인 재설정(+30일)을 인정하고 간다.</dd>
+      <dt>drop</dt>
+      <dd>디자인하우스 메타데이터의 폭, 20-에피소드 목표의 원 정의 — 블록 단위 기준으로 재정의.</dd>
+      <dt>switch-signal</dt>
+      <dd>디자인하우스 2개사 모두 Day 60까지 export 필드 합의 실패 시 발동. IP 벤더에서도 PDK 파생 파라미터가 막히면 피벗 종료, 중단 평가로.</dd>
+      <dt>worst ending</dt>
+      <dd>피벗마저 막혀 데이터 없는 엔진이 된다 — 세그먼트 중단, 배운 것(권리 12필드 계약 표, enclave 설계)만 위키에 남긴다.</dd>
+    </dl>
+  </div>
+  <div class="foot"><span>synthesis §5, §7-1 · korea-chip-company-map.md §3-4</span><span class="pg">06 / 09</span></div>
+</section>
+
+<!-- 07 -->
+<section class="slide">
+  <div class="kicker">시나리오 분기</div>
+  <h2>시나리오 <em>C</em> — 에피소드 희소 → 세그먼트 중단</h2>
+  <div class="scn">
+    <h3><span>C</span>테이프아웃 ≠ 에피소드</h3>
+    <dl>
+      <dt>bet</dt>
+      <dd>테이프아웃 1회를 파라미터 스윕으로 쪼갠 것은 독립 결정이 아니다. 한 파트너 안에 독립 결정 20건이 구조적으로 존재하지 않는다고 확인되면, <b>빠른 중단 자체가 이 90일의 최대 산출물</b>이다 — 실패 비용을 90일에서 멈춘다.</dd>
+      <dt>drop</dt>
+      <dd>칩 설계 도메인 전체(재진입 조건: 파트너가 스스로 에피소드 경로를 증명해 올 때).</dd>
+      <dt>switch-signal</dt>
+      <dd>Day 60 shadow 수집에서 독립 결정 수가 20에 구조적으로 못 미치거나, "의미 있는 최소 품질 차이"(노이즈 플로어) 이하의 delta로밖에 순위를 못 매길 때.</dd>
+      <dt>worst ending</dt>
+      <dd>희소성을 무시하고 밀어붙여 6개월 후 상관 없는 벤치마크를 발행 — ChiPBench가 이미 보여준 길을 회사 평판을 걸고 재현한다.</dd>
+    </dl>
+  </div>
+  <div class="foot"><span>synthesis §7-2 · onepager.md 10번</span><span class="pg">07 / 09</span></div>
+</section>
+
+<!-- 08 -->
+<section class="slide">
+  <div class="kicker">이 계획이 틀릴 수 있는 지점</div>
+  <h2>5개의 <em>반론</em>을 열어 둔다</h2>
+  <div class="stop">
+    <div class="stoprow"><span class="k">반론 1</span><span class="v"><b>권리 단편화</b> — 중소기업 데이터도 고객·파운드리·EDA 벤더·IP 벤더·수출통제의 공동 소유일 수 있다.</span></div>
+    <div class="stoprow"><span class="k">반론 2</span><span class="v"><b>에피소드 희소성</b> — 20 에피소드 경로가 실제로 존재하는지가 게이트다.</span></div>
+    <div class="stoprow"><span class="k">반론 3</span><span class="v"><b>기존 EDA AI</b> — 인간 레시피·랜덤·BO를 동일 예산으로 못 이기는 LLM/RL 레이어는 부가가치가 없다.</span></div>
+    <div class="stoprow"><span class="k">반론 4</span><span class="v"><b>스케일 한계</b> — 4비트 ALU·4상태 FSM의 프록시 왜곡이 수백만 게이트에서도 같은 부호일지는 미검증(가설이지 관측이 아니다).</span></div>
+    <div class="stoprow"><span class="k">반론 5</span><span class="v"><b>한국 접근성 가정</b> — "한국 회사라서 데이터 접근이 쉽다"는 검증되지 않은 지역성 가정일 수 있다.</span></div>
+  </div>
+  <div class="foot"><span>synthesis §7</span><span class="pg">08 / 09</span></div>
+</section>
+
+<!-- 09 -->
+<section class="slide">
+  <div class="kicker">결정 규칙 · 출처</div>
+  <h2>첫 증거는<br><em>20건의 prospective 상관</em>이다</h2>
+  <p class="lead">지금 할 일: 데이터가 아니라 과제 스펙을 산다 — 2주 안에 구매자 작성 스펙 3건
+    (또는 유료 파일럿 1건), 병행으로 ORFS 소형 디자인 2개의 final-route 채점을 공개 골격에 추가.
+    8주 안에 권리 유효 경로·보호된 채점기·구매자 가격이 없으면 세그먼트를 중단한다.</p>
+  <div class="src">
+    <span><b>출처</b> — knowledge/research/20260729-chip-design-env/</span>
+    <span>synthesis-and-recommendation.md (§4, §6, §7)</span>
+    <span>onepager.md · goal-map.md</span>
+    <span>research/simulators-and-ai-methods.md · research/data-artifacts-and-datasets.md · research/korea-chip-company-map.md</span>
+    <span>실험: knowledge/lab/experiments/ai-chip-foundry{,-v2}/ (v1 5회 + v2 3회)</span>
+  </div>
+  <div class="foot"><span>Deck 3 · 90일 실행과 중단 조건</span><span class="pg">09 / 09</span></div>
+</section>
+
+</body>
+</html>
