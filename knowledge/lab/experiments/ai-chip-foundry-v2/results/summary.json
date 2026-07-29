@@ -1,0 +1,21 @@
+{
+  "status": "OBSERVED",
+  "capability": "sequential-block contract, mutation-audited grader, liberty-mapped fidelity comparison",
+  "not_yet": [
+    "RTL-to-GDS correlation",
+    "formal proofs",
+    "commercial-node transfer",
+    "company-data utility",
+    "silicon outcome"
+  ],
+  "iterations": [
+    "results/iteration-1.json",
+    "results/iteration-2.json",
+    "results/iteration-3.json"
+  ],
+  "headline": {
+    "iter1_gamer_hidden_passed": false,
+    "iter2_mutation_score": 1.0,
+    "iter3_status": "OBSERVED"
+  }
+}

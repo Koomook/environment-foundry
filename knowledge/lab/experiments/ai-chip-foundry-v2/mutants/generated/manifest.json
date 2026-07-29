@@ -1,0 +1,44 @@
+{
+  "mutants": [
+    {
+      "name": "seq_mut01_no_overlap",
+      "description": "S3 transition drops overlap (restart at S0 after hit)",
+      "expected": "KILLED"
+    },
+    {
+      "name": "seq_mut02_s2_reentry",
+      "description": "S2 on din=1 falls back to S1 (breaks '11101')",
+      "expected": "KILLED"
+    },
+    {
+      "name": "seq_mut03_pattern_1100",
+      "description": "detects 1100 instead of 1101 (hit polarity flip)",
+      "expected": "KILLED"
+    },
+    {
+      "name": "seq_mut04_s1_wrong_zero",
+      "description": "S1 on din=0 jumps to S2 instead of S0",
+      "expected": "KILLED"
+    },
+    {
+      "name": "seq_mut05_registered_hit",
+      "description": "hit registered by one cycle (timing shift, same pattern)",
+      "expected": "KILLED"
+    },
+    {
+      "name": "seq_mut06_equiv_encoding",
+      "description": "EQUIVALENT: swaps S2/S3 encodings, behavior identical",
+      "expected": "SURVIVES"
+    },
+    {
+      "name": "seq_mut07_reset_to_s1",
+      "description": "reset lands in S1 instead of S0 (reset semantics)",
+      "expected": "KILLED"
+    },
+    {
+      "name": "seq_mut08_false_start",
+      "description": "S0 advances on din=0 as well (false start)",
+      "expected": "KILLED"
+    }
+  ]
+}
