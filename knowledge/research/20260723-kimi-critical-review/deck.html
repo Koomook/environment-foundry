@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>키미 리서치 — Environment Foundry V2 비판적 리뷰</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" />
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0a0810;--panel:#141020;--panel2:#181226;--text:#f3effa;--dim:#b3aac6;--muted:#6b6180;--accent:#b794f6;--gold:#ffd84d;--good:#7ee3c0;--bad:#ff7272;--blue:#7aa2ff;--border:#2a2140;--mono:ui-monospace,'SF Mono',Menlo,monospace}
+html{background:var(--bg);scroll-snap-type:y proximity;scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Pretendard Variable',Pretendard,sans-serif;line-height:1.5}
+section{width:100vw;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:4.5rem 6vw;position:relative;scroll-snap-align:start}
+.wrap{width:100%;max-width:1240px}
+.label{font-family:var(--mono);font-size:.72rem;letter-spacing:.2em;color:var(--accent);margin-bottom:1.1rem}
+h1{font-size:clamp(2.7rem,5.8vw,5.4rem);line-height:1.06;letter-spacing:-.05em}
+h2{font-size:clamp(2rem,4.2vw,3.6rem);line-height:1.1;letter-spacing:-.04em;max-width:1150px}
+.sub{font-size:clamp(1.05rem,1.8vw,1.35rem);color:var(--dim);max-width:900px;margin-top:1.2rem}
+.big{font-size:clamp(1.25rem,2.6vw,2.2rem);line-height:1.38;font-weight:700;border-left:4px solid var(--accent);padding:1rem 0 1rem 1.4rem;margin-top:1.9rem;max-width:1130px;background:linear-gradient(90deg,rgba(183,148,246,.07),transparent)}
+.big em{font-style:normal;color:var(--accent)}
+.cards{display:grid;gap:1rem;margin-top:1.8rem}
+.c2{grid-template-columns:repeat(2,1fr)}.c3{grid-template-columns:repeat(3,1fr)}.c4{grid-template-columns:repeat(4,1fr)}
+.card{background:linear-gradient(155deg,var(--panel),#0f0b18);border:1px solid var(--border);border-radius:14px;padding:1.35rem 1.4rem}
+.card h3{font-size:1.08rem;margin-bottom:.5rem}
+.card h3 em{font-style:normal;font-family:var(--mono);font-size:.64rem;display:block;letter-spacing:.14em;margin-bottom:.5rem;color:var(--accent)}
+.card p,.card li{font-size:.88rem;color:var(--dim);line-height:1.6}
+.card ul{margin-left:1.1rem}
+.card.good{border-top:3px solid var(--good)}.card.bad{border-top:3px solid var(--bad)}.card.next{border-top:3px solid var(--accent)}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:2rem}
+.kpi{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:1.4rem 1.2rem;text-align:center}
+.kpi strong{display:block;font-size:clamp(1.8rem,3.4vw,3rem);color:var(--accent);letter-spacing:-.04em;line-height:1.1}
+.kpi span{display:block;color:var(--dim);font-size:.78rem;margin-top:.7rem;line-height:1.5}
+table.mx{width:100%;border-collapse:collapse;margin-top:1.8rem;font-size:.88rem}
+table.mx th{font-family:var(--mono);font-size:.64rem;letter-spacing:.1em;color:var(--muted);text-align:left;padding:.7rem .8rem;border-bottom:1px solid var(--accent)}
+table.mx td{padding:.7rem .8rem;border-bottom:1px solid var(--border);color:var(--dim);vertical-align:top}
+table.mx td:first-child{color:var(--text);font-weight:700;white-space:nowrap}
+.y{color:var(--good)}.n{color:var(--bad)}
+.num{position:absolute;right:3rem;bottom:1.6rem;color:var(--muted);font-family:var(--mono);font-size:.68rem}
+.meta{position:fixed;top:1.2rem;right:1.5rem;color:var(--muted);font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;z-index:9}
+.note{margin-top:1.4rem;border-left:2px solid var(--gold);padding:.8rem 1.1rem;background:rgba(255,216,77,.05);color:var(--dim);font-size:.9rem;max-width:1100px}
+.src{margin-top:1.6rem;font-family:var(--mono);font-size:.62rem;color:var(--muted);line-height:1.9}
+@media(max-width:900px){.c2,.c3,.c4,.kpis{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="meta">KIMI RESEARCH · ENVIRONMENT FOUNDRY · 2026-07-23</div>
+
+<section><div class="wrap">
+  <div class="label">KIMI CRITICAL REVIEW · V2</div>
+  <h1>지도는 그려졌다.<br>이제 결정이다.</h1>
+  <p class="sub">v2 세션은 벤치마크 지형을 잘 정리했다. 이 덱은 그 다음이다 — 성능을 올리는 데이터, 시뮬레이션, 투자자, 코파욷더, 운영 모델, 타임라인. 같은 주제, 다른 접근: 모든 리서치는 결정으로 끝난다.</p>
+  <div class="big">검증 가능한 비즈니스 판단 데이터는 <em>글로벌 공백</em>이고,<br>그 상품의 스펙은 이미 RLVR 문헌이 정해줬다.</div>
+  <div class="num">01 / 10</div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="label">V2 CRITIQUE · 잘한 것과 한계</div>
+  <h2>v2의 성적표.</h2>
+  <div class="cards c2">
+    <div class="card good"><h3><em>잘한 것</em>4개</h3><ul><li>L1–L5 능력 사다리로 "회사 운영" 분해</li><li>논문이 아니라 실제 artifact 검사 (라이선스까지)</li><li>음성 결과(negative result) 보존하는 실험 습관</li><li>공개 사실/추론/미공개의 증거 등급화</li></ul></div>
+    <div class="card bad"><h3><em>한계</em>5개</h3><ul><li>답이 아니라 지도 — 월요일의 결정이 없다</li><li>buyer 없는 benchmark 비판 — 에코 챔버 재현</li><li>0.5B/16개 실험은 신호가 너무 약하다</li><li>시뮬레이션·투자자·코파욷더·운영이 범위 밖</li><li>V2.1 가설이 실험 카드로 변환되지 않았다</li></ul></div>
+  </div>
+  <div class="note">v2의 landscape matrix는 유효한 원자료로 유지. 이 리서치는 그 위의 결정 레이어다.</div>
+  <div class="num">02 / 10</div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="label">BENCHMARKS · 결정판</div>
+  <h2>벤치마크는 세 종류로 나뉜다.</h2>
+  <div class="cards c3">
+    <div class="card"><h3><em>PATH A 시장</em>점수 고객이 있는 곳</h3><p>SWE-bench · OSWorld · WebArena · CRMArenaPro · TheAgentCompany. 이들의 태스크·grader·궤적 공급이 빠른 현금 경로.</p></div>
+    <div class="card"><h3><em>설계 기준</em>우리 상품의 원형</h3><p>GDPval — 전문가 루브릭 채점. SWE-Lancer — 실제 지급액 $1M이 보상, 매니저의 원래 결정을 정답으로 채점. "실제 결정·실제 결과"의 선례.</p></div>
+    <div class="card"><h3><em>공백의 증거</em>12개 전부에 없는 것</h3><p>전부 영어·미국 기업·정적/단발 태스크. 한국어 없고, 살아있는 회사 없고, 지연된 관계 결과 없다.</p></div>
+  </div>
+  <div class="kpis">
+    <div class="kpi"><strong>$30</strong><span>TinyZero 3B — R1-Zero 재현 비용</span></div>
+    <div class="kpi"><strong>$4,500</strong><span>DeepScaleR 1.5B → AIME 43.1%</span></div>
+    <div class="kpi"><strong>4.8→42.4%</strong><span>WebRL 8B, WebArena 성공률</span></div>
+    <div class="kpi"><strong>+31%</strong><span>RaR — 루브릭 보상, HealthBench</span></div>
+  </div>
+  <div class="num">03 / 10</div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="label">DATA PLAYBOOK · 상품 스펙</div>
+  <h2>RLVR 문헌이 정해준 스펙 5개.</h2>
+  <table class="mx">
+    <tr><th>스펙</th><th>왜</th><th>근거</th></tr>
+    <tr><td>pass rate 20–80% 태스크</td><td>전원 정답/오답은 학습 신호 0</td><td>DAPO dynamic sampling · RAGEN</td></tr>
+    <tr><td>케이스별 전문가 루브릭</td><td>루브릭이 그대로 RL 보상이 된다</td><td>RaR (+31%) · Kimi K2 self-critique</td></tr>
+    <tr><td>실제 결정·결과값 앵커</td><td>실제 지급액·원래 결정이 보상인 선례</td><td>SWE-Lancer · GDPval</td></tr>
+    <tr><td>중간 단계 보상 밀도</td><td>outcome만 있으면 추론 붕괴</td><td>RAGEN Finding 3 · TheAgentCompany 체크포인트</td></tr>
+    <tr><td>해킹 감사 루프</td><td>랜덤 보상도 +21.4%p — 게인≠능력</td><td>Spurious Rewards · Rubric Anchors</td></tr>
+  </table>
+  <div class="big">만들 것: <em>gold trajectory 100개 + 루브릭 100개 + 난이도 분포 리포트</em>.<br>그 다음: LoRA 파일럿으로 첫 lift — 그것이 "우리 데이터가 성능을 올린다"의 첫 증거.</div>
+  <div class="num">04 / 10</div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="label">KOREA GAP · 3중 공백</div>
+  <h2>한국어는 학습 신호 기준 극저자원이다.</h2>
+  <div class="cards c3">
+    <div class="card"><h3><em>공백 1</em>코퍼스</h3><p>CulturaX 토큰의 0.39%. Naver·LG가 자체 코퍼스를 짓는 이유.</p></div>
+    <div class="card"><h3><em>공백 2</em>궤적 데이터</h3><p>한국어 agentic 환경·rollout 데이터 공개 0건.</p></div>
+    <div class="card"><h3><em>공백 3</em>벤치마크</h3><p>KMMLU 등 지식형만. 운영 판단 벤치 없음.</p></div>
+  </div>
+  <div class="big">이중 수요: 국내 랩(Naver·LG·Upstage·SKT)은 한국어 reasoning을,<br>프론티어 랩은 한국 시장 맥락 agentic 능력을 원한다. <em>글로벌 유일 카테고리.</em></div>
+  <div class="num">05 / 10</div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="label">SIMULATION · 예측력의 4개 법칙</div>
+  <h2>시뮬레이터는 데이터가 있어야 예측한다.</h2>
+  <div class="cards c4">
+    <div class="card"><h3><em>법칙 1</em>결정론적 보상</h3><p>테스트·감사 가능한 채점. 모든 상업 플레이어의 공통 전제.</p></div>
+    <div class="card"><h3><em>법칙 2</em>변동성이 현실을 덮는다</h3><p>Domain Randomization (Tobin 2017). 조직 버전: 인원·정책·장애 주입.</p></div>
+    <div class="card"><h3><em>법칙 3</em>실제 데이터 폐루프</h3><p>SimOpt: 소량의 실제 궤적으로 주기적 재보정. 살아있는 episode가 연료.</p></div>
+    <div class="card"><h3><em>법칙 4</em>calibration 수치화</h3><p>본인 자기일관성 대비 정규화 정확도 (Park 1,000명 실험, 0.85).</p></div>
+  </div>
+  <div class="note">상업 선례: Mechanize 'digital office' · AfterQuery 'worlds' ($100M run-rate, 미국 프론티어 랩 전원 고객) · micro1 'Roots' (모의 지주회사) · Fleet (SW 충실 복제, ~$750M). 반례: Sherwin Wu "숏", Karpathy "환경 강세·RL 약세". 시뮬레이터는 Gate 6 이후의 상품 — 먼저 팔 것은 episode+grader다.</div>
+  <div class="num">06 / 10</div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="label">INVESTORS · 누가, 얼마를, 무엇을 묻는가</div>
+  <h2>"Scale AI for environments"를 찾는 돈.</h2>
+  <table class="mx">
+    <tr><th>투자자</th><th>딜</th><th>논리</th></tr>
+    <tr><td>NFDG + Collison·Dean</td><td>Mechanize $9.1M</td><td>"모든 일의 완전 자동화" TAM</td></tr>
+    <tr><td>Sequoia·Menlo·Bain</td><td>Fleet ~$750M (병도)</td><td>에이전트의 체육관</td></tr>
+    <tr><td>Altos(리드)·랩 엔젤</td><td>AfterQuery $30M @ $300M</td><td>$100M run-rate 속도</td></tr>
+    <tr><td>Founders Fund·Karpathy</td><td>Prime Intellect →$1B (병도)</td><td>RL 환경의 Hugging Face</td></tr>
+    <tr><td>a16z · YC</td><td>옵저버 + 배치 펀딩</td><td>"모두가 이 공간을 보고 있다"</td></tr>
+  </table>
+  <div class="cards c2" style="margin-top:1.4rem">
+    <div class="card"><h3><em>묻는 질문 5개</em></h3><ul><li>랩이 사내에서 만들면 되지 않나</li><li>reward hacking 보증은</li><li>매출 집중 리스크</li><li>확장성(컴퓨트 비용)</li><li>방어력(재사용 자산·SOC 2)</li></ul></div>
+    <div class="card"><h3><em>한국·아시아 경로</em></h3><ul><li>Altos — 이 카테고리 최대 교두보</li><li>Naver D2SF — "Proprietary Data" thesis</li><li>SBVA — 한·미 크로스오버</li><li>정책자금 — 2026 상반기 AI 투자 +485%</li></ul></div>
+  </div>
+  <div class="num">07 / 10</div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="label">CO-FOUNDER · 8개 창업팀의 패턴</div>
+  <h2>연구자 포함 여부가 회사를 결정한다.</h2>
+  <div class="cards c4">
+    <div class="card"><h3><em>연구자 주도</em>품질 프리미엄</h3><p>Surge(1인·前Google/Meta 연구자) · Mechanize(Epoch AI 3인) · Snorkel(Stanford 랩)</p></div>
+    <div class="card"><h3><em>운영형</em>속도로 승부</h3><p>Mercor(고교 친구 3인) · Scale(Quora 동료 → 2018년 결별의 교훈)</p></div>
+    <div class="card"><h3><em>유사 구성</em>Mechanize</h3><p>같은 연구조직 동반 이직. frogstar와 가장 유사.</p></div>
+    <div class="card"><h3><em>반례 경계</em>Surge의 함정</h3><p>1인 가능했던 이유: 본인이 프론티어급 연구자. → RL 코파욷더 필요 가설 지지.</p></div>
+  </div>
+  <div class="cards c2">
+    <div class="card next"><h3><em>프로필 스펙</em>필요한 사람</h3><p>RLVR·grader·reward hacking을 손으로 핵본 RL 실전 경험자. 공개 artifact로 검증. environment/grader 품질의 최종 책임 + buyer 기술 미팅.</p></div>
+    <div class="card next"><h3><em>찾는 곳</em>한국 현실 풀</h3><p>KAIST(김기응 AIPRLAB 등)·서울대 랩 · 네이버/카카오/업스테이지/삼성/LG 출신 · 해외 한국인 박사·포닥 · 오픈소스 RL 기여자. 지분: 근접 균등 + 4년 베스팅 (YC 표준).</p></div>
+  </div>
+  <div class="big">탐색 방법은 미팅이 아니라 <em>공동 실험</em> — LoRA 파일럿을 함께 돌려보는 것이 가장 싼 상호 검증.</div>
+  <div class="num">08 / 10</div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="label">OPERATIONS & TIMELINE · 선례와 계획</div>
+  <h2>첫 매출은 빠르다. 폭발은 랩 첫 계약 뒤.</h2>
+  <div class="cards c3">
+    <div class="card"><h3><em>운영 모델</em>실제 구조</h3><p>소수 정직원+대규모 원격 전문가(Surge 130명↔계약자 5만). 스프레드 마진 ~35%. 랩 소수 집중 고객 = 엔진이자 리스크.</p></div>
+    <div class="card"><h3><em>타임라인 선례</em>실제 속도</h3><p>Mercor: 첫 랩 계약 후 11개월 만에 $100M ARR. Turing: 데이터 사업 피벗 후 2년 2.5배. SimpleClosure: 덱 없이 24시간 시드.</p></div>
+    <div class="card"><h3><em>핵심 선례</em>Turing 피벗</h3><p>기존 인재 네트워크 자산을 RL 환경 사업으로 피벗해 재평가. Team Attention의 커뮤니티 자산이 같은 역할.</p></div>
+  </div>
+  <table class="mx">
+    <tr><th>기간</th><th>마일스톤</th><th>gate</th></tr>
+    <tr><td>~7/28</td><td>V2→V5 매일 한 버전 (골격→buyer 반영→episode 초도→IR)</td><td>—</td></tr>
+    <tr><td>8월</td><td>gold trajectory+루브릭 100개 · 난이도 분포 · buyer 20건(랩+SimpleClosure/Sunset/Protege+국내 랩)</td><td>0–2</td></tr>
+    <tr><td>9월</td><td>코파욷더 후보 5명과 공동 실험 · LoRA 파일럿 첫 lift</td><td>3</td></tr>
+    <tr><td>10–12월</td><td>shadow episode → paid pilot 1건 또는 spec 3건. 실패 시 stop rule</td><td>4–5, 9</td></tr>
+  </table>
+  <div class="num">09 / 10</div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="label">CLOSE · 한 문장</div>
+  <h2>상품의 스펙은 정해졌고,<br>만들 사람과 순서도 정해졌다.</h2>
+  <div class="big">검증 가능한 비즈니스 판단 데이터는 공백이고, 스펙은 RLVR 문헌이 정했고, 한국어는 3중 공백이라 이중 수요가 있고, 만들 사람은 RL 실전 코파욷더이고, 첫 매출 선례는 수 주다. <em>남은 것은 gold trajectory 100개와 buyer 20명이다.</em></div>
+  <div class="src">FULL SOURCES · environment-foundry/knowledge/research/20260723-kimi-critical-review/ — v2-approach-critique · data-playbook(+appendix 40출처) · simulation-and-investors · cofounder-and-operations · deck.html · podcast-script.md</div>
+  <div class="num">10 / 10</div>
+</div></section>
+
+</body>
+</html>

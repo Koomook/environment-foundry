@@ -1,0 +1,78 @@
+{
+  "manifest_version": "environment-foundry-v2.1",
+  "created_at": "2026-07-23T17:55:00+09:00",
+  "network_artifacts_live_outside_git": true,
+  "sources": [
+    {
+      "name": "TheAgentCompany",
+      "url": "https://github.com/TheAgentCompany/TheAgentCompany",
+      "revision": "98b68ef82a47690c316f42fddb05baafaab56851",
+      "cache_relative_path": "upstream/TheAgentCompany",
+      "license": "MIT",
+      "decoded_episode_ids": [
+        "the-agent-company:admin-arrange-meeting-rooms",
+        "the-agent-company:admin-a\u0073k-for-meeting-feedback",
+        "the-agent-company:admin-a\u0073k-for-upgrade-reimbursement"
+      ]
+    },
+    {
+      "name": "CRMArenaPro B2B",
+      "url": "https://huggingface.co/datasets/Salesforce/CRMArenaPro",
+      "revision": "8c055f5",
+      "cache_relative_path": "upstream/CRMArenaPro-data/tasks_b2b.json",
+      "sha256": "65e90c8a1f962c7fc9db60597a42f27ecbb0933fc81677e6f27c7ef97a64b711",
+      "rows": 2140,
+      "license": "CC-BY-NC-4.0",
+      "decoded_episode_ids": [
+        "crmarena-pro:b2b:0",
+        "crmarena-pro:b2b:1",
+        "crmarena-pro:b2b:2"
+      ]
+    },
+    {
+      "name": "Gaia2 mini validation",
+      "url": "https://huggingface.co/datasets/meta-agents-research-environments/gaia2",
+      "code_revision": "7946367413129784139e785ae4c351090002a0bb",
+      "cache_relative_path": "upstream/Gaia2-data/mini-validation.parquet",
+      "sha256": "88430154e09bb728c666bbbf367bb805c8a84f8bdee427e7d469887022ab71fe",
+      "rows": 160,
+      "license": "CC-BY-4.0",
+      "decoded_episode_ids": [
+        "gaia2:scenario_universe_21_xvc7uo",
+        "gaia2:scenario_universe_27_fcbx0i",
+        "gaia2:scenario_universe_30_68r6vs"
+      ]
+    }
+  ],
+  "local_evidence": {
+    "decoded_files_cache_relative_path": "decoded",
+    "schema_failures_across_nine_samples": 0,
+    "baseline": {
+      "source": "CRMArenaPro B2B first 10 rows",
+      "policy": "refuse policy-sensitive tasks, abstain otherwise",
+      "mean_reward": 0.0,
+      "setting": "local deterministic approximation, not upstream score"
+    },
+    "small_model_experiment": {
+      "model": "Qwen/Qwen2.5-0.5B-Instruct",
+      "revision": "7ae557604adf67be50417f59c2c2f167def9a775",
+      "algorithm": "LoRA SFT",
+      "training_split": "public synthetic train only",
+      "test_used_for_training": false,
+      "train_rows": 16,
+      "dev_rows": 10,
+      "frozen_test_rows": 10,
+      "iterations": 12,
+      "seed": 20260723,
+      "wall_time_seconds": 5.4,
+      "peak_memory_gib": 1.281,
+      "cost_usd": 0,
+      "adapter_sha256": "c2aa992d4001b6c9d92d3bc6201539081794d2642de8d4391226ce12bce3220c",
+      "test_parse_validity_before": 0.0,
+      "test_parse_validity_after": 1.0,
+      "test_exact_match_before": 0.0,
+      "test_exact_match_after": 0.0,
+      "interpretation": "format and safe-action recovery only; no decision lift"
+    }
+  }
+}

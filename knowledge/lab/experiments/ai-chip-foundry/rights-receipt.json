@@ -1,0 +1,22 @@
+{
+  "receipt_id": "rr-ai-chip-foundry-synthetic-v1",
+  "purpose": "Local evaluation of a bounded RTL repair and optimization environment",
+  "grants": {
+    "access": true,
+    "operations": true,
+    "evaluation": true,
+    "training": true,
+    "derivative": true,
+    "resale": false,
+    "export": true
+  },
+  "retention": "Synthetic fixtures and derived metrics may be retained in Git.",
+  "revocation": "Repository owner may remove the synthetic package in a superseding change.",
+  "deletion_propagation": "Delete derived local build outputs and future dataset versions referencing the removed fixture.",
+  "reviewed_at": "2026-07-29T00:00:00+09:00",
+  "source_class": "synthetic",
+  "limitations": [
+    "No proprietary RTL, PDK, EDA output, company payload, or person-level data.",
+    "Upstream tool licenses are not transferred by this receipt."
+  ]
+}

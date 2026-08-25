@@ -1,6 +1,6 @@
 # Environment Foundry — Company OS
 
-This repository is the operating system of an independent company. The working name is Environment Foundry. Do not import Team Attention's mission, people, customers, or claims as this company's truth.
+This repository is the operating system of an independent company. The working name is Environment Foundry and the project codename is `frogstar`; Morphospace is not a valid name for this project. Do not import Team Attention's mission, people, customers, or claims as this company's truth.
 
 ## Mission
 
@@ -64,6 +64,39 @@ Do not call a corpus an environment without an observation boundary, typed actio
 - Command decisions live in canonical decision pages after evidence review.
 - The founder owns priority, budget, publication, external commitments, acquisition, fundraising, and stop/continue decisions.
 - Agents may draft and test internally but must not contact people, publish, purchase, fundraise, acquire, or run live interventions without explicit authorization.
+
+## Founder Companion routing
+
+Founder life, family, health, happiness, identity, and long-horizon personal
+decisions start at `founder-companion/README.md`, not in the company wiki or a
+company workstream.
+
+- `founder-companion/` stores public-safe operating principles, decision
+  protocols, templates, and declassified capacity rules.
+- Raw memories, family narratives, private conversations, health records,
+  reading notes, audio, and personal timelines belong only in
+  `private-plane/payload/founder-companion/` or another approved private
+  system. That local payload directory is ignored by Git.
+- A founder preference is not company truth. Company strategy may consume only
+  the sanitized interface defined in
+  `company/operating-system/founder-capacity-interface.md`.
+- For consequential personal decisions, agents may research, simulate, and
+  recommend. The founder and any affected adult principal retain final
+  authority. Never infer another principal's consent from the founder's
+  authorization.
+- The Companion must surface tensions instead of optimizing one objective
+  silently: ambition, family, health, money, learning, identity, and
+  reversibility remain separate decision dimensions.
+- For half-working/half-resting, feed, webtoon, shorts, or transition-failure
+  questions, use `founder-companion/flow-protocol.md` before offering a new
+  productivity system.
+- For training, sleep, pain, or exercise-plan questions, read the private
+  Health & Training OS locator at
+  `private-plane/payload/founder-companion/health/README.md`. Treat historical
+  performance as history, not current capacity, and do not diagnose.
+- Use `founder-companion/system-map.md` before moving information among the
+  Company Constitution, Founder Constitution, Health & Training OS, and
+  Decision Studio.
 
 ## Privacy and rights
 

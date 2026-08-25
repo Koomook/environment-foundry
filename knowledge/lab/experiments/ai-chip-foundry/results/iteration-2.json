@@ -1,0 +1,56 @@
+{
+  "iteration": 2,
+  "hypothesis": "A few visible examples will accept at least one behaviorally wrong candidate.",
+  "artifact": "Visible smoke-test replay",
+  "metric": "three visible examples passed",
+  "stop_rule": "Stop if smoke tests already separate the gamer from correct implementations.",
+  "results": {
+    "visible_gamer": {
+      "compile": {
+        "passed": true,
+        "returncode": 0,
+        "stdout_tail": "",
+        "stderr_tail": ""
+      },
+      "simulation": {
+        "passed": true,
+        "returncode": 0,
+        "stdout_tail": "PASS visible\n/Users/bong/environment-foundry/knowledge/lab/experiments/ai-chip-foundry/tb/visible_tb.v:29: $finish called at 3 (1s)\n",
+        "stderr_tail": ""
+      },
+      "passed": true
+    },
+    "correct_verbose": {
+      "compile": {
+        "passed": true,
+        "returncode": 0,
+        "stdout_tail": "",
+        "stderr_tail": ""
+      },
+      "simulation": {
+        "passed": true,
+        "returncode": 0,
+        "stdout_tail": "PASS visible\n/Users/bong/environment-foundry/knowledge/lab/experiments/ai-chip-foundry/tb/visible_tb.v:29: $finish called at 3 (1s)\n",
+        "stderr_tail": ""
+      },
+      "passed": true
+    },
+    "correct_compact": {
+      "compile": {
+        "passed": true,
+        "returncode": 0,
+        "stdout_tail": "",
+        "stderr_tail": ""
+      },
+      "simulation": {
+        "passed": true,
+        "returncode": 0,
+        "stdout_tail": "PASS visible\n/Users/bong/environment-foundry/knowledge/lab/experiments/ai-chip-foundry/tb/visible_tb.v:29: $finish called at 3 (1s)\n",
+        "stderr_tail": ""
+      },
+      "passed": true
+    }
+  },
+  "observed": "visible_gamer passes the disclosed examples by construction.",
+  "next_hypothesis": "Hidden exhaustive behavior is required before optimizing design quality."
+}

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>덱 1 — 어떤 시뮬레이터인가: 충실도 사다리</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{
+  --bg:#07090c; --panel:#0c1016; --line:#1b232e; --fg:#eef2f6; --dim:#93a0ae;
+  --accent:#4fd1c5;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-snap-type:y mandatory;scroll-behavior:smooth}
+body{background:var(--bg);color:var(--fg);
+  font-family:"Pretendard Variable",Pretendard,-apple-system,sans-serif;
+  line-height:1.5;-webkit-font-smoothing:antialiased}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.slide{min-height:100vh;scroll-snap-align:start;display:flex;flex-direction:column;
+  justify-content:center;gap:2.2rem;padding:9vh 8vw 12vh;position:relative;
+  border-bottom:1px solid var(--line)}
+.kicker{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.8rem;
+  letter-spacing:.24em;text-transform:uppercase;color:var(--accent)}
+h1{font-size:clamp(2.4rem,7vw,5.5rem);font-weight:800;line-height:1.08;letter-spacing:-.02em}
+h2{font-size:clamp(2rem,5.2vw,4.2rem);font-weight:800;line-height:1.12;letter-spacing:-.02em}
+h1 em,h2 em{font-style:normal;color:var(--accent)}
+.lead{font-size:clamp(1.05rem,1.6vw,1.35rem);color:var(--dim);max-width:64ch}
+.quote{border-left:6px solid var(--accent);padding:1.3rem 1.7rem;
+  background:linear-gradient(90deg,rgba(79,209,197,.07),transparent);
+  font-size:clamp(1.3rem,2.4vw,2rem);font-weight:700;line-height:1.4;max-width:38ch}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1.2rem}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:1.5rem 1.6rem}
+.kpi .n{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:clamp(2.2rem,4.6vw,3.8rem);font-weight:800;color:var(--accent);line-height:1.05}
+.kpi .t{margin-top:.7rem;font-weight:700;font-size:1.05rem}
+.kpi .d{margin-top:.35rem;color:var(--dim);font-size:.92rem}
+table{width:100%;border-collapse:collapse;font-size:clamp(.84rem,1.05vw,1rem)}
+th{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--accent);
+  text-align:left;font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;
+  padding:.55rem .8rem;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:.7rem .8rem;border-bottom:1px solid var(--line);vertical-align:top;color:#cdd7e0}
+td b{color:var(--fg)}
+.dot{color:var(--accent);font-size:1.05em}
+.dimdot{color:#5b6673}
+.scn{background:var(--panel);border:1px solid var(--line);border-left:6px solid var(--accent);
+  border-radius:12px;padding:1.6rem 1.8rem;max-width:1100px}
+.scn h3{font-size:clamp(1.2rem,1.9vw,1.6rem);font-weight:800;margin-bottom:1rem}
+.scn h3 span{color:var(--accent);font-family:ui-monospace,Menlo,monospace;margin-right:.5rem}
+.scn dl{display:grid;grid-template-columns:8.5rem 1fr;gap:.55rem 1.2rem}
+.scn dt{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--accent);
+  font-size:.76rem;letter-spacing:.1em;text-transform:uppercase;padding-top:.2rem}
+.scn dd{color:#cdd7e0;font-size:clamp(.92rem,1.15vw,1.05rem)}
+.scn dd b{color:var(--fg)}
+.foot{position:absolute;left:8vw;right:8vw;bottom:3.2vh;display:flex;
+  justify-content:space-between;gap:2rem;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.7rem;
+  color:#5f6b78;letter-spacing:.06em}
+.foot .pg{color:var(--accent);white-space:nowrap}
+.src{display:flex;flex-direction:column;gap:.45rem;font-family:ui-monospace,Menlo,monospace;
+  font-size:.82rem;color:#8b98a6}
+.src b{color:var(--accent);font-weight:600}
+@media print{
+  html{scroll-snap-type:auto}
+  body{background:#fff;color:#111}
+  .slide{min-height:100vh;page-break-after:always;border-bottom:none}
+}
+</style>
+</head>
+<body>
+
+<!-- 01 -->
+<section class="slide">
+  <div class="kicker">Environment Foundry · 칩 설계 환경 전략 · Deck 1 / 3</div>
+  <h1>어떤 시뮬레이터인가<br><em>충실도 사다리</em></h1>
+  <p class="lead">필요한 것은 "더 큰 시뮬레이터"가 아니다. 보상 1회 비용이 초~분 단위인
+    실행 가능한 충실도 사다리 위에서, 히든 채점기가 검증되고 에피소드를 무한히
+    리플레이할 수 있는 환경이다.</p>
+  <div class="foot"><span>synthesis-and-recommendation.md §1–2</span><span class="pg">01 / 10</span></div>
+</section>
+
+<!-- 02 -->
+<section class="slide">
+  <div class="kicker">제1원칙</div>
+  <h2>보상 1회 비용이<br><em>제1 설계 변수</em>다</h2>
+  <div class="kpis">
+    <div class="kpi">
+      <div class="n">초~분</div>
+      <div class="t">RTL · 합성 · DNN 모델링</div>
+      <div class="d">Icarus/Verilator, Yosys, Timeloop — 대량 반복 가능. RL 루프의 주묘대.</div>
+    </div>
+    <div class="kpi">
+      <div class="n">분~시간</div>
+      <div class="t">물리설계 · 아키텍처</div>
+      <div class="d">OpenROAD, gem5 — GPU 가속 또는 프록시 계층화 없이는 루프가 느려진다.</div>
+    </div>
+    <div class="kpi">
+      <div class="n">시간~일</div>
+      <div class="t">회로(SPICE)</div>
+      <div class="d">ngspice/Xyce — RL 루프에 사실상 못 넣는다. 소규모 아날로그 셀만.</div>
+    </div>
+  </div>
+  <div class="quote">시뮬레이터는 선택이 아니라 정의다 — 정적 데이터셋에는 상태전이가 없다.</div>
+  <div class="foot"><span>리서치 A 부록 A.2 · synthesis §1</span><span class="pg">02 / 10</span></div>
+</section>
+
+<!-- 03 -->
+<section class="slide">
+  <div class="kicker">계층별 시뮬레이터 지도</div>
+  <h2>충실도 <em>사다리</em></h2>
+  <table>
+    <thead>
+      <tr><th>계층</th><th>추천 시뮬레이터(오픈)</th><th>보상 1회 비용</th><th>환경 적합성</th><th>공개 선례</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><b>DNN 가속기 모델링</b></td><td>Timeloop/Accelergy, SCALE-Sim</td><td>초~분</td><td><span class="dot">●</span> 최상</td><td>ArchGym (2306.08888)</td></tr>
+      <tr><td><b>RTL 시뮬레이션</b></td><td>Icarus(채점 표준), Verilator(고속)</td><td>초~분</td><td><span class="dot">●</span> 최상</td><td>VerilogEval, RTLFixer, 우리 v1·v2</td></tr>
+      <tr><td><b>논리합성</b></td><td>Yosys/ABC (+Nangate45/ASAP7)</td><td>초~분</td><td><span class="dot">●</span> 상</td><td>OpenABC-D, DRiLLS, 우리 iter-3</td></tr>
+      <tr><td><b>물리설계</b></td><td>OpenROAD/ORFS, DREAMPlace(GPU)</td><td>분~시간</td><td><span class="dot">◐</span> 중 — 프록시 계층화 필수</td><td>Circuit Training, AutoDMP, ChiPBench</td></tr>
+      <tr><td><b>아키텍처</b></td><td>gem5, SST</td><td>분~시간</td><td><span class="dot">◐</span> 중하 — 보상 비용 큼</td><td>ArchGym</td></tr>
+      <tr><td><b>회로(SPICE)</b></td><td>ngspice, Xyce</td><td>시간~일</td><td><span class="dimdot">—</span> 하</td><td>(산업: FastSPICE)</td></tr>
+    </tbody>
+  </table>
+  <p class="lead">정답은 "하나의 최고 시뮬레이터"가 아니라 비용-충실도 곡선 위의 최소 집합:
+    <b>Icarus/Verilator + Yosys + OpenROAD + Timeloop</b>. 4개면 사다리 전 구간, 전부 오픈소스.</p>
+  <div class="foot"><span>synthesis §2 · research/simulators-and-ai-methods.md 파트 1</span><span class="pg">03 / 10</span></div>
+</section>
+
+<!-- 04 -->
+<section class="slide">
+  <div class="kicker">ChiPBench의 교훈</div>
+  <h2>프록시 보상의 <em>배신</em></h2>
+  <p class="lead">ChiPBench(arXiv 2407.15026)는 placement AI의 중간 프록시(HPWL 등)가
+    최종 end-to-end PPA(타이밍·전력·면적)와 <b>상관이 약하다</b>는 것을 OpenROAD
+    end-to-end 플로우로 실증했다. AlphaChip 논쟁("False Dawn" 2306.09633 ↔
+    "That Chip Has Sailed" 2411.10053)의 뿌리도 같다 — 비공개 데이터 + 프록시 보상
+    조합은 재현성 논쟁에 취약하다.</p>
+  <div class="quote">모든 싼 측정은 거짓말을 한다. 문제는 얼마나인가다.</div>
+  <div class="foot"><span>synthesis §1 · 리서치 A §2.1–2.2</span><span class="pg">04 / 10</span></div>
+</section>
+
+<!-- 05 -->
+<section class="slide">
+  <div class="kicker">우리 iter-3 실측 (OBSERVED)</div>
+  <h2>프록시 왜곡을 <em>정량 재현</em>했다</h2>
+  <div class="kpis">
+    <div class="kpi">
+      <div class="n">7.7×</div>
+      <div class="t">격차 과장</div>
+      <div class="d">제네릭 셀 수 프록시가 ALU 품질 격차를 실제 라이브러리 대비 7.7배 부풀림.</div>
+    </div>
+    <div class="kpi">
+      <div class="n">2.13×</div>
+      <div class="t">노이즈 플로어</div>
+      <div class="d">행동이 동일한 동등 RTL 쌍이 Nangate45 매핑 면적에서 2.13배 차이 — 이하의 delta로 순위 금지.</div>
+    </div>
+    <div class="kpi">
+      <div class="n">반전</div>
+      <div class="t">지연 순위</div>
+      <div class="d">프록시가 매긴 지연 순위가 실제 매핑에서 뒤집혔다.</div>
+    </div>
+  </div>
+  <p class="lead">조달 스펙의 두 신규 요건: 채점기의 <b>돌연변이 감사 성적표(mutation score)</b>와,
+    동등류 실험으로 잰 <b>품질 지표 노이즈 플로어</b>(이 스케일에서 ~2배).</p>
+  <div class="foot"><span>synthesis §3–4 · v2-3 (knowledge/lab/experiments/ai-chip-foundry-v2)</span><span class="pg">05 / 10</span></div>
+</section>
+
+<!-- 06 -->
+<section class="slide">
+  <div class="kicker">설계 원칙</div>
+  <h2>싼 툴이 에피소드를 만들고,<br>비싼 툴이 <em>검증</em>한다</h2>
+  <p class="lead">한 계층의 결과를 다음 계층의 입장에서 다시 채점하는 사다리가 환경의 뼈대다.
+    사다리의 각 단은 PDK를 공유해야 하고, 오픈 PDK가 전체를 묣 료로 지탱한다 —
+    <b>SKY130/GF180</b>(fab 가능) · <b>Nangate45/ASAP7</b>(연구용).</p>
+  <p class="lead">게이트 순서가 곧 환경 설계 계약이다:<br>
+    <span class="mono" style="color:var(--accent)">컴파일 → 공개 테스트 → 히든 행동 전수 → 돌연변이 감사 → 품질 프록시(노이즈 플로어 명시) → 사다리 상승 → prospective 상관</span></p>
+  <div class="quote">이 순서 중 하나라도 건드리지 않은 채점/순위는 신뢰 등급을 깎는다.</div>
+  <div class="foot"><span>synthesis §2, §4</span><span class="pg">06 / 10</span></div>
+</section>
+
+<!-- 07 -->
+<section class="slide">
+  <div class="kicker">시나리오 분기 — 어느 경로도 정답으로 미리 고르지 않는다</div>
+  <h2>시나리오 <em>A</em> — 최소 오픈 스택</h2>
+  <div class="scn">
+    <h3><span>A</span>Icarus + Yosys 만</h3>
+    <dl>
+      <dt>bet</dt>
+      <dd>RTL repair·합성 계층만으로 가장 빠르고 싸게 prospective 검증 루프를 돌린다. v1·v2가 이미 이 스택 위에서 검증됐고, Days 0–30 공개 골격과 정합. 초~분 보상 비용으로 에피소드 대량 반복.</dd>
+      <dt>drop</dt>
+      <dd>물리설계·아키텍처 계층 전체, end-to-end PPA 신호, 라우팅 상관(v2-3의 NOT YET을 미해소로 둠).</dd>
+      <dt>switch-signal</dt>
+      <dd>파트너가 "합성 이후(라우팅·타이밍) 신호 없이는 못 산다"고 하거나, iter-3 급 프록시 왜곡이 구매자 채점 기준과 충돌하면 → <b>B(풀 사다리)로 상승</b>.</dd>
+      <dt>worst ending</dt>
+      <dd>싼 환경만 남아 ChiPBench가 경고한 프록시-단독 벤치마크를 재현하고, prospective 상관 게이트에서 탈락.</dd>
+    </dl>
+  </div>
+  <div class="foot"><span>goal-map.md · synthesis §2, §6</span><span class="pg">07 / 10</span></div>
+</section>
+
+<!-- 08 -->
+<section class="slide">
+  <div class="kicker">시나리오 분기</div>
+  <h2>시나리오 <em>B</em> — 풀 사다리</h2>
+  <div class="scn">
+    <h3><span>B</span>Icarus/Verilator + Yosys + OpenROAD + Timeloop</h3>
+    <dl>
+      <dt>bet</dt>
+      <dd>오픈소스 4종으로 사다리 전 구간을 묣 료로 커버. 이번 분기 단일 베팅(reference-design signoff closure 환경)의 뼈대이며, ORFS final-route 채점으로 v2-3의 NOT YET을 해소한다.</dd>
+      <dt>drop</dt>
+      <dd>SPICE급 충실도, 상용 노드 PDK 정합성, gem5급 아키텍처 DSE(후순위로 미룸).</dd>
+      <dt>switch-signal</dt>
+      <dd>ORFS 소형 디자인 2개의 final-route 채점이 Days 15–30 안에 안 서거나 구축·운영 비용이 에피소드 생산을 잡아먹으면 → <b>A로 후퇴</b>. 반대로 prospective 상관이 보이고 물리설계 보상이 병목이면 → <b>C(GPU 가속)를 얹음</b>.</dd>
+      <dt>worst ending</dt>
+      <dd>사다리는 완성했으나 에피소드 시드(파트너 데이터)가 없어 빈 사다리가 된다 — 엔진은 있는데 컴파일할 운영 사건이 없음.</dd>
+    </dl>
+  </div>
+  <div class="foot"><span>goal-map.md 단일 베팅 · synthesis §2, §6</span><span class="pg">08 / 10</span></div>
+</section>
+
+<!-- 09 -->
+<section class="slide">
+  <div class="kicker">시나리오 분기</div>
+  <h2>시나리오 <em>C</em> — GPU 가속 중심</h2>
+  <div class="scn">
+    <h3><span>C</span>DREAMPlace / AutoDMP 류</h3>
+    <dl>
+      <dt>bet</dt>
+      <dd>DREAMPlace는 CPU 대비 ~30배 가속(논문 주장), AutoDMP는 GPU 1대로 수백 후보를 병렬 평가해 상용 툴·Nature RL 대비 동급 PPA 보고. 대형 디자인에서 물리설계 계층의 보상 1회 비용을 분 단위로 끌어내린다.</dd>
+      <dt>drop</dt>
+      <dd>RTL·검증 계층, 학습된 정책의 이전(transfer) — BO 중심이라 디자인 간 재사용이 약함. RL 정책 학습 자체는 포기.</dd>
+      <dt>switch-signal</dt>
+      <dd>파트너 에피소드가 실제 수십만 셀급 물리설계 결정이고, OpenROAD CPU 실행 시간이 보상 예산을 초과한다고 측정될 때.</dd>
+      <dt>worst ending</dt>
+      <dd>GPU 인프라와 튜닝에 90일을 태우고 환경 계약(돌연변이 감사·노이즈 플로어)은 미검증으로 남는다 — 엔진 없는 placement 연구.</dd>
+    </dl>
+  </div>
+  <div class="foot"><span>리서치 A §1.4, §2.3 · synthesis §2</span><span class="pg">09 / 10</span></div>
+</section>
+
+<!-- 10 -->
+<section class="slide">
+  <div class="kicker">결정 규칙 · 출처</div>
+  <h2>게이트가 고른다,<br><em>우리가 아니라</em></h2>
+  <p class="lead">세 시나리오는 배타적이지 않다. A로 시작해 파트너의 채점 요구가 사다리 상승을
+    요구하면 B로, 물리설계 보상 비용이 병목이면 C를 얹는다. 공통 조건: 어떤 스택이든
+    히든 채점기 돌연변이 감사와 노이즈 플로어 명시 없이는 순위를 발행하지 않는다.</p>
+  <div class="src">
+    <span><b>출처</b> — knowledge/research/20260729-chip-design-env/</span>
+    <span>synthesis-and-recommendation.md (§1–2, §4)</span>
+    <span>onepager.md · goal-map.md</span>
+    <span>research/simulators-and-ai-methods.md</span>
+    <span>실험: knowledge/lab/experiments/ai-chip-foundry{,-v2}/ (v2-3 실측)</span>
+  </div>
+  <div class="foot"><span>Deck 1 · 충실도 사다리</span><span class="pg">10 / 10</span></div>
+</section>
+
+</body>
+</html>

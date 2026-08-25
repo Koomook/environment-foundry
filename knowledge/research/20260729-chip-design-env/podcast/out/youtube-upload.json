@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "uploaded_at": "2026-07-29T15:54:06.327978+00:00",
+  "video_id": "Om0f0V9AoxE",
+  "video_url": "https://youtu.be/Om0f0V9AoxE",
+  "playlist_id": "PLKJS7FxlMuvI",
+  "playlist_url": "https://www.youtube.com/playlist?list=PLKJS7FxlMuvI",
+  "privacy_status": "private",
+  "podcast_status": "enabled",
+  "contains_synthetic_media": true,
+  "ai_generated_voice_count": 2,
+  "source_file": "podcast.mp4",
+  "source_sha256": "9ab9c36cf88f4f44a4e624731867f33eedc50bd8af8b741a8cbd2b9c8467bb4f"
+}

@@ -1,6 +1,6 @@
 # Environment Foundry
 
-> Working name. No trademark or domain claim has been made.
+> Working name: Environment Foundry. Codename: `frogstar`. No trademark or domain claim has been made.
 
 Environment Foundry turns authorized company operations into bounded environments in which AI can observe, act, and be evaluated. It is an independent company repository and a file-native Company OS for humans and coding agents.
 
@@ -23,11 +23,26 @@ Environment Foundry turns authorized company operations into bounded environment
 - `company/` — identity, operating model, roadmap, proof ladder
 - `functions/` — every company function and its outputs
 - `products/` — executable product surfaces; code may later move to dedicated repos
+- `founder-companion/` — founder life and family decision protocols; raw
+  personal material remains in the ignored private plane
 - `knowledge/wiki/` — source-backed canonical truth
 - `knowledge/okf/` — compact progressive-disclosure reading layer
 - `knowledge/workstreams/` — scope, live status, immutable handoffs
 - `knowledge/lab/` — rights-cleared task, trajectory, grader, and eval artifacts
 - `private-plane/` — policy only; private payload stays outside Git
+
+## Founder Companion
+
+Personal strategy work starts at
+[`founder-companion/README.md`](founder-companion/README.md). The company may
+receive only sanitized capacity constraints; it must not ingest family
+explanations, private memories, or health narratives as company data.
+
+The company operating rules are collected in
+[`company/constitution.md`](company/constitution.md). The separation among the
+company Constitution, Founder Constitution, private Health & Training OS, and
+Decision Studio is defined in
+[`founder-companion/system-map.md`](founder-companion/system-map.md).
 
 ## Validate
 
@@ -35,3 +50,23 @@ Environment Foundry turns authorized company operations into bounded environment
 uv run python scripts/validate_company_os.py
 git diff --check
 ```
+
+## V2 benchmark adapter
+
+The V2 research adapter preserves upstream artifacts outside Git, projects
+them into a versioned normalized episode schema, and provides an explicitly
+local/offline baseline and evaluator:
+
+```bash
+uv sync --extra parquet --group dev
+uv run pytest
+uv run environment-foundry-v2 decode \
+  --source crmarena-pro \
+  --path /path/to/CRMArenaPro/tasks_b2b.json \
+  --revision 8c055f5 \
+  --split b2b \
+  --limit 3
+```
+
+Research brief and evidence ledger:
+`knowledge/research/20260723-environment-foundry-v2/README.md`.

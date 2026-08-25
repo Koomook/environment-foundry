@@ -1,0 +1,43 @@
+{
+  "iteration": 1,
+  "hypothesis": "The v1 environment contract (compile -> visible -> hidden behavior gate) transfers to a sequential block where internal state makes exhaustive input testing insufficient.",
+  "artifact": "Icarus replay of 3 disclosed sequences + hidden exhaustive replay (16,384 sequences x 14 bits, cycle-accurate golden model)",
+  "metric": "hidden exhaustive sequence pass/fail",
+  "stop_rule": "Reject the transfer claim if seq_gold or seq_alt_onehot fails hidden replay, or if seq_gamer passes it.",
+  "results": {
+    "seq_gold": {
+      "visible": {
+        "compile_passed": true,
+        "sim_passed": true
+      },
+      "hidden": {
+        "compile_passed": true,
+        "sim_passed": true,
+        "sim_log": "PASS: all 16384 sequences x 14 bits matched golden model (229376 cycle checks)\n/Users/bong/environment-foundry/knowledge/lab/experiments/ai-chip-foundry-v2/tb/hidden_tb.v:57: $finish called at 2457596000 (1ps)\n"
+      }
+    },
+    "seq_gamer": {
+      "visible": {
+        "compile_passed": true,
+        "sim_passed": true
+      },
+      "hidden": {
+        "compile_passed": true,
+        "sim_passed": false,
+        "sim_log": "MISMATCH seq=91 bit=6 prev=110 din=1 hit=0 expected=1\nMISMATCH seq=182 bit=7 prev=110 din=1 hit=0 expected=1\nMISMATCH seq=183 bit=7 prev=110 din=1 hit=0 expected=1\nMISMATCH seq=219 bit=6 prev=110 din=1 hit=0 expected=1\nMISMATCH seq=347 bit=6 prev=110 din=1 hit=0 expected=1\nMISMATCH seq=364 bit=8 prev=110 din=1 hit=0 expected=1\nMISMATCH seq=365 bit=8 prev=110 din=1 hit=0 expected=1\nMISMATCH seq=366 bit=8 prev=110 din=1 hit=0 expected=1\nMISMATCH seq=367 bit=8 prev=110 din=1 hit=0 expected=1\nMISMATCH seq=438 bit=7 prev=110 din=1 hit=0 expected=1\nFAIL: 948 cycle mismatches\nFATAL: /Users/bong/environment-foundry/knowledge/lab/experiments/ai-chip-foundry-v2/tb/hidden_tb.v:55: \n       Time: 2457596000  Scope: hidden_tb\n"
+      }
+    },
+    "seq_alt_onehot": {
+      "visible": {
+        "compile_passed": true,
+        "sim_passed": true
+      },
+      "hidden": {
+        "compile_passed": true,
+        "sim_passed": true,
+        "sim_log": "PASS: all 16384 sequences x 14 bits matched golden model (229376 cycle checks)\n/Users/bong/environment-foundry/knowledge/lab/experiments/ai-chip-foundry-v2/tb/hidden_tb.v:57: $finish called at 2457596000 (1ps)\n"
+      }
+    }
+  },
+  "next_hypothesis": "The hidden grader itself must be validated before trusting its verdicts: inject mutations of gold and require 100% kill of behavior-changing mutants."
+}

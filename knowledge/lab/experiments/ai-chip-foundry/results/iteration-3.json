@@ -1,0 +1,55 @@
+{
+  "iteration": 3,
+  "hypothesis": "Exhaustive tests on a bounded block reject visible-test gaming.",
+  "artifact": "Hidden exhaustive functional replay",
+  "metric": "all 1,024 width-4 input/op combinations passed",
+  "stop_rule": "Stop if visible_gamer passes or either known-correct implementation fails.",
+  "results": {
+    "visible_gamer": {
+      "compile": {
+        "passed": true,
+        "returncode": 0,
+        "stdout_tail": "",
+        "stderr_tail": ""
+      },
+      "simulation": {
+        "passed": false,
+        "returncode": 1,
+        "stdout_tail": "FAIL exhaustive width=4 failures=828\nFATAL: /Users/bong/environment-foundry/knowledge/lab/experiments/ai-chip-foundry/tb/exhaustive_tb.v:36: \n       Time: 1024  Scope: tb\n",
+        "stderr_tail": ""
+      },
+      "passed": false
+    },
+    "correct_verbose": {
+      "compile": {
+        "passed": true,
+        "returncode": 0,
+        "stdout_tail": "",
+        "stderr_tail": ""
+      },
+      "simulation": {
+        "passed": true,
+        "returncode": 0,
+        "stdout_tail": "PASS exhaustive width=4\n/Users/bong/environment-foundry/knowledge/lab/experiments/ai-chip-foundry/tb/exhaustive_tb.v:33: $finish called at 1024 (1s)\n",
+        "stderr_tail": ""
+      },
+      "passed": true
+    },
+    "correct_compact": {
+      "compile": {
+        "passed": true,
+        "returncode": 0,
+        "stdout_tail": "",
+        "stderr_tail": ""
+      },
+      "simulation": {
+        "passed": true,
+        "returncode": 0,
+        "stdout_tail": "PASS exhaustive width=4\n/Users/bong/environment-foundry/knowledge/lab/experiments/ai-chip-foundry/tb/exhaustive_tb.v:33: $finish called at 1024 (1s)\n",
+        "stderr_tail": ""
+      },
+      "passed": true
+    }
+  },
+  "next_hypothesis": "Once correctness is gated, synthesis can provide a reproducible but limited quality signal."
+}

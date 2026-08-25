@@ -1,0 +1,70 @@
+{
+  "iteration": 2,
+  "hypothesis": "A grader is only trustworthy if audited: every behavior-changing single-point mutation of gold must be rejected by the hidden grader.",
+  "artifact": "8 deterministic single-point mutants of seq_gold.v through hidden exhaustive replay",
+  "metric": "mutation score (behavior-changing mutants killed / total)",
+  "stop_rule": "If any behavior-changing mutant survives, the grader has a blind spot; stop and lengthen sequences or add formal checks before trusting quality rankings.",
+  "results": {
+    "seq_mut01_no_overlap": {
+      "mutation": "S3 transition drops overlap (restart at S0 after hit)",
+      "expected": "KILLED",
+      "observed": "KILLED",
+      "verdict": "OK",
+      "log": "hit=0 expected=1\nMISMATCH seq=367 bit=8 prev=110 din=1 hit=0 expected=1\nMISMATCH seq=438 bit=7 prev=110 din=1 hit=0 expected=1\nFAIL: 948 cycle mismatches\nFATAL: /Users/bong/environment-foundry/knowledge/lab/experiments/ai-chip-foundry-v2/tb/hidden_tb.v:55: \n       Time: 2457596000  Scope: hidden_tb\n"
+    },
+    "seq_mut02_s2_reentry": {
+      "mutation": "S2 on din=1 falls back to S1 (breaks '11101')",
+      "expected": "KILLED",
+      "observed": "KILLED",
+      "verdict": "OK",
+      "log": "it=0 expected=1\nMISMATCH seq=119 bit=4 prev=110 din=1 hit=0 expected=1\nMISMATCH seq=151 bit=4 prev=110 din=1 hit=0 expected=1\nFAIL: 3527 cycle mismatches\nFATAL: /Users/bong/environment-foundry/knowledge/lab/experiments/ai-chip-foundry-v2/tb/hidden_tb.v:55: \n       Time: 2457596000  Scope: hidden_tb\n"
+    },
+    "seq_mut03_pattern_1100": {
+      "mutation": "detects 1100 instead of 1101 (hit polarity flip)",
+      "expected": "KILLED",
+      "observed": "KILLED",
+      "verdict": "OK",
+      "log": "hit=1 expected=0\nMISMATCH seq=19 bit=3 prev=110 din=0 hit=1 expected=0\nMISMATCH seq=22 bit=4 prev=110 din=1 hit=0 expected=1\nFAIL: 22528 cycle mismatches\nFATAL: /Users/bong/environment-foundry/knowledge/lab/experiments/ai-chip-foundry-v2/tb/hidden_tb.v:55: \n       Time: 2457596000  Scope: hidden_tb\n"
+    },
+    "seq_mut04_s1_wrong_zero": {
+      "mutation": "S1 on din=0 jumps to S2 instead of S0",
+      "expected": "KILLED",
+      "observed": "KILLED",
+      "verdict": "OK",
+      "log": " hit=1 expected=0\nMISMATCH seq=53 bit=4 prev=010 din=1 hit=1 expected=0\nMISMATCH seq=57 bit=3 prev=100 din=1 hit=1 expected=0\nFAIL: 7414 cycle mismatches\nFATAL: /Users/bong/environment-foundry/knowledge/lab/experiments/ai-chip-foundry-v2/tb/hidden_tb.v:55: \n       Time: 2457596000  Scope: hidden_tb\n"
+    },
+    "seq_mut05_registered_hit": {
+      "mutation": "hit registered by one cycle (timing shift, same pattern)",
+      "expected": "KILLED",
+      "observed": "KILLED",
+      "verdict": "OK",
+      "log": "hit=1 expected=0\nMISMATCH seq=43 bit=3 prev=110 din=1 hit=0 expected=1\nMISMATCH seq=43 bit=4 prev=101 din=0 hit=1 expected=0\nFAIL: 21504 cycle mismatches\nFATAL: /Users/bong/environment-foundry/knowledge/lab/experiments/ai-chip-foundry-v2/tb/hidden_tb.v:55: \n       Time: 2457596000  Scope: hidden_tb\n"
+    },
+    "seq_mut06_equiv_encoding": {
+      "mutation": "EQUIVALENT: swaps S2/S3 encodings, behavior identical",
+      "expected": "SURVIVES",
+      "observed": "SURVIVED",
+      "verdict": "OK",
+      "log": "PASS: all 16384 sequences x 14 bits matched golden model (229376 cycle checks)\n/Users/bong/environment-foundry/knowledge/lab/experiments/ai-chip-foundry-v2/tb/hidden_tb.v:57: $finish called at 2457596000 (1ps)\n"
+    },
+    "seq_mut07_reset_to_s1": {
+      "mutation": "reset lands in S1 instead of S0 (reset semantics)",
+      "expected": "KILLED",
+      "observed": "KILLED",
+      "verdict": "OK",
+      "log": " hit=1 expected=0\nMISMATCH seq=69 bit=2 prev=010 din=1 hit=1 expected=0\nMISMATCH seq=77 bit=2 prev=010 din=1 hit=1 expected=0\nFAIL: 2048 cycle mismatches\nFATAL: /Users/bong/environment-foundry/knowledge/lab/experiments/ai-chip-foundry-v2/tb/hidden_tb.v:55: \n       Time: 2457596000  Scope: hidden_tb\n"
+    },
+    "seq_mut08_false_start": {
+      "mutation": "S0 advances on din=0 as well (false start)",
+      "expected": "KILLED",
+      "observed": "KILLED",
+      "verdict": "OK",
+      "log": "it=1 expected=0\nMISMATCH seq=104 bit=5 prev=010 din=1 hit=1 expected=0\nMISMATCH seq=105 bit=5 prev=010 din=1 hit=1 expected=0\nFAIL: 3288 cycle mismatches\nFATAL: /Users/bong/environment-foundry/knowledge/lab/experiments/ai-chip-foundry-v2/tb/hidden_tb.v:55: \n       Time: 2457596000  Scope: hidden_tb\n"
+    }
+  },
+  "mutation_score_behavior_changing": 1.0,
+  "equivalent_mutants": [
+    "seq_mut06_equiv_encoding"
+  ],
+  "next_hypothesis": "With a validated correctness gate, test whether the cheap quality proxy (generic cell count) survives a fidelity step-up to a real cell library."
+}

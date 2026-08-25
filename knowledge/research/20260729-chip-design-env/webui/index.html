@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI는 어떻게 칩을 배우는가 — 인터랙티브 설명서</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{
+  --bg:#07090c;
+  --bg2:#0b0f14;
+  --bg3:#10161d;
+  --line:#1b2430;
+  --line2:#263242;
+  --txt:#e6edf3;
+  --dim:#8b98a9;
+  --faint:#5b6879;
+  --accent:#4fd1c5;
+  --accent-dim:rgba(79,209,197,.14);
+  --warn:#f6ad55;
+  --bad:#fc8181;
+  --good:#68d391;
+  --violet:#b794f4;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--txt);
+  font-family:'Pretendard Variable',Pretendard,-apple-system,sans-serif;
+  line-height:1.65;
+  overflow-x:hidden;
+}
+::selection{background:var(--accent);color:#04211e}
+
+/* ---------- nav ---------- */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(7,9,12,.82);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);
+  display:flex;align-items:center;gap:4px;
+  padding:0 24px;height:52px;overflow-x:auto;
+}
+nav .brand{color:var(--accent);font-weight:800;font-size:14px;white-space:nowrap;margin-right:16px;letter-spacing:-.02em}
+nav a{color:var(--dim);text-decoration:none;font-size:12.5px;padding:6px 10px;border-radius:6px;white-space:nowrap;transition:.15s}
+nav a:hover{color:var(--accent);background:var(--accent-dim)}
+
+/* ---------- shared ---------- */
+section{max-width:1080px;margin:0 auto;padding:110px 24px 70px}
+.kicker{color:var(--accent);font-size:12px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;margin-bottom:14px}
+h2{font-size:clamp(26px,4vw,38px);font-weight:800;letter-spacing:-.03em;line-height:1.25;margin-bottom:14px}
+.sub{color:var(--dim);font-size:15.5px;max-width:760px;margin-bottom:40px}
+.sub b{color:var(--txt)}
+.tag{display:inline-block;font-size:11px;font-weight:700;padding:3px 10px;border-radius:99px;border:1px solid var(--line2);color:var(--dim);margin-right:6px}
+.tag.a{color:var(--accent);border-color:rgba(79,209,197,.4);background:var(--accent-dim)}
+.hint{color:var(--faint);font-size:12.5px;margin-top:10px}
+.hint::before{content:"↳ ";color:var(--accent)}
+
+/* ---------- hero ---------- */
+#hero{
+  min-height:100vh;display:flex;flex-direction:column;justify-content:center;
+  max-width:1080px;position:relative;padding-top:80px;
+}
+#hero .kicker{margin-bottom:22px}
+#hero h1{
+  font-size:clamp(34px,6vw,64px);font-weight:800;letter-spacing:-.04em;line-height:1.15;margin-bottom:28px;
+  background:linear-gradient(120deg,#fff 30%,var(--accent) 100%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+}
+#hero .onesentence{
+  font-size:clamp(16px,2.2vw,21px);color:var(--dim);max-width:840px;line-height:1.8;
+}
+#hero .onesentence b{color:var(--txt)}
+#hero .onesentence .hl{color:var(--accent);font-weight:700}
+.scrollcue{
+  position:absolute;bottom:36px;left:24px;display:flex;align-items:center;gap:12px;
+  color:var(--faint);font-size:12.5px;cursor:pointer;background:none;border:none;font-family:inherit;
+}
+.scrollcue .wheel{
+  width:22px;height:36px;border:1.5px solid var(--faint);border-radius:12px;position:relative;
+}
+.scrollcue .wheel::after{
+  content:"";position:absolute;left:50%;top:6px;width:3px;height:7px;margin-left:-1.5px;
+  background:var(--accent);border-radius:2px;animation:drop 1.6s infinite;
+}
+@keyframes drop{0%{transform:translateY(0);opacity:1}70%{transform:translateY(12px);opacity:0}100%{opacity:0}}
+.scrollcue:hover{color:var(--accent)}
+
+/* ---------- section 2: ladder ---------- */
+.ladder{display:flex;flex-direction:column;gap:0;position:relative;margin-top:8px}
+.rung{
+  border:1px solid var(--line);border-bottom:none;background:var(--bg2);
+  cursor:pointer;transition:background .2s;position:relative;
+}
+.rung:last-child{border-bottom:1px solid var(--line);border-radius:0 0 14px 14px}
+.rung:first-child{border-radius:14px 14px 0 0}
+.rung:hover{background:var(--bg3)}
+.rung.open{background:var(--bg3);border-left:2px solid var(--accent)}
+.rung-head{display:flex;align-items:center;gap:16px;padding:18px 22px}
+.rung-idx{
+  width:34px;height:34px;flex:none;border-radius:9px;display:flex;align-items:center;justify-content:center;
+  background:var(--accent-dim);color:var(--accent);font-weight:800;font-size:13px;border:1px solid rgba(79,209,197,.3);
+}
+.rung-name{font-weight:700;font-size:16.5px;letter-spacing:-.01em}
+.rung-en{color:var(--faint);font-size:12.5px;margin-left:2px}
+.rung-cost{margin-left:auto;color:var(--dim);font-size:12px;white-space:nowrap}
+.rung-arrow{color:var(--faint);transition:transform .25s;font-size:13px}
+.rung.open .rung-arrow{transform:rotate(90deg);color:var(--accent)}
+.rung-body{max-height:0;overflow:hidden;transition:max-height .35s ease;}
+.rung-body-in{padding:0 22px 22px 72px;display:grid;grid-template-columns:1.4fr 1fr;gap:20px}
+@media(max-width:720px){.rung-body-in{grid-template-columns:1fr;padding-left:22px}}
+.rung-desc{color:var(--dim);font-size:14px}
+.rung-desc b{color:var(--txt)}
+.errbox{
+  background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:14px 16px;
+}
+.errbox .t{font-size:11px;font-weight:700;color:var(--warn);letter-spacing:.14em;margin-bottom:6px}
+.errbox .v{font-size:13.5px;color:var(--dim)}
+.errbox .v b{color:var(--warn)}
+.ladder-note{
+  margin-top:26px;border:1px dashed var(--line2);border-radius:12px;padding:18px 22px;
+  color:var(--dim);font-size:14px;background:var(--bg2);
+}
+.ladder-note code{color:var(--accent);font-size:12.5px;background:var(--accent-dim);padding:2px 6px;border-radius:5px}
+
+/* ---------- section 3: simulator map ---------- */
+.axis-wrap{margin-bottom:34px}
+.axis{position:relative;height:8px;background:linear-gradient(90deg,#12312e,#1b2430 60%,#3a2230);border-radius:4px;margin:26px 0 8px}
+.axis-lbl{display:flex;justify-content:space-between;color:var(--faint);font-size:11.5px}
+.axis-lbl span:nth-child(2){color:var(--dim)}
+.sim-dot{position:absolute;top:50%;width:12px;height:12px;border-radius:50%;background:var(--accent);transform:translate(-50%,-50%);cursor:pointer;border:2px solid var(--bg);transition:.15s;z-index:2}
+.sim-dot:hover{transform:translate(-50%,-50%) scale(1.5);box-shadow:0 0 12px rgba(79,209,197,.6)}
+.sim-dot.active{background:var(--warn);transform:translate(-50%,-50%) scale(1.5)}
+.sim-dot .tip{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);background:var(--bg3);border:1px solid var(--line2);padding:3px 9px;border-radius:6px;font-size:11px;color:var(--txt);white-space:nowrap;opacity:0;pointer-events:none;transition:.15s}
+.sim-dot:hover .tip{opacity:1}
+.sim-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px;margin-top:34px}
+.sim-card{
+  background:var(--bg2);border:1px solid var(--line);border-radius:13px;padding:18px;cursor:pointer;transition:.2s;
+}
+.sim-card:hover{border-color:var(--line2);transform:translateY(-2px)}
+.sim-card.active{border-color:var(--accent);background:var(--bg3);box-shadow:0 0 0 1px var(--accent)}
+.sim-card .nm{font-weight:800;font-size:16px;letter-spacing:-.01em}
+.sim-card .layer{font-size:11.5px;color:var(--accent);font-weight:700;margin:2px 0 10px}
+.sim-card .cost{font-size:12px;color:var(--dim)}
+.sim-detail{
+  margin-top:18px;background:var(--bg3);border:1px solid var(--accent);border-radius:14px;padding:24px 26px;
+  display:none;
+}
+.sim-detail.show{display:block;animation:fadein .25s}
+@keyframes fadein{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.sim-detail h3{font-size:20px;font-weight:800;margin-bottom:4px}
+.sim-detail .layer{color:var(--accent);font-size:12.5px;font-weight:700;margin-bottom:16px}
+.kv{display:grid;grid-template-columns:120px 1fr;gap:8px 16px;font-size:13.5px;margin-bottom:6px}
+.kv .k{color:var(--faint);font-weight:600}
+.kv .v{color:var(--txt)}
+.kv .v.dim{color:var(--dim)}
+.pill{display:inline-block;font-size:11px;font-weight:700;padding:2px 9px;border-radius:99px;margin-right:5px;margin-bottom:3px}
+.pill.g{background:rgba(104,211,145,.13);color:var(--good);border:1px solid rgba(104,211,145,.35)}
+.pill.y{background:rgba(246,173,85,.12);color:var(--warn);border:1px solid rgba(246,173,85,.35)}
+.pill.r{background:rgba(252,129,129,.12);color:var(--bad);border:1px solid rgba(252,129,129,.35)}
+.pill.v{background:rgba(183,148,244,.12);color:var(--violet);border:1px solid rgba(183,148,244,.35)}
+.sim-principle{
+  margin-top:30px;border-left:3px solid var(--accent);background:var(--bg2);padding:18px 22px;border-radius:0 12px 12px 0;
+  color:var(--dim);font-size:14.5px;
+}
+.sim-principle b{color:var(--accent)}
+
+/* ---------- section 4: gates ---------- */
+.stepper{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:26px}
+.gate-btn{
+  flex:1 1 100px;min-width:104px;background:var(--bg2);border:1px solid var(--line);border-radius:12px;
+  padding:14px 12px;cursor:pointer;text-align:left;transition:.18s;font-family:inherit;position:relative;
+}
+.gate-btn:hover{border-color:var(--line2);background:var(--bg3)}
+.gate-btn.active{border-color:var(--accent);background:var(--bg3);box-shadow:0 0 0 1px var(--accent)}
+.gate-btn .gid{font-size:11px;font-weight:800;color:var(--faint);letter-spacing:.08em}
+.gate-btn.active .gid{color:var(--accent)}
+.gate-btn .gt{font-size:12.5px;font-weight:700;color:var(--txt);margin-top:4px;line-height:1.4}
+.gate-btn.v2 .gid{color:var(--violet)}
+.gate-btn.v2.active .gid{color:var(--violet)}
+.gate-btn.v2.active{border-color:var(--violet);box-shadow:0 0 0 1px var(--violet)}
+.stepper-lbl{display:flex;gap:10px;margin-bottom:10px;font-size:11.5px;color:var(--faint)}
+.stepper-lbl .b1{color:var(--accent)}
+.stepper-lbl .b2{color:var(--violet)}
+.gate-panel{
+  background:var(--bg2);border:1px solid var(--line2);border-radius:16px;padding:28px 30px;min-height:300px;
+}
+.gate-panel .gp-head{display:flex;align-items:baseline;gap:12px;margin-bottom:20px;flex-wrap:wrap}
+.gate-panel .gp-id{font-size:13px;font-weight:800;color:var(--accent);letter-spacing:.1em}
+.gate-panel h3{font-size:21px;font-weight:800;letter-spacing:-.02em}
+.gp-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:8px}
+@media(max-width:820px){.gp-cols{grid-template-columns:1fr}}
+.gp-col{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+.gp-col .t{font-size:11px;font-weight:800;letter-spacing:.16em;margin-bottom:8px}
+.gp-col.h .t{color:var(--warn)}
+.gp-col.r .t{color:var(--good)}
+.gp-col.n .t{color:var(--accent)}
+.gp-col .b{font-size:13.5px;color:var(--dim)}
+.gp-col .b b{color:var(--txt)}
+.gp-extra{margin-top:18px}
+.gp-extra .t{font-size:11px;font-weight:800;letter-spacing:.16em;color:var(--violet);margin-bottom:12px}
+.mut-table{width:100%;border-collapse:collapse;font-size:12.5px}
+.mut-table th{text-align:left;color:var(--faint);font-weight:700;padding:8px 10px;border-bottom:1px solid var(--line2);font-size:11.5px;letter-spacing:.06em}
+.mut-table td{padding:8px 10px;border-bottom:1px solid var(--line);color:var(--dim)}
+.mut-table td:first-child{color:var(--txt);font-weight:600;white-space:nowrap}
+.mut-table tr:hover td{background:var(--bg3)}
+.kill{color:var(--bad);font-weight:700}
+.surv{color:var(--good);font-weight:700}
+.chart-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:820px){.chart-row{grid-template-columns:1fr}}
+.chart-box{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:16px}
+.chart-box .ct{font-size:12px;font-weight:700;color:var(--txt);margin-bottom:4px}
+.chart-box .cs{font-size:11.5px;color:var(--faint);margin-bottom:12px}
+.chart-box svg{width:100%;height:auto;display:block}
+.legend{display:flex;gap:14px;font-size:11px;color:var(--dim);margin-top:10px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.contract-flow{
+  margin-top:30px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;
+  border:1px dashed var(--line2);border-radius:12px;padding:18px 20px;background:var(--bg2);
+}
+.contract-flow .cf{font-size:12px;font-weight:700;color:var(--txt);background:var(--bg3);border:1px solid var(--line2);padding:6px 12px;border-radius:8px}
+.contract-flow .arw{color:var(--accent);font-size:13px}
+.contract-note{margin-top:12px;color:var(--dim);font-size:13px}
+.contract-note b{color:var(--warn)}
+
+/* ---------- section 5: gaming demo ---------- */
+.demo{
+  background:var(--bg2);border:1px solid var(--line2);border-radius:16px;padding:28px;
+}
+.demo-controls{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:20px;align-items:center}
+.bitstream{
+  flex:1 1 260px;background:var(--bg);border:1px solid var(--line2);border-radius:10px;
+  color:var(--accent);font-family:'Pretendard Variable',monospace;font-size:17px;letter-spacing:3px;
+  padding:11px 16px;outline:none;font-weight:700;min-width:200px;
+}
+.bitstream:focus{border-color:var(--accent)}
+.btn{
+  background:var(--accent-dim);border:1px solid rgba(79,209,197,.4);color:var(--accent);
+  font-family:inherit;font-weight:700;font-size:13px;padding:10px 18px;border-radius:10px;cursor:pointer;transition:.15s;
+}
+.btn:hover{background:rgba(79,209,197,.25)}
+.btn.ghost{background:transparent;border-color:var(--line2);color:var(--dim)}
+.btn.ghost:hover{color:var(--txt);border-color:var(--faint)}
+.demo-status{font-size:13px;color:var(--dim);margin-bottom:16px;min-height:20px}
+.demo-status b{color:var(--txt)}
+.demo-status .div-warn{color:var(--warn);font-weight:700}
+.demo-status .div-ok{color:var(--good);font-weight:700}
+.wave-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;overflow-x:auto;padding-bottom:4px}
+.wave-lbl{width:88px;flex:none;font-size:11.5px;font-weight:800;color:var(--faint);letter-spacing:.06em;text-align:right}
+.wave-lbl.gold{color:var(--accent)}
+.wave-lbl.gamer{color:var(--warn)}
+.cell{
+  width:30px;height:30px;flex:none;display:flex;align-items:center;justify-content:center;
+  border:1px solid var(--line);border-radius:6px;font-size:12.5px;font-weight:700;background:var(--bg);
+  color:var(--dim);font-family:monospace;
+}
+.cell.hit{color:var(--accent);border-color:rgba(79,209,197,.5);background:var(--accent-dim)}
+.cell.miss{color:var(--bad)}
+.cell.div{outline:2px solid var(--warn);outline-offset:1px}
+.scan-result{
+  margin-top:18px;border-top:1px solid var(--line);padding-top:16px;font-size:13px;color:var(--dim);display:none;
+}
+.scan-result.show{display:block}
+.scan-result b{color:var(--accent)}
+.demo-explain{margin-top:22px;color:var(--dim);font-size:13.5px;border-left:3px solid var(--warn);padding:4px 0 4px 16px}
+.demo-explain b{color:var(--txt)}
+
+/* ---------- section 6: companies ---------- */
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}
+.fchip{
+  background:var(--bg2);border:1px solid var(--line2);color:var(--dim);font-family:inherit;
+  font-size:12.5px;font-weight:700;padding:8px 16px;border-radius:99px;cursor:pointer;transition:.15s;
+}
+.fchip:hover{color:var(--txt)}
+.fchip.active{background:var(--accent-dim);border-color:var(--accent);color:var(--accent)}
+.co-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.co-card{
+  background:var(--bg2);border:1px solid var(--line);border-radius:14px;padding:20px;cursor:pointer;transition:.2s;
+}
+.co-card:hover{border-color:var(--line2);transform:translateY(-2px)}
+.co-card.hidden{display:none}
+.co-card .nm{font-weight:800;font-size:16.5px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.co-card .type{font-size:10.5px;font-weight:800;padding:2px 9px;border-radius:99px;letter-spacing:.05em}
+.type.dh{background:rgba(79,209,197,.13);color:var(--accent);border:1px solid rgba(79,209,197,.35)}
+.type.ip{background:rgba(104,211,145,.12);color:var(--good);border:1px solid rgba(104,211,145,.35)}
+.type.fa{background:rgba(183,148,244,.12);color:var(--violet);border:1px solid rgba(183,148,244,.35)}
+.type.mid{background:rgba(246,173,85,.12);color:var(--warn);border:1px solid rgba(246,173,85,.35)}
+.co-card .prod{font-size:13px;color:var(--txt);margin:10px 0 6px}
+.co-card .asset{font-size:12.5px;color:var(--dim)}
+.co-card .asset b{color:var(--dim)}
+.co-card .wedge{margin-top:12px;font-size:11.5px;font-weight:800;letter-spacing:.06em}
+.wedge.w1{color:var(--accent)}
+.wedge.w2{color:var(--good)}
+.wedge.w3{color:var(--violet)}
+.wedge.w4{color:var(--warn)}
+.co-detail{display:none;margin-top:12px;padding-top:12px;border-top:1px solid var(--line);font-size:12.5px;color:var(--dim)}
+.co-card.open .co-detail{display:block;animation:fadein .25s}
+.co-detail b{color:var(--txt)}
+.co-note{margin-top:24px;color:var(--faint);font-size:12.5px}
+
+/* ---------- section 7: conclusion ---------- */
+.ten{counter-reset:sent;display:flex;flex-direction:column;gap:12px;margin-bottom:50px}
+.sent{
+  counter-increment:sent;display:flex;gap:16px;background:var(--bg2);border:1px solid var(--line);
+  border-radius:12px;padding:16px 20px;font-size:14.5px;color:var(--dim);cursor:default;transition:.15s;
+}
+.sent:hover{border-color:var(--line2)}
+.sent::before{
+  content:counter(sent,decimal-leading-zero);flex:none;color:var(--accent);font-weight:800;font-size:13px;
+  padding-top:2px;
+}
+.sent b{color:var(--txt)}
+.tl{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:14px 0 50px;position:relative}
+@media(max-width:820px){.tl{grid-template-columns:1fr;gap:14px}}
+.tl-item{border-top:2px solid var(--line2);padding:16px 18px 0 0;cursor:pointer;transition:.15s;position:relative}
+.tl-item::before{content:"";position:absolute;top:-6px;left:0;width:10px;height:10px;border-radius:50%;background:var(--faint);transition:.15s}
+.tl-item:hover::before,.tl-item.active::before{background:var(--accent);box-shadow:0 0 10px rgba(79,209,197,.6)}
+.tl-item.active{border-top-color:var(--accent)}
+.tl-item .d{font-size:11.5px;font-weight:800;color:var(--accent);letter-spacing:.08em}
+.tl-item .t{font-size:13.5px;font-weight:700;margin:5px 0}
+.tl-item .b{font-size:12.5px;color:var(--dim)}
+.risks{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.risk{
+  background:var(--bg2);border:1px solid var(--line);border-left:3px solid var(--bad);
+  border-radius:10px;padding:16px 18px;font-size:13px;color:var(--dim);cursor:pointer;transition:.15s;
+}
+.risk:hover{background:var(--bg3)}
+.risk b{color:var(--bad);display:block;margin-bottom:5px;font-size:13.5px}
+footer{
+  border-top:1px solid var(--line);margin-top:60px;padding:34px 24px 60px;text-align:center;
+  color:var(--faint);font-size:12px;
+}
+footer b{color:var(--dim)}
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .6s,transform .6s}
+.reveal.vis{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="brand">AI는 어떻게 칩을 배우는가</span>
+  <a href="#principles">제1원칙</a>
+  <a href="#simulators">시뮬레이터 지도</a>
+  <a href="#gates">환경 계약 8게이트</a>
+  <a href="#gaming">게이밍 시연</a>
+  <a href="#korea">한국 회사 지도</a>
+  <a href="#conclusion">결론</a>
+</nav>
+
+<!-- ============ 1. HERO ============ -->
+<section id="hero">
+  <div class="kicker">Environment Foundry · Chip Design Environment Research · 2026-07-29</div>
+  <h1>AI는 어떻게<br>칩을 배우는가</h1>
+  <p class="onesentence">
+    AI가 칩을 잘 설계하는 데 필요한 것은 "더 큰 시뮬레이터"도 "더 많은 파일"도 아니라 —
+    <b>보상 1회 비용이 초~분 단위인 실행 가능한 <span class="hl">충실도 사다리</span> 위에서,
+    히든 채점기가 <span class="hl">돌연변이 감사</span>로 검증되고, 권리가 유효한 결정 에피소드를
+    무한히 리플레이할 수 있는 환경</b>이다.
+  </p>
+  <p class="onesentence" style="margin-top:18px;font-size:14px;color:var(--faint)">
+    리서치 3편 + 실험 8회(v1 5회 + v2 3회)의 종합 결론을, 클릭하며 검증하는 인터랙티브 설명서.
+  </p>
+  <button class="scrollcue" onclick="document.getElementById('principles').scrollIntoView({behavior:'smooth'})">
+    <span class="wheel"></span> 스크롤해서 시작 — 아래 모든 항목은 클릭할 수 있습니다
+  </button>
+</section>
+
+<!-- ============ 2. 제1원칙 ============ -->
+<section id="principles" class="reveal">
+  <div class="kicker">01 · First Principles</div>
+  <h2>제1원칙: 칩이란 무엇인가</h2>
+  <p class="sub">
+    칩은 실리콘 위의 <b>전하 이동 규칙</b>이다. 그 위에 쌓인 추상화 계층은 전부
+    <b>물리 법칙의 근사 모델</b>이고, 각 계층 사이에는 근사 오차가 있다.
+    사다리의 각 단을 클릭하면 그 단계가 무엇을 숨기고 있는지 — 그리고 어떤 오차를 감수하는지 펼쳐진다.
+  </p>
+  <div class="ladder" id="ladder"></div>
+  <div class="ladder-note">
+    유효한 칩 설계는 하나의 스칼라가 아니라 <b style="color:var(--txt)">논리곱</b>이다:
+    <code>valid = 기능 통과 AND 형식검증 AND DRC 무위반 AND LVS 일치 AND 타이밍 이내 AND IR drop 이내</code><br>
+    그리고 유효한 것들 사이의 점수는 <code>score = Pareto(성능, 전력, 면적, 검증 공수, 툴 실행시간, 테스트 비용)</code>.
+    "AI가 칩을 잘 설계한다"는 것은 — 어떤 계층에서든 ① 결정을 내리고 ② 결과를 실행해서 관측하고(시뮬레이터 = 상태전이 함수)
+    ③ 유효성 논리곱과 파레토 점수로 채점받는 루프를 ④ 충분히 많이, 충분히 싸게, 충분히 정직하게 반복하는 것이다.
+  </div>
+  <div class="hint">세 가지 제1원칙적 관찰: 시뮬레이터는 선택이 아니라 정의다 · 보상 1회 비용이 제1 설계 변수다 · 모든 싼 측정은 거짓말을 한다 — 문제는 얼마나인가다.</div>
+</section>
+
+<!-- ============ 3. 시뮬레이터 지도 ============ -->
+<section id="simulators" class="reveal">
+  <div class="kicker">02 · Simulator Map</div>
+  <h2>시뮬레이터 지도: 비용-충실도 곡선</h2>
+  <p class="sub">
+    정답은 "하나의 최고 시뮬레이터"가 아니라 <b>비용-충실도 곡선 위의 최소 집합</b>이다.
+    축 위의 점이나 카드를 클릭하면 보상 1회 비용, 라이선스, RL 적합성, 대표 연구를 볼 수 있다.
+  </p>
+  <div class="axis-wrap">
+    <div class="axis-lbl" style="margin-bottom:2px"><span>보상 1회 비용 →</span><span>싸다 = RL 루프에 넣을 수 있다</span></div>
+    <div class="axis" id="costAxis"></div>
+    <div class="axis-lbl"><span>초</span><span>분</span><span>시간</span><span>일</span></div>
+  </div>
+  <div class="sim-grid" id="simGrid"></div>
+  <div class="sim-detail" id="simDetail"></div>
+  <div class="sim-principle">
+    <b>설계 원칙:</b> 싼 툴이 에피소드를 만들고, 비싼 툴이 싼 순위가 현실을 예측하는지 검증한다.
+    최소 집합 <b>Icarus/Verilator + Yosys + OpenROAD + Timeloop</b> 4개면 사다리 전 구간을 커버하고 전부 오픈소스다.
+    사다리의 각 단은 PDK를 공유해야 하고, 오픈 PDK(SKY130/GF180=fab 가능, Nangate45/ASAP7=연구용)가 전체를 묣로 지탱한다.
+  </div>
+</section>
+
+<!-- ============ 4. 환경 계약 8게이트 ============ -->
+<section id="gates" class="reveal">
+  <div class="kicker">03 · Environment Contract — 8 Gates</div>
+  <h2>환경 계약 8게이트</h2>
+  <p class="sub">
+    8회의 이터레이션(v1 5회 + v2 3회)이 실증한 것. <b>게이트 순서가 곧 환경 설계 계약</b>이다.
+    각 게이트를 클릭하면 가설 → 결과 → 다음 가설과 실측 데이터가 펼쳐진다.
+  </p>
+  <div class="stepper-lbl"><span class="b1">■ v1 — 조합 블록(ALU) 계약 확립 (5회)</span><span class="b2">■ v2 — 순차 블록 전이 + 채점기 감사 + 프록시 충실도 (3회)</span></div>
+  <div class="stepper" id="gateStepper"></div>
+  <div class="gate-panel" id="gatePanel"></div>
+  <div class="contract-flow">
+    <span class="cf">컴파일</span><span class="arw">→</span>
+    <span class="cf">공개 테스트</span><span class="arw">→</span>
+    <span class="cf">히든 행동(시퀀스 전수)</span><span class="arw">→</span>
+    <span class="cf">돌연변이 감사된 채점기</span><span class="arw">→</span>
+    <span class="cf">품질 프록시(노이즈 플로어 명시)</span><span class="arw">→</span>
+    <span class="cf">충실도 사다리 상승</span><span class="arw">→</span>
+    <span class="cf">(미래) prospective 상관</span>
+  </div>
+  <p class="contract-note">이 순서 중 하나라도 건드리지 않은 채점/순위는 <b>신뢰 등급을 깎는다.</b></p>
+</section>
+
+<!-- ============ 5. 게이밍 시연 ============ -->
+<section id="gaming" class="reveal">
+  <div class="kicker">04 · Live Demo</div>
+  <h2>게이밍 시연: "1101" 시퀀스 검출기</h2>
+  <p class="sub">
+    v2-1 실험의 축소판. <b>gold</b>(정답, 오버랩 처리)와 <b>gamer</b>(공개 테스트만 통과하도록 오버랩 미처리) —
+    두 FSM은 공개 테스트에선 구분이 안 된다. 비트열을 직접 입력해서 둘이 갈라지는 지점(오버랩)을 찾아볼 것.
+    힌트: <b>1101 뒤에 바로 101</b>을 붙여볼 것.
+  </p>
+  <div class="demo">
+    <div class="demo-controls">
+      <input class="bitstream" id="bitInput" value="1101101" maxlength="64" spellcheck="false" placeholder="0과 1만 입력">
+      <button class="btn" id="runBtn">실행</button>
+      <button class="btn ghost" id="presetOverlap">오버랩 예제</button>
+      <button class="btn ghost" id="presetPublic">공개 테스트 예제</button>
+      <button class="btn ghost" id="presetRandom">랜덤 16비트</button>
+    </div>
+    <div class="demo-status" id="demoStatus"></div>
+    <div id="waveBox"></div>
+    <div class="demo-controls" style="margin-top:20px;margin-bottom:0">
+      <button class="btn" id="scanBtn">14비트 전수 스캔 (16,384 시퀀스)</button>
+    </div>
+    <div class="scan-result" id="scanResult"></div>
+    <div class="demo-explain">
+      <b>왜 이게 핵심인가:</b> gamer는 "띄엄띄엄 나오는 1101"(공개 테스트 3종)은 전부 맞힌다.
+      하지만 <b>1101101</b>처럼 검출 직후 새 패턴이 즉시 시작되는 오버랩 구간에서 gold는 2회, gamer는 1회만 검출한다.
+      히든 채점기(16,384 시퀀스 × 14비트 전수, 사이클 정확 골든 모델)만이 이 차이를 잡아낸다 —
+      실제 실험에서 gamer의 첫 실패는 <b>seq=91, bit=6</b>에서 격리됐다. "공개 테스트 통과"는 "정답"이 아니다.
+    </div>
+  </div>
+</section>
+
+<!-- ============ 6. 한국 회사 지도 ============ -->
+<section id="korea" class="reveal">
+  <div class="kicker">05 · Korea Partner Map</div>
+  <h2>한국 회사 지도: 누구의 데이터인가</h2>
+  <p class="sub">
+    한국에서는 <b>데이터 허브 성격의 디자인하우스(세미파이브/에이직랜드 류) 2개사 POC</b>가 최우선 wedge다.
+    유형 필터를 눌러 보고, 카드를 클릭하면 데이터 자산과 딜 구조를 볼 수 있다.
+  </p>
+  <div class="filters" id="coFilters">
+    <button class="fchip active" data-f="all">전체 (17)</button>
+    <button class="fchip" data-f="dh">디자인하우스 · 1순위</button>
+    <button class="fchip" data-f="ip">IP 벤더 · 2순위</button>
+    <button class="fchip" data-f="fa">팹리스 AI · 3순위</button>
+    <button class="fchip" data-f="mid">중견 팹리스 · 병행</button>
+  </div>
+  <div class="co-grid" id="coGrid"></div>
+  <p class="co-note">
+    ※ 유형·데이터 자산은 공개 정보 + 업계 구조에 대한 추론(리서치 C)이며, 실제 보유 여부는 각사 확인이 필요하다.
+    공통 리스크: 파운드리 PDK NDA(→ PDK-free 추상화 + 파트너 측 enclave 실행), 고객 IP 소유권(→ 메타데이터 분리 제공 계약), 경쟁사 노출 우려.
+  </p>
+</section>
+
+<!-- ============ 7. 결론 ============ -->
+<section id="conclusion" class="reveal">
+  <div class="kicker">06 · Conclusion</div>
+  <h2>결론: 원페이저와 90일</h2>
+  <p class="sub">열 문장으로 압축한 종합 결론. 각 항목은 위 섹션의 실측 데이터에 대응한다.</p>
+  <div class="ten" id="tenBox"></div>
+
+  <h2 style="font-size:24px;margin-top:20px">수정된 90일 계획</h2>
+  <p class="sub" style="margin-bottom:20px">이번 실증(mutation audit · 노이즈 플로어)을 스펙에 반영한 버전. 각 구간을 클릭해 게이트 조건 확인.</p>
+  <div class="tl" id="tlBox"></div>
+
+  <h2 style="font-size:24px;margin-top:20px">이 결론이 틀릴 수 있는 지점 5가지</h2>
+  <p class="sub" style="margin-bottom:20px">정직한 결론은 자기 반론을 동봉한다.</p>
+  <div class="risks" id="riskBox"></div>
+</section>
+
+<footer>
+  <b>AI는 어떻게 칩을 배우는가</b> · Environment Foundry 칩 설계 환경 리서치 인터랙티브 설명서<br>
+  소스: synthesis-and-recommendation.md · iterations/iter-1,2,3 · korea-chip-company-map.md (2026-07-29, divergent research — canonical 아님)
+</footer>
+
+<script>
+"use strict";
+const $ = (s, el) => (el||document).querySelector(s);
+const $$ = (s, el) => Array.from((el||document).querySelectorAll(s));
+
+/* ================= SECTION 2 : ladder ================= */
+const LADDER = [
+  {name:"트랜지스터", en:"Transistor / SPICE", cost:"시뮬 비용: 시간~일",
+   desc:"<b>물리 그 자체에 가장 가까운 모델.</b> 전압·전류·전하의 연속 시간 거동을 미분방정식으로 푼다(ngspice/Xyce). 여기서만 '진짜'가 보이지만, 게이트 수백만 개를 이 해상도로 돌릴 수는 없다. 보상 1회에 시간~일이 걸려 RL 루프에는 사실상 못 넣는다.",
+   err:"숨기는 것: 없음에 가까움 — 대신 <b>계산 불가능성</b>이 오차다. SPICE를 못 쓰는 순간부터 모든 위 계층은 추정이 된다."},
+  {name:"게이트", en:"Gate / Netlist", cost:"시뮬 비용: 초~분",
+   desc:"<b>트랜지스터를 0/1 스위치로 근사.</b> 표준 셀 라이브러리(Nangate45 등)로 매핑하면 면적·지연·전력을 셀 단위로 읽을 수 있다. Yosys/ABC 합성이 이 계층을 만들고, 우리 iter-3이 바로 이 계층에서 프록시 왜곡을 실측했다.",
+   err:"숨기는 것: 연속 파형, 기생 성분, 배선. <b>같은 동작의 두 회로가 매핑 면적에서 2.13배 차이</b>나는 노이즈 플로어가 이미 여기서 발생한다."},
+  {name:"RTL", en:"Register Transfer Level (Verilog)", cost:"시뮬 비용: 초~분",
+   desc:"<b>설계자가 실제로 쓰는 언어.</b> 레지스터 사이의 데이터 흐름을 클럭 단위로 기술한다. Icarus/Verilator가 실행하고, LLM 생성-검증 루프(VerilogEval, RTLFixer, 우리 v1·v2)가 검증된 유일한 계층이기도 하다. 생성 가능하고, 싸고, 행동을 직접 관측할 수 있다.",
+   err:"숨기는 것: 합성 후 실제 게이트 구조. RTL에서 '작아 보이는' 코드가 합성 후엔 아닐 수 있다 — <b>프록시가 순위를 뒤집는 사례를 실측</b>(지연 깊이 3v8 → 7v6 반전)."},
+  {name:"아키텍처", en:"Microarchitecture / System", cost:"시뮬 비용: 분~시간",
+   desc:"<b>파이프라인, 캐시, 인터커넥트의 구조적 결정.</b> gem5/SST 같은 사이클 근사 시뮬레이터나 Timeloop/Accelergy 같은 가속기 분석 모델이 성능·에너지를 추정한다. DNN 가속기 설계공간탐색(ArchGym)이 이 계층의 대표 RL 선례.",
+   err:"숨기는 것: RTL 이하의 모든 구현 디테일. 모델의 파라미터가 실제 RTL과 어긋나면 <b>탐색 전체가 가짜 최적점으로 수렴</b>한다."},
+  {name:"시스템", en:"Chip / Package / Workload", cost:"관측 비용: 테이프아웃 단위(수백억 원)",
+   desc:"<b>칩이 일하는 최종 물리대.</b> 실제 워크로드, 온도, 전원망, 수율, 실리콘 실측. 이 계층의 데이터(테이프아웃 전후 예측 vs 실측 갭)가 가장 값지고, 공개 자산이 거의 전무하다 — <b>이 공백이 곧 회사의 시장</b>이다.",
+   err:"숨기는 것: 없다. 다만 <b>에피소드 1개의 비용이 테이프아웃 1회</b>라서, 아래 계층의 싼 프록시가 이 계층의 진실을 얼마나 예측하는지가 전부의 문제다."}
+];
+const ladderEl = $("#ladder");
+LADDER.forEach((r,i)=>{
+  const div = document.createElement("div");
+  div.className = "rung" + (i===2 ? " open" : "");
+  div.innerHTML =
+    '<div class="rung-head">' +
+      '<div class="rung-idx">'+(i+1)+'</div>' +
+      '<div><span class="rung-name">'+r.name+'</span> <span class="rung-en">'+r.en+'</span></div>' +
+      '<div class="rung-cost">'+r.cost+'</div>' +
+      '<div class="rung-arrow">▶</div>' +
+    '</div>' +
+    '<div class="rung-body"><div class="rung-body-in">' +
+      '<div class="rung-desc">'+r.desc+'</div>' +
+      '<div class="errbox"><div class="t">근사 오차 / 숨기는 것</div><div class="v">'+r.err+'</div></div>' +
+    '</div></div>';
+  div.querySelector(".rung-head").addEventListener("click", ()=>{
+    const open = div.classList.contains("open");
+    $$(".rung", ladderEl).forEach(x=>{ x.classList.remove("open"); x.querySelector(".rung-body").style.maxHeight = "0px"; });
+    if(!open){ div.classList.add("open"); const b = div.querySelector(".rung-body"); b.style.maxHeight = b.scrollHeight + "px"; }
+  });
+  ladderEl.appendChild(div);
+});
+// open default (RTL)
+(function(){ const r = $$(".rung", ladderEl)[2]; const b = r.querySelector(".rung-body"); requestAnimationFrame(()=>{ b.style.maxHeight = b.scrollHeight + "px"; }); })();
+
+/* ================= SECTION 3 : simulators ================= */
+const SIMS = [
+  {id:"timeloop", name:"Timeloop / Accelergy", layer:"DNN 가속기 모델링", costSec:60, cost:"초~분", license:"MIT (오픈소스)", rl:3,
+   research:"ArchGym (arXiv 2306.08888) — 가속기 설계공간탐색을 RL 환경으로", note:"워크로드→에너지/지연 분석 모델. 에피소드 대량 반복에 최상. SCALE-Sim도 동급."},
+  {id:"icarus", name:"Icarus Verilog", layer:"RTL 시뮬레이션", costSec:5, cost:"초~분", license:"GPLv2 (오픈소스)", rl:3,
+   research:"VerilogEval, RTLFixer, 우리 v1·v2 실험의 채점 표준", note:"느리지만 정직한 이벤트 구동 시뮬레이터. 생성-검증 루프의 채점기로 검증됨."},
+  {id:"verilator", name:"Verilator", layer:"RTL 시뮬레이션 (고속)", costSec:1, cost:"초", license:"LGPLv3 (오픈소스)", rl:3,
+   research:"대규모 생성-검증 루프, 오픈소스 CPU 검증 인프라", note:"Verilog를 C++로 컴파일해 수십 배 고속 실행. 대량 에피소드의 엔진."},
+  {id:"yosys", name:"Yosys / ABC", layer:"논리합성", costSec:30, cost:"초~분", license:"ISC (오픈소스)", rl:2,
+   research:"OpenABC-D (87만 합성 샘플), DRiLLS, 우리 iter-3", note:"RTL→게이트 넷리스트. 상태전이가 명확해 RL 적합성 상. Nangate45/ASAP7 라이브러리와 결합."},
+  {id:"openroad", name:"OpenROAD / ORFS", layer:"물리설계", costSec:3600, cost:"분~시간", license:"BSD (오픈소스)", rl:2,
+   research:"Circuit Training (Google), ChiPBench", note:"배치·배선·사인오프의 오픈소스 풀스택. 프록시 계층화 없이는 RL에 무겁다. RTL-to-GDS 상관 검증의 다음 단계."},
+  {id:"dreamplace", name:"DREAMPlace", layer:"물리설계 · 배치 (GPU)", costSec:300, cost:"분 (GPU 가속)", license:"오픈소스 (UT Austin)", rl:2,
+   research:"AutoDMP — GPU 가속 배치 + 베이지안 최적화", note:"GPU로 배치를 30배+ 가속. 비싼 물리설계를 RL 예산 안으로 끌어오는 핵심 카드."},
+  {id:"gem5", name:"gem5 / SST", layer:"아키텍처 시뮬레이션", costSec:3600, cost:"분~시간", license:"BSD 스타일 (오픈소스)", rl:1,
+   research:"ArchGym의 아키텍처 축", note:"사이클 근사 CPU/SoC 시뮬레이터. 보상 비용이 커서 RL 적합성은 중하."},
+  {id:"ngspice", name:"ngspice / Xyce", layer:"회로 (SPICE)", costSec:86400, cost:"시간~일", license:"BSD / GPLv3 (오픈소스)", rl:0,
+   research:"(산업: FastSPICE) — 소규모 아날로그 셀에 한정", note:"물리에 가장 가깝지만 보상 1회에 시간~일. RL 루프에는 못 넣고, 사다리의 '진실 검증기'로만 쓴다."}
+];
+const RL_TXT = ["하 — RL 불가(검증기)","중하 — 보상 비용 큼","중 — 프록시 계층화 필요","최상 — 대량 반복 가능"];
+const RL_CLS = ["r","y","y","g"];
+const axisEl = $("#costAxis"), simGrid = $("#simGrid"), simDetail = $("#simDetail");
+const LOG_MIN = 0, LOG_MAX = Math.log10(86400);
+SIMS.forEach(s=>{
+  const pct = (Math.log10(s.costSec)-LOG_MIN)/(LOG_MAX-LOG_MIN)*100;
+  const dot = document.createElement("div");
+  dot.className = "sim-dot"; dot.style.left = pct + "%"; dot.dataset.id = s.id;
+  dot.innerHTML = '<span class="tip">'+s.name.split(" ")[0]+' · '+s.cost+'</span>';
+  dot.addEventListener("click", ()=>selectSim(s.id));
+  axisEl.appendChild(dot);
+
+  const card = document.createElement("div");
+  card.className = "sim-card"; card.dataset.id = s.id;
+  card.innerHTML = '<div class="nm">'+s.name+'</div><div class="layer">'+s.layer+'</div>' +
+    '<div class="cost">보상 1회: '+s.cost+'</div>' +
+    '<div style="margin-top:8px"><span class="pill '+RL_CLS[s.rl]+'">RL '+RL_TXT[s.rl]+'</span></div>';
+  card.addEventListener("click", ()=>selectSim(s.id));
+  simGrid.appendChild(card);
+});
+function selectSim(id){
+  const s = SIMS.find(x=>x.id===id);
+  $$(".sim-dot").forEach(d=>d.classList.toggle("active", d.dataset.id===id));
+  $$(".sim-card").forEach(c=>c.classList.toggle("active", c.dataset.id===id));
+  simDetail.classList.add("show");
+  simDetail.innerHTML =
+    '<h3>'+s.name+'</h3><div class="layer">'+s.layer+'</div>' +
+    '<div class="kv"><div class="k">보상 1회 비용</div><div class="v">'+s.cost+'</div></div>' +
+    '<div class="kv"><div class="k">라이선스</div><div class="v">'+s.license+'</div></div>' +
+    '<div class="kv"><div class="k">RL 적합성</div><div class="v"><span class="pill '+RL_CLS[s.rl]+'">'+RL_TXT[s.rl]+'</span></div></div>' +
+    '<div class="kv"><div class="k">대표 연구</div><div class="v">'+s.research+'</div></div>' +
+    '<div class="kv"><div class="k">메모</div><div class="v dim">'+s.note+'</div></div>';
+  simDetail.scrollIntoView({behavior:"smooth", block:"nearest"});
+}
+selectSim("icarus");
+
+/* ================= SECTION 4 : 8 gates ================= */
+function bar(label, val, max, color, txt){
+  const w = Math.max(2, val/max*100);
+  return '<div style="display:flex;align-items:center;gap:8px;margin-bottom:7px">' +
+    '<div style="width:118px;flex:none;font-size:11px;color:var(--dim);text-align:right">'+label+'</div>' +
+    '<div style="flex:1;background:var(--bg3);border-radius:4px;height:16px;position:relative">' +
+      '<div style="width:'+w.toFixed(1)+'%;height:100%;background:'+color+';border-radius:4px"></div>' +
+    '</div>' +
+    '<div style="width:64px;flex:none;font-size:11.5px;font-weight:700;color:var(--txt)">'+txt+'</div></div>';
+}
+const MUT_TABLE =
+  '<table class="mut-table"><thead><tr><th>돌연변이</th><th>변경</th><th>기대</th><th>결과</th></tr></thead><tbody>' +
+  '<tr><td>mut01_no_overlap</td><td>오버랩 제거 (gamer 버그와 동일)</td><td>KILL</td><td class="kill">KILL</td></tr>' +
+  '<tr><td>mut02_s2_reentry</td><td>"11101" 깨짐</td><td>KILL</td><td class="kill">KILL</td></tr>' +
+  '<tr><td>mut03_pattern_1100</td><td>1100 검출로 극성 반전</td><td>KILL</td><td class="kill">KILL</td></tr>' +
+  '<tr><td>mut04_s1_wrong_zero</td><td>S1에서 din=0 시 잘못된 전이</td><td>KILL</td><td class="kill">KILL</td></tr>' +
+  '<tr><td>mut05_registered_hit</td><td>hit 1사이클 레지스터 지연 (타이밍 공격)</td><td>KILL</td><td class="kill">KILL</td></tr>' +
+  '<tr><td>mut06_equiv_encoding</td><td>동등 돌연변이 — S2/S3 인코딩 스왑, 행동 동일</td><td>SURVIVE</td><td class="surv">SURVIVE (캘리브레이션)</td></tr>' +
+  '<tr><td>mut07_reset_to_s1</td><td>리셋 상태 변경</td><td>KILL</td><td class="kill">KILL</td></tr>' +
+  '<tr><td>mut08_false_start</td><td>S0에서 din=0에도 전진</td><td>KILL</td><td class="kill">KILL</td></tr>' +
+  '</tbody></table>' +
+  '<p style="margin-top:12px;font-size:12.5px;color:var(--dim)">행동 변경 돌연변이 <b style="color:var(--good)">7/7 KILL → mutation score 1.0</b>. ' +
+  '동등 돌연변이(mut06) 생존은 감사 캘리브레이션 정상의 증거. mut05(1사이클 지연)까지 격리됨 → 채점기가 패턴 <b style="color:var(--txt)">개수</b>가 아니라 <b style="color:var(--txt)">사이클 정확 타이밍</b>을 채점한다는 증거. mutation score는 동등 돌연변이를 제외하고 계산해야 한다(포함 시 87.5%로 오독).</p>';
+
+const CHART_ALU =
+  '<div class="ct">관측 1 — ALU 격차: 방향은 유지, 크기는 왜곡</div><div class="cs">제네릭 셀 수 프록시가 품질 차이를 ~7.7배 과장 (14% → 1.8%)</div>' +
+  '<div style="font-size:10.5px;color:var(--faint);margin-bottom:6px">제네릭 셀 수 (격차 14%)</div>' +
+  bar("alu_compact", 36, 45, "var(--accent)", "36") + bar("alu_verbose", 41, 45, "var(--accent)", "41") +
+  '<div style="font-size:10.5px;color:var(--faint);margin:10px 0 6px">Nangate45 매핑 면적 (격차 1.8%)</div>' +
+  bar("alu_compact", 29.79, 34, "var(--violet)", "29.79") + bar("alu_verbose", 30.32, 34, "var(--violet)", "30.32");
+const CHART_EQ =
+  '<div class="ct">관측 2 — 동등류 노이즈 플로어 2.13배</div><div class="cs">행동이 완전히 동일한 두 설계가 매핑 면적에서 2.13배 차이</div>' +
+  '<div style="font-size:10.5px;color:var(--faint);margin-bottom:6px">Nangate45 매핑 면적</div>' +
+  bar("seqdet_binary", 8.512, 10, "var(--accent)", "8.512") + bar("seqdet_equiv_enc", 3.990, 10, "var(--warn)", "3.990") +
+  '<p style="font-size:11.5px;color:var(--dim);margin-top:10px">이 스케일에서 "의미 있는 최소 품질 차이"는 최소 ~2배. 그 이하의 delta로 순위를 매기면 <b style="color:var(--warn)">노이즈를 학습</b>하는 것.</p>';
+const CHART_DLY =
+  '<div class="ct">관측 3 — 지연 순위 반전 실측</div><div class="cs">프록시가 순위의 방향 자체를 뒤집는 사례 (합성 단계)</div>' +
+  '<div style="font-size:10.5px;color:var(--faint);margin-bottom:6px">제네릭 깊이 — equiv 우위 (3 vs 8)</div>' +
+  bar("equiv_enc", 3, 9, "var(--warn)", "3") + bar("binary(gold)", 8, 9, "var(--accent)", "8") +
+  '<div style="font-size:10.5px;color:var(--faint);margin:10px 0 6px">매핑 깊이 — gold 우위 (6 vs 7) · 반전</div>' +
+  bar("equiv_enc", 7, 9, "var(--warn)", "7") + bar("binary(gold)", 6, 9, "var(--accent)", "6");
+
+const GATES = [
+  {id:"v1-1", v:1, title:"컴파일은 문법을 본다",
+   h:"컴파일 전이가 무효 RTL을 거부할 것이다.",
+   r:"<b>성공.</b> 문법 오류 RTL은 컴파일 게이트에서 격리. 환경의 첫 상태전이가 실제 툴(Icarus) 위에서 동작함을 확인.",
+   n:"컴파일은 <b>행동을 못 본다</b> — 문법이 맞고 동작이 틀린 구현을 잡을 다음 게이트가 필요."},
+  {id:"v1-2", v:1, title:"공개 테스트는 속는다",
+   h:"공개 예제만으로는 틀린 구현(gamer)도 통과시킬 것이다.",
+   r:"<b>확인.</b> 공개 테스트를 전부 통과하면서도 의도적으로 틀린 gamer 구현이 통과됨. '공개 통과 = 정답'이 아님이 실증.",
+   n:"보이지 않는 <b>히든 행동 게이트</b>가 필요하다."},
+  {id:"v1-3", v:1, title:"히든 전수가 게이밍을 격리",
+   h:"히든 전수 테스트는 공개 테스트를 통과한 gamer를 격리할 것이다.",
+   r:"<b>성공.</b> 4비트 ALU 입력 공간 1,024 조합 중 <b>828/1024 조합</b>에서 gamer의 출력 불일치를 격리. gold는 전수 통과.",
+   n:"정답(행동 동등) 게이트가 서면, 그 다음 신호는 <b>품질</b>이어야 한다 — 하지만 품질 프록시는 정직한가?"},
+  {id:"v1-4", v:1, title:"제네릭 합성이 순위를 매기다",
+   h:"제네릭 합성(셀 수)이 행동 동등한 두 RTL의 품질 순위를 줄 것이다.",
+   r:"<b>조걶부 성공.</b> verbose 41셀 vs compact 36셀 — 같은 동작, 다른 크기를 프록시가 구분. 그러나 이 순위가 진짜인지는 미검증.",
+   n:"홀드아웃 파라미터(다른 width, 다른 라이브러리)에서도 이 순위가 <b>생존</b>하는가?"},
+  {id:"v1-5", v:1, title:"계약은 스케일을 넘는다",
+   h:"환경 계약이 width 5로 전이(일반화)될 것이다.",
+   r:"<b>성공.</b> 같은 계약(관측 경계→타입화된 행동→실제 툴 전이→공개/히든 채점→리셋/리플레이)이 파라미터 변경에 전이됨.",
+   n:"다른 <b>블록 패밀리</b>(조합→순차)와 라우팅 상관으로 확장하라. → v2 시작."},
+  {id:"v2-1", v:2, title:"순차 블록에도 계약 전이",
+   h:"v1의 환경 계약이 남부 상태를 가진 순차 블록(오버랩 허용 '1101' 검출기)에도 그대로 전이될 것이다.",
+   r:"<b>성공.</b> 히든 채점(16,384 시퀀스 × 14비트 전수 = 229,376 사이클 체크, 사이클 정확 독립 골든 모델)에서 gamer 격리 — <b>오버랩 지점에서 불일치, 첫 실패 seq=91 bit=6</b>. gold·onehot 모두 통과. 순차의 히든 채점은 '입력 전수'가 아니라 '시퀀스 전수 + 리셋 시맨틱스'임을 학습.",
+   n:"히든 채점기의 판정을 신뢰하기 전에 <b>채점기 자체를 감사</b>하라. (아래 §게이밍 시연에서 이 오버랩을 직접 재현 가능)"},
+  {id:"v2-2", v:2, title:"채점기 감사: 돌연변이 8종",
+   h:"채점기는 감사될 때만 신뢰할 수 있다 — gold의 행동 변경 단일지점 돌연변이는 히든 채점기가 100% 격리(kill)해야 한다.",
+   r:"<b>성공.</b> 행동 변경 돌연변이 <b>7/7 KILL → mutation score 1.0</b>. 동등 돌연변이 1개는 예상대로 생존(캘리브레이션 정상). '히든 테스트 있음'과 '히든 테스트가 강함'은 다르다 — 채점기는 돌연변이 감사 성적표를 동봉해야 신뢰 등급을 매길 수 있다.",
+   n:"정답 게이트가 검증됐으니, 이제 <b>저비용 품질 프록시(제네릭 셀 수)가 실제 라이브러리 매핑에서도 같은 순위를 주는가</b>를 검증.",
+   extra:'<div class="t">실측 · 뮤테이션 감사 8종 (iter-2)</div>' + MUT_TABLE},
+  {id:"v2-3", v:2, title:"프록시는 거짓말을 한다",
+   h:"제네릭 셀 수 프록시는 실제 셀 라이브러리(Nangate45) 매핑 대비 순위를 왜곡할 수 있다 — 현실 간극은 합성 단계에서 이미 관측 가능하다.",
+   r:"<b>실측 확정.</b> ① ALU 격차 14% → 1.8%로 축소(프록시가 품질 차이를 ~7.7배 과장) ② 행동 동등쌍이 매핑 면적 8.512 vs 3.990으로 <b>2.13배 노이즈 플로어</b> ③ 지연 깊이 순위가 제네릭(3 vs 8, equiv 우위)에서 매핑(7 vs 6, gold 우위)으로 <b>반전</b>. 정답 게이트가 품질 순위보다 반드시 먼저여야 하는 이유가 정량화됐다.",
+   n:"매핑 면적/깊이도 여전히 pre-P&R. 남은 단계는 <b>RTL-to-GDS 상관</b>(ORFS, 90일 계획 Days 15–30으로 이관) — NOT YET.",
+   extra:'<div class="t">실측 · 프록시 왜곡 3종 바차트 (iter-3, Nangate45 매핑)</div><div class="chart-row">' +
+        '<div class="chart-box">'+CHART_ALU+'</div><div class="chart-box">'+CHART_EQ+'</div><div class="chart-box">'+CHART_DLY+'</div></div>'}
+];
+const stepperEl = $("#gateStepper"), gatePanel = $("#gatePanel");
+GATES.forEach((g,i)=>{
+  const b = document.createElement("button");
+  b.className = "gate-btn" + (g.v===2 ? " v2" : "") + (i===0 ? " active" : "");
+  b.innerHTML = '<div class="gid">GATE '+(i+1)+' · '+g.id+'</div><div class="gt">'+g.title+'</div>';
+  b.addEventListener("click", ()=>selectGate(i));
+  stepperEl.appendChild(b);
+});
+function selectGate(i){
+  const g = GATES[i];
+  $$(".gate-btn", stepperEl).forEach((b,j)=>b.classList.toggle("active", j===i));
+  gatePanel.innerHTML =
+    '<div class="gp-head"><span class="gp-id">'+g.id+'</span><h3>'+g.title+'</h3>' +
+    '<span class="tag '+(g.v===2?'':'a')+'" style="'+(g.v===2?'color:var(--violet);border-color:rgba(183,148,244,.4);background:rgba(183,148,244,.1)':'')+'">'+(g.v===2?'v2 — 순차/감사/충실도':'v1 — 조합 블록 계약')+'</span></div>' +
+    '<div class="gp-cols">' +
+      '<div class="gp-col h"><div class="t">가설 HYPOTHESIS</div><div class="b">'+g.h+'</div></div>' +
+      '<div class="gp-col r"><div class="t">결과 OBSERVED</div><div class="b">'+g.r+'</div></div>' +
+      '<div class="gp-col n"><div class="t">다음 가설 NEXT</div><div class="b">'+g.n+'</div></div>' +
+    '</div>' +
+    (g.extra ? '<div class="gp-extra">'+g.extra+'</div>' : '');
+}
+selectGate(0);
+
+/* ================= SECTION 5 : gaming demo ================= */
+// gold: 4-bit window == 1101 (overlap-correct golden model)
+function goldOutputs(bits){
+  const out = [];
+  for(let i=0;i<bits.length;i++){
+    const w = bits.slice(Math.max(0,i-3), i+1);
+    out.push(w === "1101" ? 1 : 0);
+  }
+  return out;
+}
+// gamer: Mealy FSM that resets to S0 after a hit (no overlap re-entry)
+function gamerOutputs(bits){
+  let s = 0; const out = [];
+  for(const ch of bits){
+    const d = ch === "1" ? 1 : 0; let hit = 0;
+    if(s===0){ s = d ? 1 : 0; }
+    else if(s===1){ s = d ? 2 : 0; }
+    else if(s===2){ s = d ? 2 : 3; }
+    else { if(d){ hit = 1; s = 0; } else { s = 0; } }
+    out.push(hit);
+  }
+  return out;
+}
+function runDemo(){
+  const raw = $("#bitInput").value.replace(/[^01]/g, "").slice(0, 64);
+  $("#bitInput").value = raw;
+  const status = $("#demoStatus"), box = $("#waveBox");
+  if(!raw){ status.textContent = "0과 1로 비트열을 입력하세요."; box.innerHTML = ""; return; }
+  const g = goldOutputs(raw), m = gamerOutputs(raw);
+  let divIdx = -1;
+  for(let i=0;i<raw.length;i++){ if(g[i] !== m[i]){ divIdx = i; break; } }
+  const gHits = g.reduce((a,b)=>a+b,0), mHits = m.reduce((a,b)=>a+b,0);
+  if(divIdx >= 0){
+    status.innerHTML = '<span class="div-warn">⚡ 발산 발견 — bit '+(divIdx+1)+' ("'+raw.slice(Math.max(0,divIdx-3),divIdx+1)+'" 구간)</span> · gold <b>'+gHits+'</b>회 검출 vs gamer <b>'+mHits+'</b>회 검출. 이 지점이 오버랩입니다.';
+  } else {
+    status.innerHTML = '<span class="div-ok">✓ 이 구간에서는 두 FSM이 동일</span> (gold '+gHits+'회, gamer '+mHits+'회). 공개 테스트가 이래서 gamer를 못 잡습니다 — 오버랩(검출 직후 재시작)을 포함시켜 보세요.';
+  }
+  const mkRow = (lbl, cls, arr, other) => {
+    let h = '<div class="wave-row"><div class="wave-lbl '+cls+'">'+lbl+'</div>';
+    for(let i=0;i<raw.length;i++){
+      let c = "cell";
+      if(arr[i]===1) c += " hit";
+      if(other && arr[i]!==other[i]) c += (i===divIdx ? " div" : " miss");
+      h += '<div class="'+c+'">'+arr[i]+'</div>';
+    }
+    return h + "</div>";
+  };
+  let bitsRow = '<div class="wave-row"><div class="wave-lbl">INPUT</div>';
+  for(let i=0;i<raw.length;i++){ bitsRow += '<div class="cell" style="color:var(--txt)">'+raw[i]+'</div>'; }
+  bitsRow += "</div>";
+  box.innerHTML = bitsRow + mkRow("GOLD hit", "gold", g, null) + mkRow("GAMER hit", "gamer", m, g);
+}
+$("#runBtn").addEventListener("click", runDemo);
+$("#bitInput").addEventListener("input", runDemo);
+$("#presetOverlap").addEventListener("click", ()=>{ $("#bitInput").value = "1101101"; runDemo(); });
+$("#presetPublic").addEventListener("click", ()=>{ $("#bitInput").value = "01101001101"; runDemo(); });
+$("#presetRandom").addEventListener("click", ()=>{
+  let s = ""; for(let i=0;i<16;i++) s += Math.random() < 0.5 ? "0" : "1";
+  $("#bitInput").value = s; runDemo();
+});
+$("#scanBtn").addEventListener("click", ()=>{
+  const N = 14, total = 1 << N;
+  let failSeqs = 0, firstFail = -1, firstBit = -1, failCycles = 0, totalCycles = 0;
+  for(let seq=0; seq<total; seq++){
+    let bits = "";
+    for(let b=N-1;b>=0;b--) bits += ((seq>>b)&1) ? "1" : "0";
+    const g = goldOutputs(bits), m = gamerOutputs(bits);
+    totalCycles += N;
+    let seqFailed = false;
+    for(let i=0;i<N;i++){
+      if(g[i]!==m[i]){ failCycles++; if(!seqFailed){ seqFailed = true; if(firstFail<0){ firstFail = seq; firstBit = i; } } }
+    }
+    if(seqFailed) failSeqs++;
+  }
+  const r = $("#scanResult");
+  r.classList.add("show");
+  r.innerHTML = '전수 스캔 완료: <b>'+total.toLocaleString()+'</b> 시퀀스 × 14비트 = <b>'+totalCycles.toLocaleString()+'</b> 사이클 체크. ' +
+    'gamer가 gold와 갈라진 시퀀스 <b>'+failSeqs.toLocaleString()+'/'+total.toLocaleString()+'</b> ('+(failSeqs/total*100).toFixed(1)+'%), ' +
+    '불일치 사이클 '+failCycles.toLocaleString()+'개. 첫 실패: seq='+firstFail+' bit='+(firstBit+1)+' ' +
+    '<span style="color:var(--faint)">(열거 순서가 달라 원 실험의 seq=91 bit=6과 인덱스는 다를 수 있으나, gamer 격리 자체는 동일하게 재현됨)</span>';
+});
+runDemo();
+
+/* ================= SECTION 6 : companies ================= */
+const COS = [
+  {n:"세미파이브", t:"dh", tn:"디자인하우스", w:1, prod:"플랫폼 기반 SoC 설계 (AI 추론/AIoT/HPC 플랫폼)",
+   asset:"프로젝트×노드 교차 메타데이터 — '플랫폼 재사용' 모델이라 축적이 구조적으로 가장 큼",
+   detail:"삼성 파운드리 SAFE의 대표 DSP. 2024 매출 1,118억(+56.8%), 2026 코스닥 상장. <b>1순위 POC 타겟:</b> 메타데이터 밀도 최고 + 상장사 거버넌스 + 'AI 설계 도구 ⇄ 데이터' 대칭 딜 가능."},
+  {n:"에이직랜드", t:"dh", tn:"디자인하우스", w:1, prod:"ASIC 설계+양산 턴키 (국내 유일 TSMC VCA)",
+   asset:"TSMC 공정 프로젝트 데이터 — TSMC 슬롯 포화 속 국내 고객의 접근 창구",
+   detail:"딥엑스 등 AI 팹리스 다수가 고객(95억 설계 계약 공시). <b>1순위 POC 타겟:</b> 세미파이브(삼성)와 함께 잡으면 삼성/TSMC 양 생태계 커버. TSMC NDA가 삼성보다 엄격한 편(미확정)."},
+  {n:"에이디테크놀로지", t:"dh", tn:"디자인하우스", w:1, prod:"ASIC 풀턴키 디자인 서비스 (Arm 토탈 디자인 파트너)",
+   asset:"노드×PPA 교차 데이터 + 양산 공급 이력 (연 매출 2~3천억 규모, 미확정)",
+   detail:"TSMC→삼성 파운드리 축 이동의 상징 사례. 차량용 설계 사업 전사 구축 중. 풀턴키라 테이프아웃 성공/실패 원인 데이터까지 축적."},
+  {n:"가온칩스", t:"dh", tn:"디자인하우스", w:1, prod:"삼성 파운드리 기반 시스템반도체 디자인 솔루션",
+   asset:"삼성 SAFE-DSP + Arm 파트너 — 삼성 공정 프로젝트 메타데이터",
+   detail:"코스닥 상장(399720). 일본 등 해외 고객 확대 중(미확정). 디자인하우스 유형은 전체가 <b>wedge 1순위 그룹</b>."},
+  {n:"칩스앤미디어", t:"ip", tn:"IP 벤더", w:2, prod:"비디오 코덱 IP (인코더/디코더), AI 비디오 IP",
+   asset:"IP별 검증 스위트 + 글로벌 실리콘 프루븐 피드백 (고객 수 매우 많음)",
+   detail:"국내 IP 벤더 중 글로벌 인지도 최상위. 라이선스+로열티 모델이라 <b>데이터 라이선스로 확장하기 가장 쉬운 구조</b>."},
+  {n:"퀄리타스반도체", t:"ip", tn:"IP 벤더", w:2, prod:"초고속 인터페이스 PHY IP (PCIe 4~6, UCIe, MIPI)",
+   asset:"노드별 IP PPA + ISO 26262 ASIL-D 프로세스 인증 이력",
+   detail:"삼성 SAFE IP 파트너. 비상장이라 의사결정 빠름 — <b>2순위 실행 타겟(퀄리타스 또는 오픈엣지)</b>. 블록 단위라 권리 분리가 가장 쉽다."},
+  {n:"오픈엣지테크놀로지", t:"ip", tn:"IP 벤더", w:2, prod:"NPU IP(ENLIGHT 등) + 메모리 서브시스템 IP",
+   asset:"IP 검증 이력 중심 (칩을 직접 안 만들고 IP 라이선스)",
+   detail:"국내 유일 NPU IP 상장사(394280). 삼성 SAFE + TSMC 양쪽 고객. AI 반도체로 분류되지만 실제는 IP 벤더 — 권리 구조가 이미 존재."},
+  {n:"리벨리온", t:"fa", tn:"팹리스 AI", w:3, prod:"데이터센터 추론 칩 (ATOM, 차세대 REBEL 칩렛)",
+   asset:"아키텍처 탐색 로그 + 워크로드-PPA (깊지만 좁음, 핵심 영업비밀)",
+   detail:"사피온 합병, 기업가치 3.4조. 삼성 파운드리 생산. 3순위 — 공동연구/국책 채널로 접근. 원시 RTL 공유 가능성 낮고 '실패한 설계 실험 로그'가 협상 여지."},
+  {n:"퓨리오사AI", t:"fa", tn:"팹리스 AI", w:3, prod:"데이터센터 추론 가속기 RNGD + 자체 SW 스택",
+   asset:"컴파일러-하드웨어 코디자인 이력 (아키텍처 결정→SW 성능 추적 가능)",
+   detail:"메타 인수 제안 거절, 독립 노선. LG AI리서치 공급. 자체 스택은 환경 관점에서 고가치 — 3순위(공동연구)."},
+  {n:"딥엑스", t:"fa", tn:"팹리스 AI", w:3, prod:"온디바이스 AI NPU (DX-M1, 초저전력 추론)",
+   asset:"엣지 워크로드-PPA + 8개국 48건 PO의 필드 피드백(미확정)",
+   detail:"<b>3순위 실행 타겟:</b> NPU 개발자 생태계 사업을 이미 운영 — 교육/환경 제공 명분이 맞음. 국책·공동연구 채널로 진입."},
+  {n:"모빌린트", t:"fa", tn:"팹리스 AI", w:3, prod:"고성능 엣지 AI NPU (에리스, 차세대 레귤러스)",
+   asset:"고성능-저전력 트레이드오프 설계 데이터 (삼성 14nm 검증 완료)",
+   detail:"2019년 설립, 시리즈B 200억. 고객 미공개 — 데이터 접근은 공동연구 명분 필요."},
+  {n:"보스반도체", t:"fa", tn:"팹리스 AI", w:3, prod:"모빌리티용 고성능 AI SoC (이글-N)",
+   asset:"차량용이라 ISO 26262 기능안전 프로세스 데이터 축적 예상",
+   detail:"삼성 시스템LSI·파운드리 출신 창업, 시리즈A 870억(역대급). <b>3순위 실행 타겟(딥엑스/보스)</b> — 규제 환경 설계라는 별도 환경 차원."},
+  {n:"망고부스트", t:"fa", tn:"팹리스 AI", w:3, prod:"DPU — 데이터센터 네트워킹/스토리지/보안 오프로드",
+   asset:"인프라 워크로드 가속 데이터 (GPU 비경쟁 영역)",
+   detail:"서울대 김장우 교수 창업(미확정). 풀스택 SW 포함. 독립 검증 부족(미확정) — 접근은 공동연구 채널."},
+  {n:"팜네시아", t:"fa", tn:"팹리스 AI", w:3, prod:"CXL 인터커넥트 IP + CXL SoC (세계 최초 CXL 3.0 풀시스템)",
+   asset:"CXL 표준 논의 참여 + IP와 칩 양방향 데이터",
+   detail:"KAIST 스핀오프, 시리즈A 800억+. IP+칩 양방향이라 IP 벤더 딜 구조도 가능."},
+  {n:"텔레칩스", t:"mid", tn:"중견 팹리스", w:4, prod:"차량용 AP (IVI/클스터/자율주행)",
+   asset:"성숙 노드 다품종 + 차량 인증 프로세스 데이터",
+   detail:"1999년 설립 중견, 현대·기아 공급(미확정). 삼성 파운드리 핵심 협력사. <b>병행 트랙</b> — 설계 자동화·기능안전 문서화 AI 도구가 교환 카드."},
+  {n:"실리콘마이터스", t:"mid", tn:"중견 팹리스", w:4, prod:"PMIC (모바일/OLED/오디오 전력관리)",
+   asset:"아날로그/전력 도메인 — 디지털과는 다른 데이터 특성(공정 민감도)",
+   detail:"매출 2,000억대 비상장. 아날로그는 별도 환경 축(SPICE 계층) — 병행 검토."},
+  {n:"넥스트칩", t:"mid", tn:"중견 팹리스", w:4, prod:"차량용 칼ERA ISP + AHD 솔루션",
+   asset:"차량 프로세스 데이터 (ISP 매출 476억 전망, 자사)",
+   detail:"코스닥 상장(396270). 국내 차량 부품사/OEM 고객. 병행 트랙."}
+];
+const WEDGE_TXT = {1:"WEDGE 1순위 — 데이터 허브 · 즉시 POC", 2:"WEDGE 2순위 — 권리 분리 가장 쉬움", 3:"WEDGE 3순위 — 공동연구 채널", 4:"WEDGE 병행 — 성숙 노드 · 인증 데이터"};
+const coGrid = $("#coGrid");
+COS.forEach(c=>{
+  const d = document.createElement("div");
+  d.className = "co-card"; d.dataset.t = c.t;
+  d.innerHTML = '<div class="nm">'+c.n+' <span class="type '+c.t+'">'+c.tn+'</span></div>' +
+    '<div class="prod">'+c.prod+'</div>' +
+    '<div class="asset"><b>데이터 자산:</b> '+c.asset+'</div>' +
+    '<div class="wedge w'+c.w+'">'+WEDGE_TXT[c.w]+'</div>' +
+    '<div class="co-detail">'+c.detail+'</div>';
+  d.addEventListener("click", ()=>d.classList.toggle("open"));
+  coGrid.appendChild(d);
+});
+$$("#coFilters .fchip").forEach(ch=>{
+  ch.addEventListener("click", ()=>{
+    $$("#coFilters .fchip").forEach(x=>x.classList.remove("active"));
+    ch.classList.add("active");
+    const f = ch.dataset.f;
+    $$(".co-card", coGrid).forEach(c=>c.classList.toggle("hidden", f!=="all" && c.dataset.t!==f));
+  });
+});
+
+/* ================= SECTION 7 : conclusion ================= */
+const TEN = [
+  "AI가 칩을 잘 설계하는 데 필요한 것은 더 큰 시뮬레이터도 더 많은 파일도 아니라, <b>보상 1회 비용이 초~분 단위인 실행 가능한 충실도 사다리</b> 위의 환경이다.",
+  "시뮬레이터는 선택이 아니라 정의다 — 정적 데이터셋에는 상태전이가 없고, 환경 = <b>오픈소스 EDA 툴체인 + 과제 정의 + 채점기</b>다.",
+  "비용-충실도 곡선 위의 최소 집합은 <b>Icarus/Verilator + Yosys + OpenROAD + Timeloop</b> 4개다. 전부 오픈소스고 사다리 전 구간을 커버한다.",
+  "싼 툴이 에피소드를 만들고, 비싼 툴이 싼 순위가 현실을 예측하는지 검증한다 — <b>한 계층의 결과를 다음 계층의 입장에서 다시 채점</b>하는 것이 사다리의 뼈대다.",
+  "공개 테스트는 속는다(gamer 통과 실증). 히든 행동 게이트는 조합(828/1024 격리)과 순차(오버랩 시점 격리) 모두에서 작동했다 — <b>계약은 블록 패밀리를 넘어 전이된다</b>.",
+  "'히든 테스트 있음'과 '히든 테스트가 강함'은 다르다. 채점기에는 <b>돌연변이 감사 성적표(mutation score)</b>가 붙어야 하고, 우리 채점기는 7/7 kill = 1.0을 받았다.",
+  "모든 싼 측정은 거짓말을 한다: 제네릭 프록시는 ALU 격차를 <b>7.7배 과장</b>하고, 동등 설계 쌍에서 <b>2.13배 노이즈 플로어</b>가 있으며, 지연 순위를 <b>반전</b>시킨다(합성 단계 실측).",
+  "따라서 게이트 순서가 곧 계약이다: 컴파일 → 공개 → 히든 행동 → 돌연변이 감사 → 품질 프록시(노이즈 플로어 명시) → 충실도 상승 → prospective 상관. <b>하나라도 건드리지 않은 순위는 신뢰 등급을 깎는다</b>.",
+  "공개 데이터의 공백(spec, 검증, 테이프아웃, 실리콘 상관)이 곧 시장이고, 한국에서는 <b>데이터 허브 성격의 디자인하우스(세미파이브/에이직랜드) 2개사 POC</b>가 최우선 wedge다.",
+  "권리가 제약의 전부다: 파운드리 PDK는 재배포 불가(→ PDK-free 추상화 + 파트너 측 enclave 실행), 고객 IP는 팹리스 소유(→ 메타데이터 분리 제공 계약) — <b>권리 12필드를 계약서 표로 번역하는 것이 첫 미팅 전 산출물</b>이다."
+];
+$("#tenBox").innerHTML = TEN.map(t=>'<div class="sent">'+t+'</div>').join("");
+
+const TL = [
+  {d:"DAYS 0–14", t:"과제 스펙 구매 (데이터 구매 아님)",
+   b:"채점기 mutation audit과 노이즈 플로어 요구를 스펙 양식에 포함. <b>게이트:</b> 구매자 작성 스펙 3건 또는 유료 디자인 파일럿 1건."},
+  {d:"DAYS 15–30", t:"공개 골격 완성",
+   b:"RTL repair 5블록 확장, formal/mutation 보호 표준화(v2 템플릿), ORFS 소형 디자인 2개 final-route 채점(v2-3의 NOT YET 해소), 2명 운영자 재현 + revocation 드릴."},
+  {d:"DAYS 31–60", t:"파트너 측 shadow 에피소드 20건",
+   b:"enclave 실행, 허가된 필드만 export (episode ID, 타입화된 행동, 스칼라 채점, 실행시간, 영수증)."},
+  {d:"DAYS 61–90", t:"순위 상관 테스트",
+   b:"인간/규칙/랜덤·BO/범용모델/에이전트를 동일 툴-시간 예산으로. <b>중단 조건:</b> 8주 안에 권리 유효 20-에피소드 경로·보호된 prospective 채점기·구매자 가격이 없으면 세그먼트 중단."}
+];
+const tlBox = $("#tlBox");
+TL.forEach((t,i)=>{
+  const d = document.createElement("div");
+  d.className = "tl-item" + (i===0 ? " active" : "");
+  d.innerHTML = '<div class="d">'+t.d+'</div><div class="t">'+t.t+'</div><div class="b">'+t.b+'</div>';
+  d.addEventListener("click", ()=>{ $$(".tl-item", tlBox).forEach(x=>x.classList.remove("active")); d.classList.add("active"); });
+  tlBox.appendChild(d);
+});
+
+const RISKS = [
+  {t:"권리 단편화", b:"중소기업 데이터도 고객·파운드리·EDA 벤더·IP 벤더·수출통제의 공동 소유일 수 있다 (선행 패킷의 최강 반론, 유지)."},
+  {t:"에피소드 희소성", b:"테이프아웃 1회를 파라미터 스윕으로 쪼갠 것은 독립 결정이 아니다. 20 에피소드 경로가 실제로 존재하는지가 게이트."},
+  {t:"기존 EDA AI와의 차별화", b:"DSO.ai/Cerebrus가 이미 상용. 인간 레시피·랜덤·BO를 동일 예산으로 못 이기는 LLM/RL 레이어는 부가가치가 없다."},
+  {t:"우리 실험의 스케일 한계", b:"4비트 ALU와 4상태 FSM의 프록시 왜곡이 수백만 게이트에서도 같은 부호로 나타날지는 미검증. 스케일이 커지면 왜곡은 보통 커지지만, 이건 가설이지 관측이 아니다."},
+  {t:"한국 접근성 가정", b:"'한국 회사라서 데이터 접근이 쉽다'는 검증되지 않은 지역성 가정일 수 있다 (선행 패킷의 중심 반론, 유지)."}
+];
+$("#riskBox").innerHTML = RISKS.map(r=>'<div class="risk"><b>'+r.t+'</b>'+r.b+'</div>').join("");
+
+/* ================= reveal on scroll ================= */
+const io = new IntersectionObserver(es=>{
+  es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("vis"); io.unobserve(e.target); } });
+},{threshold:.08});
+$$(".reveal").forEach(el=>io.observe(el));
+/* fallback: IO never fires (headless capture, exotic WebViews, print) -> reveal all */
+setTimeout(()=>{
+  if(!document.querySelector(".reveal.vis")) $$(".reveal").forEach(el=>el.classList.add("vis"));
+},1500);
+</script>
+</body>
+</html>

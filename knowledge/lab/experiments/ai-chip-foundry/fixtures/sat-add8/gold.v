@@ -1,0 +1,8 @@
+module sat_add8(
+  input  wire [7:0] a,
+  input  wire [7:0] b,
+  output wire [7:0] y
+);
+  wire [8:0] sum = {1'b0, a} + {1'b0, b};
+  assign y = sum[8] ? 8'hff : sum[7:0];
+endmodule

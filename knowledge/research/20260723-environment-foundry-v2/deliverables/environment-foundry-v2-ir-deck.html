@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>Environment Foundry V2 — IR Deck</title>
+<style>
+@page { size: 13.333in 7.5in; margin: 0; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #ddd; font-family: "Helvetica Neue", Arial, sans-serif; color: #000; }
+.slide { width: 1280px; height: 720px; padding: 40px; background: #fff; margin: 18px auto; position: relative; page-break-after: always; overflow: hidden; }
+h1 { font-size: 40px; margin: 0 0 34px; line-height: 1.12; }
+.hero { font-size: 66px; line-height: 1.08; max-width: 1120px; margin-top: 150px; }
+.eyebrow { color: #3d8dff; font-weight: 700; font-size: 16px; }
+.orange { color: #ff6233; }
+.sub { font-size: 21px; margin-left: 42px; }
+.evidence { display:flex; align-items:center; margin-bottom:34px; }
+.grid5 { display:grid; grid-template-columns:repeat(5,1fr); gap:24px; }
+.grid3 { display:grid; grid-template-columns:repeat(3,1fr); gap:36px; }
+.grid2 { display:grid; grid-template-columns:repeat(2,1fr); gap:36px; }
+.card { background:#ededed; padding:28px; min-height:260px; }
+.bluecard { background:#d0edfa; }
+.metric { font-size:58px; font-weight:700; margin:45px 0 28px; }
+.title { font-size:28px; font-weight:700; }
+.body { font-size:21px; line-height:1.4; }
+.small { font-size:17px; color:#555; }
+table { width:100%; border-collapse:collapse; font-size:16px; }
+th,td { border:1px solid #000; padding:12px; text-align:left; vertical-align:top; }
+.row { display:grid; grid-template-columns:70px 110px 190px 1fr; align-items:center; min-height:80px; }
+.rule { height:1px; background:#3d8dff; }
+.bar { height:28px; background:#3d8dff; margin:20px 0; }
+.timeline { position:absolute; left:60px; right:100px; top:500px; height:1px; background:#000; }
+.dot { width:18px; height:18px; border-radius:50%; background:#000; position:absolute; top:491px; }
+.footer { position:absolute; left:40px; bottom:28px; font-size:12px; color:#555; }
+.page { position:absolute; right:40px; bottom:28px; font-size:13px; }
+@media print { body { background:#fff; } .slide { margin:0; } }
+</style>
+</head>
+<body>
+<section class="slide">
+  <div class="eyebrow">ENVIRONMENT FOUNDRY V2</div>
+  <h1 class="hero">‘진짜 회사를 운영하는 AI’는<br>아직 하나의 점수가 아니다</h1>
+  <div class="body">실제 benchmark artifact 3종 · 9개 episode decode · Qwen 0.5B 실행 결과</div>
+  <div class="footer">Evidence-backed research · 2026-07-23</div>
+</section>
+<section class="slide">
+  <h1>하나의 점수 대신, 누적 capability ladder가 필요하다</h1>
+  <div class="evidence"><span class="eyebrow">EVIDENCE</span><span class="sub">검사한 최고 공개 artifact는 L3 surface와 L4 일부까지. L5 real outcome은 없음.</span></div>
+  <div class="grid5">
+    <div class="card"><div class="metric">1</div><div class="title">Tool call</div><p class="small">arguments · auth</p></div>
+    <div class="card"><div class="metric">2</div><div class="title">Bounded workflow</div><p class="small">multi-step · final state</p></div>
+    <div class="card"><div class="metric">3</div><div class="title">Cross-functional</div><p class="small">multi-app · coordination</p></div>
+    <div class="card"><div class="metric">4</div><div class="title">Judgment</div><p class="small">uncertainty · policy</p></div>
+    <div class="card bluecard"><div class="metric" style="color:#3d8dff">5</div><div class="title">Company outcome</div><p class="small">revenue · trust · harm</p></div>
+  </div><div class="page">02</div>
+</section>
+<section class="slide">
+  <h1>문헌이 아니라 파일을 열어 확인했다</h1>
+  <div class="evidence"><span class="eyebrow">EVIDENCE</span><span class="sub">세 artifact에서 실제 row/episode 3개씩을 보존 schema로 변환했다.</span></div>
+  <div class="grid3" style="margin-top:150px">
+    <div class="card"><div class="metric">175</div><div class="body">TheAgentCompany<br>task directories</div></div>
+    <div class="card"><div class="metric">4,280</div><div class="body">CRMArenaPro<br>unique queries</div></div>
+    <div class="card bluecard"><div class="metric" style="color:#3d8dff">9 / 9</div><div class="body">decoded episodes<br>schema-valid</div></div>
+  </div><div class="page">03</div>
+</section>
+<section class="slide">
+  <h1>세 후보는 서로 다른 것을 측정한다</h1>
+  <div class="evidence"><span class="eyebrow">EVIDENCE</span><span class="sub">점수는 setting이 달라 직접 서열화하지 않는다.</span></div>
+  <table><tr><th>Artifact</th><th>Actual schema</th><th>State / action</th><th>Reset</th><th>License</th><th>Cannot prove</th></tr>
+  <tr><td>CRMArenaPro</td><td>JSON task row</td><td>Salesforce query / respond</td><td>logical only</td><td>CC BY-NC 4.0</td><td>mutable workflow; delayed outcome</td></tr>
+  <tr><td>TheAgentCompany</td><td>task dir + evaluator</td><td>5 apps + shell/browser</td><td>task image init</td><td>MIT code</td><td>real firm history; economic outcome</td></tr>
+  <tr><td>Gaia2</td><td>Parquet → JSON scenario</td><td>apps + scheduled events</td><td>scenario re-import</td><td>CC BY 4.0 / MIT</td><td>prospective company outcome</td></tr></table>
+  <div class="footer">Official repos, dataset cards, papers and dated leaderboards</div><div class="page">04</div>
+</section>
+<section class="slide">
+  <h1>‘episode’는 prompt 한 줄이 아니라 계약이다</h1>
+  <div class="evidence"><span class="eyebrow">EVIDENCE</span><span class="sub">원본 payload는 보존하고, 비교 가능한 최소 필드만 정규화한다.</span></div>
+  <div class="row"><b class="eyebrow">01</b><div class="rule"></div><b class="title">Task</b><span class="body">objective · policy · provenance</span></div>
+  <div class="row"><b class="eyebrow">02</b><div class="rule"></div><b class="title">State</b><span class="body">initial observation · hidden state refs</span></div>
+  <div class="row"><b class="eyebrow">03</b><div class="rule"></div><b class="title">Action</b><span class="body">typed space · authority boundary</span></div>
+  <div class="row"><b class="eyebrow">04</b><div class="rule"></div><b class="title">Reward</b><span class="body">grader · terminal condition</span></div>
+  <div class="row"><b class="eyebrow">05</b><div class="rule"></div><b class="title">Replay</b><span class="body">reset semantics · source revision</span></div>
+  <div class="footer">normalized-episode-v2.schema.json</div><div class="page">05</div>
+</section>
+<section class="slide">
+  <h1>Qwen SFT는 형식을 고쳤지만 판단은 못 고쳤다</h1>
+  <div class="evidence"><span class="eyebrow">EVIDENCE</span><span class="sub">12-step LoRA · 5.40 s · 1.281 GiB peak · $0</span></div>
+  <div class="grid2">
+    <div><div class="small">Base</div><div class="bar" style="width:1px"></div><div class="eyebrow">Post-SFT</div><div class="bar"></div><div class="body">Parse validity 0% → 100%</div>
+    <div class="bar" style="margin-top:55px"></div><div class="body">No hard failure 0% → 100%</div><hr><div class="orange title">Exact decision 0% → 0%</div></div>
+    <div><div class="card bluecard" style="min-height:120px"><div class="metric" style="margin:0;color:#3d8dff">0% → 100%</div><div class="body">parse validity</div></div>
+    <div class="card" style="min-height:175px;margin-top:30px"><div class="metric orange" style="margin:0">0% → 0%</div><div class="body">held-out exact decision</div><p><b>해석: format recovery only</b></p></div></div>
+  </div><div class="footer">Local MLX receipt; frozen test n=10; no paid compute</div><div class="page">06</div>
+</section>
+<section class="slide">
+  <h1>점수를 올리는 데이터는 여섯 가지 역할로 분리된다</h1>
+  <div class="grid3">
+    <div><h2>SFT trace</h2><p>input → demonstrated action</p><p class="small">limit → coverage ceiling</p></div>
+    <div><h2>Preference</h2><p>input → ranked rollouts</p><p class="small">limit → causal ambiguity</p></div>
+    <div><h2>Verifier</h2><p>input → score / reward</p><p class="small">limit → proxy hacking</p></div>
+    <div><h2>Outcome</h2><p>input → delayed consequence</p><p class="small">limit → confounding</p></div>
+    <div><h2>Rollout</h2><p>input → state transitions</p><p class="small">limit → cost / mismatch</p></div>
+    <div><h2 style="color:#3d8dff">RLVR</h2><p>input → verified reward update</p><p class="small">limit → variance / exploit</p></div>
+  </div><p style="margin-top:55px"><b class="orange">NOT YET</b>　 RLVR는 grader 신뢰성과 reward variance가 생긴 뒤에만.</p><div class="page">07</div>
+</section>
+<section class="slide">
+  <h1>사업은 ‘benchmark 공급자’와 ‘새 category’로 갈린다</h1>
+  <div class="evidence"><span class="eyebrow orange">HYPOTHESIS</span><span class="sub">두 경로를 동시에 넓히지 말고, 30일 증거로 선택한다.</span></div>
+  <div class="grid2">
+    <div><div class="card"><h2>A. 기존 점수 개선</h2><p class="body">adapter · rollout · verifier</p></div><h2>빠른 demo / 약한 moat</h2><p class="small">Kill: 고객이 public score만 원하고 지불하지 않음</p></div>
+    <div><div class="card bluecard"><h2 style="color:#3d8dff">B. company-operation category</h2><p class="body">rights · replay · outcome</p></div><h2>강한 wedge / 높은 validity cost</h2><p class="small">Kill: retrieval baseline tie 또는 outcome closure 실패</p></div>
+  </div><div class="page">08</div>
+</section>
+<section class="slide">
+  <h1>30일 안에 thesis가 아니라 prospective ranking을 검증한다</h1>
+  <div class="evidence"><span class="eyebrow orange">KILL GATE</span><span class="sub">simple baseline tie · unstable ranking · no outcome · no held-out transfer</span></div>
+  <div class="grid5" style="grid-template-columns:repeat(4,1fr);margin-top:60px">
+    <div><h2>Freeze</h2><p>task · rights · cutoff</p></div><div><h2>Capture</h2><p>≥20 shadow episodes</p></div><div><h2>Compare</h2><p>human / generic / RAG / env</p></div><div><h2>Close</h2><p>delayed outcome · transfer</p></div>
+  </div><div class="timeline"></div><span class="dot" style="left:60px"></span><span class="dot" style="left:345px"></span><span class="dot" style="left:630px"></span><span class="dot" style="left:915px;background:#3d8dff"></span>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:30px;margin-top:230px;font-size:24px;font-weight:700"><div>D1–5</div><div>D6–15</div><div>D16–23</div><div style="color:#3d8dff">D24–30</div></div><div class="page">09</div>
+</section>
+<section class="slide">
+  <div class="eyebrow">DECISION</div>
+  <h1 class="hero">새 benchmark를 선언하지 말고,<br>한 decision environment를 반증하자</h1>
+  <div class="body">승인 요청: rights-valid shadow capture 설계 · paid compute는 별도 승인</div>
+  <div class="footer orange"><b>NOT YET: buyer demand · live validity · prospective lift · transfer</b></div>
+</section>
+</body></html>

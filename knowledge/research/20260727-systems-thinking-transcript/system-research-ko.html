@@ -1,0 +1,704 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>시스템 사고 트랜스크립트 연구</title>
+  <style>
+    :root {
+      --ink: #17231d;
+      --muted: #667269;
+      --paper: #f5f2e9;
+      --surface: #fffdf7;
+      --line: #d8d6cc;
+      --green: #165c45;
+      --green-soft: #dcebe3;
+      --amber: #9b5b16;
+      --amber-soft: #f8e8cc;
+      --red: #973f3f;
+      --red-soft: #f5dddd;
+      --blue: #315f83;
+      --blue-soft: #dfeaf2;
+      --shadow: 0 18px 50px rgba(36, 48, 41, .08);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 8% 5%, rgba(22, 92, 69, .08), transparent 26rem),
+        var(--paper);
+      color: var(--ink);
+      font-family: Pretendard, "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
+      line-height: 1.75;
+      word-break: keep-all;
+    }
+
+    a { color: var(--green); text-underline-offset: 3px; }
+    a:hover { color: #0c3f2e; }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 260px minmax(0, 920px);
+      gap: 42px;
+      width: min(1240px, calc(100% - 48px));
+      margin: 0 auto;
+      padding: 34px 0 88px;
+    }
+
+    aside {
+      position: sticky;
+      top: 24px;
+      align-self: start;
+      max-height: calc(100vh - 48px);
+      overflow: auto;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255, 253, 247, .84);
+      backdrop-filter: blur(14px);
+    }
+
+    .eyebrow {
+      color: var(--green);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    aside h2 {
+      margin: 7px 0 18px;
+      font-size: 18px;
+      line-height: 1.35;
+    }
+
+    nav a {
+      display: block;
+      padding: 7px 10px;
+      border-radius: 9px;
+      color: var(--muted);
+      font-size: 14px;
+      text-decoration: none;
+    }
+
+    nav a:hover {
+      background: var(--green-soft);
+      color: var(--green);
+    }
+
+    .meta {
+      margin-top: 20px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    main { min-width: 0; }
+
+    header {
+      position: relative;
+      overflow: hidden;
+      padding: 54px;
+      border-radius: 28px;
+      background: var(--ink);
+      color: #fff;
+      box-shadow: var(--shadow);
+    }
+
+    header::after {
+      content: "";
+      position: absolute;
+      right: -80px;
+      bottom: -120px;
+      width: 330px;
+      height: 330px;
+      border: 62px solid rgba(126, 208, 166, .13);
+      border-radius: 50%;
+    }
+
+    header .eyebrow { color: #91d5b6; }
+
+    h1 {
+      position: relative;
+      z-index: 1;
+      max-width: 760px;
+      margin: 10px 0 18px;
+      font-size: clamp(38px, 6vw, 68px);
+      line-height: 1.08;
+      letter-spacing: -.045em;
+    }
+
+    .lead {
+      position: relative;
+      z-index: 1;
+      max-width: 700px;
+      margin: 0;
+      color: #d9e4dd;
+      font-size: 18px;
+    }
+
+    .badges {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 30px;
+    }
+
+    .badge {
+      padding: 6px 11px;
+      border: 1px solid rgba(255, 255, 255, .18);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .08);
+      color: #eaf4ee;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    section {
+      margin-top: 28px;
+      padding: 34px 38px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: 0 8px 30px rgba(36, 48, 41, .035);
+    }
+
+    h2 {
+      margin: 0 0 16px;
+      font-size: 28px;
+      line-height: 1.3;
+      letter-spacing: -.025em;
+    }
+
+    h3 {
+      margin: 28px 0 10px;
+      font-size: 19px;
+      line-height: 1.4;
+    }
+
+    p { margin: 10px 0; }
+    ul, ol { padding-left: 22px; }
+    li + li { margin-top: 7px; }
+
+    .summary-grid,
+    .loop-grid,
+    .claim-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .summary-grid { grid-template-columns: repeat(3, 1fr); }
+    .loop-grid { grid-template-columns: repeat(3, 1fr); }
+    .claim-grid { grid-template-columns: repeat(2, 1fr); }
+
+    .card {
+      padding: 20px;
+      border-radius: 14px;
+      background: #f8f7f1;
+      border: 1px solid #e3e1d8;
+    }
+
+    .card strong {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--green);
+      font-size: 16px;
+    }
+
+    .card p {
+      margin: 0;
+      color: #4e5b53;
+      font-size: 14px;
+    }
+
+    .callout {
+      margin: 20px 0;
+      padding: 20px 22px;
+      border-left: 4px solid var(--green);
+      border-radius: 0 12px 12px 0;
+      background: var(--green-soft);
+    }
+
+    .callout.warning {
+      border-color: var(--amber);
+      background: var(--amber-soft);
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: 1fr 38px 1fr;
+      align-items: center;
+      gap: 12px;
+      margin: 22px 0 4px;
+    }
+
+    .flow-box {
+      min-height: 170px;
+      padding: 22px;
+      border-radius: 15px;
+      background: var(--blue-soft);
+      border: 1px solid #c8dce8;
+    }
+
+    .flow-box:last-child {
+      background: var(--green-soft);
+      border-color: #c5dfd1;
+    }
+
+    .flow-box h3 { margin: 0 0 10px; color: var(--blue); }
+    .flow-box:last-child h3 { color: var(--green); }
+
+    .arrow {
+      color: var(--green);
+      font-size: 30px;
+      font-weight: 800;
+      text-align: center;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      margin: 18px -6px 4px;
+      padding: 0 6px 8px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      font-size: 14px;
+    }
+
+    th, td {
+      padding: 13px 14px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+    }
+
+    th {
+      background: #edf2ed;
+      color: #284238;
+      font-size: 13px;
+    }
+
+    tr:last-child td { border-bottom: 0; }
+    tbody tr:nth-child(even) td { background: #fbfaf5; }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      min-height: 25px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .03em;
+    }
+
+    .status.hypothesis { color: var(--blue); background: var(--blue-soft); }
+    .status.vision { color: var(--amber); background: var(--amber-soft); }
+    .status.notyet { color: var(--red); background: var(--red-soft); }
+    .status.merge { color: var(--green); background: var(--green-soft); }
+
+    .loop {
+      position: relative;
+      overflow: hidden;
+      min-height: 250px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #f9f8f3;
+    }
+
+    .loop .mark {
+      display: inline-grid;
+      place-items: center;
+      width: 37px;
+      height: 37px;
+      border-radius: 50%;
+      background: var(--green);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .loop h3 { margin: 12px 0 10px; }
+
+    .loop ol {
+      margin: 0;
+      padding-left: 19px;
+      color: #4d5952;
+      font-size: 14px;
+    }
+
+    .loop-note {
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 38px 1fr;
+      gap: 13px;
+      align-items: start;
+      padding: 12px 0;
+      border-bottom: 1px solid #e4e2d9;
+    }
+
+    .step:last-child { border-bottom: 0; }
+
+    .step-num {
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: var(--ink);
+      color: #fff;
+      font-weight: 800;
+    }
+
+    .step p { margin: 2px 0; }
+
+    .source-list {
+      columns: 2;
+      column-gap: 34px;
+      padding-left: 20px;
+      font-size: 13px;
+    }
+
+    .source-list li {
+      break-inside: avoid;
+      margin-bottom: 8px;
+    }
+
+    footer {
+      padding: 28px 4px 0;
+      color: var(--muted);
+      font-size: 12px;
+      text-align: center;
+    }
+
+    @media (max-width: 980px) {
+      .layout { grid-template-columns: 1fr; }
+      aside { position: static; max-height: none; }
+      nav { display: grid; grid-template-columns: repeat(2, 1fr); }
+      .summary-grid, .loop-grid { grid-template-columns: 1fr; }
+      .claim-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 640px) {
+      .layout {
+        width: min(100% - 24px, 920px);
+        padding-top: 12px;
+        gap: 18px;
+      }
+      aside { display: none; }
+      header { padding: 34px 24px; border-radius: 20px; }
+      section { padding: 26px 20px; }
+      .flow { grid-template-columns: 1fr; }
+      .arrow { transform: rotate(90deg); }
+      .source-list { columns: 1; }
+      h1 { font-size: 42px; }
+    }
+
+    @media print {
+      body { background: #fff; }
+      .layout { display: block; width: 100%; padding: 0; }
+      aside { display: none; }
+      header, section { box-shadow: none; break-inside: avoid; }
+      section { margin-top: 16px; }
+      a { color: inherit; text-decoration: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside aria-label="문서 목차">
+      <div class="eyebrow">Environment Foundry</div>
+      <h2>시스템 사고 연구</h2>
+      <nav>
+        <a href="#answer">핵심 결론</a>
+        <a href="#translation">Foundry 번역</a>
+        <a href="#claims">주장 검토</a>
+        <a href="#factcheck">이론 팩트체크</a>
+        <a href="#loops">후보 피드백 루프</a>
+        <a href="#canonical">정본과의 관계</a>
+        <a href="#next">다음 검증</a>
+        <a href="#sources">출처</a>
+      </nav>
+      <div class="meta">
+        2026-07-27<br>
+        비정본 발산 연구<br>
+        비공개 원문은 Git 외부 유지
+      </div>
+    </aside>
+
+    <main>
+      <header>
+        <div class="eyebrow">Transcript Research · Korean Edition</div>
+        <h1>시스템을 말하는 것과<br>환경을 만드는 것은 다르다</h1>
+        <p class="lead">
+          109분의 대화를 시스템 이론과 Environment Foundry의 실행 계약에
+          대조해, 유지할 통찰과 교정할 개념, 다음 반증 실험을 분리했다.
+        </p>
+        <div class="badges">
+          <span class="badge">시스템 다이내믹스</span>
+          <span class="badge">AI 에이전트</span>
+          <span class="badge">Rights-valid environment</span>
+          <span class="badge">EF-02 연구 입력</span>
+        </div>
+      </header>
+
+      <section id="answer">
+        <div class="eyebrow">Executive answer</div>
+        <h2>핵심 결론</h2>
+        <div class="summary-grid">
+          <article class="card">
+            <strong>유지할 통찰</strong>
+            <p>목적·경계·상태·흐름·피드백·지연을 설계하고 AI를 운영 루프의 한 구성요소로 둔다.</p>
+          </article>
+          <article class="card">
+            <strong>지켜야 할 경계</strong>
+            <p>이 대화는 시스템이 이미 존재한다는 증거도, 유효한 환경이 완성됐다는 증거도 아니다.</p>
+          </article>
+          <article class="card">
+            <strong>다음 행동</strong>
+            <p>회사 전체가 아니라 EF-02에서 선택할 워크플로 하나를 측정 가능한 동적 모델로 만든다.</p>
+          </article>
+        </div>
+        <div class="callout">
+          <strong>핵심 구분</strong><br>
+          시스템 다이어그램은 설명 모델이다. Environment Foundry의 환경은
+          실행 가능하며 권리까지 유효한 태스크 계약이어야 한다.
+        </div>
+      </section>
+
+      <section id="translation">
+        <div class="eyebrow">Translation</div>
+        <h2>시스템 렌즈를 Foundry 계약으로 번역</h2>
+        <div class="flow" aria-label="시스템 렌즈에서 Foundry 태스크 계약으로의 번역">
+          <article class="flow-box">
+            <h3>시스템 렌즈</h3>
+            <p>목적과 경계</p>
+            <p>상태와 흐름</p>
+            <p>피드백과 지연</p>
+          </article>
+          <div class="arrow" aria-hidden="true">→</div>
+          <article class="flow-box">
+            <h3>Foundry 태스크 계약</h3>
+            <p>권한이 확인된 관찰과 타입 지정 행동</p>
+            <p>상태 전이·종료·채점기</p>
+            <p>초기화·재현·지연된 결과</p>
+          </article>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>시스템 개념</th><th>Environment Foundry 운영 정의</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>목적</td><td>동결된 태스크 목표와 합격 기준</td></tr>
+              <tr><td>경계</td><td>권한이 확인된 관찰 범위와 명시적 제외 범위</td></tr>
+              <tr><td>요소</td><td>에이전트, 모델, 하네스, 도구, 상태, 인간 승인자, 채점기</td></tr>
+              <tr><td>상호연결</td><td>타입이 지정된 행동과 재현 가능한 상태 전이 규칙</td></tr>
+              <tr><td>스톡·상태</td><td>권리 유효 에피소드, 미확정 결과, 검토 대기열, 유효 어댑터</td></tr>
+              <tr><td>흐름</td><td>에피소드 유입·삭제, 결과 확정, 검토 승인·거절, 어댑터 완료</td></tr>
+              <tr><td>피드백</td><td>채점 결과, 인간 교정, 미래 실제 결과, 회귀 테스트</td></tr>
+              <tr><td>지연</td><td>행동→결과, 검토, 철회·삭제에 걸리는 시간</td></tr>
+              <tr><td>제약</td><td>권리, 검토 역량, 예산, 안전 한도, 결과 관찰 가능성</td></tr>
+              <tr><td>초기화·복구</td><td>재현 가능한 초기 상태, 재현 규칙, 롤백 또는 인간 인계</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="claims">
+        <div class="eyebrow">Transcript ledger</div>
+        <h2>대화에서 무엇을 취하고 무엇을 보류할까</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>시간</th><th>요약한 주장</th><th>판단</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>02:50–03:31</td><td>시스템은 닫힌 것이다.</td><td>분석 경계는 필요하지만 실제 시스템은 열려 있을 수 있다.</td></tr>
+              <tr><td>05:31–08:19</td><td>요소는 연결과 목적을 통해 시스템이 된다.</td><td>방향은 타당하지만 환경 계약을 충족하지는 않는다.</td></tr>
+              <tr><td>09:02–18:42</td><td>스톡·흐름·피드백으로 회사를 모델링할 수 있다.</td><td>타당하되 스톡과 일반 지표를 구분해야 한다.</td></tr>
+              <tr><td>18:45–24:37</td><td>한계와 지연을 무시하면 성장이 실패로 바뀐다.</td><td>조건부 패턴이다. 붕괴가 기본값은 아니다.</td></tr>
+              <tr><td>25:33–28:30</td><td>목적 없이 에이전트만 늘리는 것은 공허하다.</td><td>유용한 설계 원칙이다.</td></tr>
+              <tr><td>54:38–1:05:09</td><td>AI 배포에는 평가·위험 배분·보험 검증이 필요하다.</td><td>평가는 정본과 일치한다. 보험 검증은 전략 가설이다.</td></tr>
+              <tr><td>1:17:50–1:21:05</td><td>AI는 사업 결과를 위한 운영 구성요소다.</td><td>효용 게이트와 일치하지만 시장 증거는 아니다.</td></tr>
+              <tr><td>1:21:20–1:22:39</td><td>2–3년 내 AI 운영 회사가 등장한다.</td><td><span class="status vision">VISION</span></td></tr>
+              <tr><td>1:30:30–1:46:09</td><td>AI 요구사항 파악·온보딩이 서비스가 된다.</td><td><span class="status hypothesis">후보 가설</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="factcheck">
+        <div class="eyebrow">Theory fact-check</div>
+        <h2>반드시 바로잡아야 할 개념</h2>
+        <div class="claim-grid">
+          <article class="card">
+            <strong>“스톡은 지표다” → 아니다</strong>
+            <p>스톡은 특정 시점에 축적된 양이다. 지표는 흐름, 비율, 점수일 수도 있다.</p>
+          </article>
+          <article class="card">
+            <strong>“매출은 스톡이다” → 흐름이다</strong>
+            <p>기간 매출과 영업이익은 흐름이다. 현금 잔액, 고객 수, 인원은 경계에 따라 스톡이 될 수 있다.</p>
+          </article>
+          <article class="card">
+            <strong>“스톡+흐름=루프” → 조건이 부족하다</strong>
+            <p>상태 변화가 돌아와 자신의 유입이나 유출을 바꿀 때 피드백 루프가 닫힌다.</p>
+          </article>
+          <article class="card">
+            <strong>“강화=증가” → 방향의 증폭이다</strong>
+            <p>강화 루프는 성장뿐 아니라 하락도 가속한다. 균형 루프는 목표와의 차이를 줄인다.</p>
+          </article>
+          <article class="card">
+            <strong>“한계=붕괴” → 여러 경로가 있다</strong>
+            <p>구조와 지연에 따라 포화, S자 성장, 진동, 오버슈트, 붕괴가 달라진다.</p>
+          </article>
+          <article class="card">
+            <strong>“시스템=회복탄력적” → 조건부 속성이다</strong>
+            <p>목표로 복귀하는 성질은 회복탄력성보다 안정성 또는 목표 추구형 균형 피드백에 가깝다.</p>
+          </article>
+        </div>
+        <div class="callout warning">
+          <strong>역사적 교정</strong><br>
+          STT의 “네덜 교수”는 도넬라 메도스일 가능성이 높다. 다만 계보는
+          메도스 한 사람이나 1960–70년대에 시작하지 않는다. 1940년대
+          사이버네틱스, 1950년 개방계, 1950년대 시스템 다이내믹스를 함께
+          봐야 한다.
+        </div>
+      </section>
+
+      <section id="loops">
+        <div class="eyebrow">Candidate loops</div>
+        <h2>Foundry에서 측정할 후보 피드백 루프</h2>
+        <p>아래 구조는 관찰된 사실이 아니라, 앞으로 측정하고 반증할 가설이다.</p>
+        <div class="loop-grid">
+          <article class="loop">
+            <span class="mark">R1</span>
+            <h3>컴파일러 학습</h3>
+            <ol>
+              <li>유효한 환경 증가</li>
+              <li>재사용 계약·실패 사례 증가</li>
+              <li>다음 어댑터 비용 감소</li>
+              <li>실행 가능한 파일럿 증가</li>
+            </ol>
+            <div class="loop-note">두 번째 어댑터의 시간·비용 개선으로 검증</div>
+          </article>
+          <article class="loop">
+            <span class="mark">B1</span>
+            <h3>권리·검토 병목</h3>
+            <ol>
+              <li>이벤트 유입 가속</li>
+              <li>권리·검토 대기열 증가</li>
+              <li>검증 지연 증가</li>
+              <li>유효 처리량 감소</li>
+            </ol>
+            <div class="loop-note">원시 데이터 양이 성공 지표가 아닌 이유</div>
+          </article>
+          <article class="loop">
+            <span class="mark">B2</span>
+            <h3>채점기 무결성</h3>
+            <ol>
+              <li>채점기 최적화 증가</li>
+              <li>누출·악용 압력 증가</li>
+              <li>감사 실패 증가</li>
+              <li>테스트 강화</li>
+            </ol>
+            <div class="loop-note">grader 신뢰도와 악용 테스트를 별도 gate로 유지</div>
+          </article>
+        </div>
+      </section>
+
+      <section id="canonical">
+        <div class="eyebrow">Knowledge disposition</div>
+        <h2>정본에 넣을 것과 넣지 않을 것</h2>
+        <div class="claim-grid">
+          <article class="card">
+            <span class="status merge">기존 개념에 병합</span>
+            <h3>목적·경계·지연·평가</h3>
+            <p>Mission, environment boundary, delayed outcome, Proof Ladder에 이미 들어 있다. 새 정본 주장은 필요 없다.</p>
+          </article>
+          <article class="card">
+            <span class="status hypothesis">HYPOTHESIS</span>
+            <h3>후속 검증 후보</h3>
+            <p>컴파일러 동적 지표, AI 보조 FDE 요구사항 파악, 보험·감사 기반 외부 검증.</p>
+          </article>
+          <article class="card">
+            <span class="status notyet">NOT YET</span>
+            <h3>아직 입증되지 않음</h3>
+            <p>검증된 동적 모델, 미래 실제 결과 예측, 두 번째 어댑터 경제성.</p>
+          </article>
+          <article class="card">
+            <span class="status vision">VISION / REJECT</span>
+            <h3>활성 그래프에서 격리</h3>
+            <p>2–3년 내 AI 운영 회사 전망과 개인·건강·고객·제3자 관련 이야기는 증거로 사용하지 않는다.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="next">
+        <div class="eyebrow">Next falsifiable gate</div>
+        <h2>다음 검증은 하나의 워크플로에서 시작한다</h2>
+        <div class="step"><span class="step-num">1</span><p>하나의 태스크 계약과 권리 영수증을 동결한다.</p></div>
+        <div class="step"><span class="step-num">2</span><p>단위와 관찰 주기를 가진 상태 변수 3–7개를 선언한다.</p></div>
+        <div class="step"><span class="step-num">3</span><p>스톡, 흐름, 점수를 명확히 구분한다.</p></div>
+        <div class="step"><span class="step-num">4</span><p>후보 피드백 루프와 지연을 최대 3개까지만 정의한다.</p></div>
+        <div class="step"><span class="step-num">5</span><p>20개 shadow episode 전에 하나의 병목 행동을 사전 예측한다.</p></div>
+        <div class="step"><span class="step-num">6</span><p>관찰 trajectory 및 단순 workflow/rules 기준선과 비교한다.</p></div>
+        <div class="callout">
+          <strong>중단 규칙</strong><br>
+          변수를 측정할 수 없거나 인과 방향을 구분할 수 없거나, 태스크 계약과
+          결과 원장보다 추가 의사결정 가치를 주지 못하면 이 모델을 중단한다.
+        </div>
+      </section>
+
+      <section id="sources">
+        <div class="eyebrow">Sources</div>
+        <h2>1차·권위 출처</h2>
+        <ul class="source-list">
+          <li><a href="https://doi.org/10.1086/286788">Rosenblueth, Wiener, Bigelow (1943)</a></li>
+          <li><a href="https://doi.org/10.1093/bjps/I.2.134">Bertalanffy, General System Theory (1950)</a></li>
+          <li><a href="https://doi.org/10.1126/science.111.2872.23">Bertalanffy, Open Systems (1950)</a></li>
+          <li><a href="https://mitsloan.mit.edu/faculty/academic-groups/system-dynamics/about-us">MIT Sloan 시스템 다이내믹스 역사</a></li>
+          <li><a href="https://www.gc.soton.ac.uk/files/2015/01/Thinking-in-Systems-18-34.pdf">Meadows, 『Thinking in Systems』 발췌</a></li>
+          <li><a href="https://collections.dartmouth.edu/archive/text/meadows/diplomatic/meadows_ltg-diplomatic.html">Meadows 외, 『The Limits to Growth』</a></li>
+          <li><a href="https://systemdynamics.org/what-is-system-dynamics-old/">System Dynamics Society</a></li>
+          <li><a href="https://pure.iiasa.ac.at/26/1/RP-73-003.pdf">Holling, Resilience and Stability (1973)</a></li>
+          <li><a href="https://openai.com/business/guides-and-resources/a-practical-guide-to-building-ai-agents/">OpenAI, AI 에이전트 구축 가이드</a></li>
+          <li><a href="https://www.nist.gov/news-events/news/2025/08/lessons-learned-consortium-tool-use-agent-systems">NIST, 에이전트 시스템의 도구 사용</a></li>
+        </ul>
+        <div class="callout warning">
+          <strong>출처·개인정보 경계</strong><br>
+          Fireflies 원문, 오디오 URL, 화자 신원, 개인·건강·고객·제3자 정보는
+          이 문서에 포함하지 않았다. 불투명 트랜스크립트 ID와 내부 안전
+          추상화만 유지한다.
+        </div>
+      </section>
+
+      <footer>
+        Environment Foundry · EF-02 research input · 비정본
+      </footer>
+    </main>
+  </div>
+</body>
+</html>
