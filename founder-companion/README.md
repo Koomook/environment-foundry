@@ -35,6 +35,9 @@ later revealed whether a decision was wise.
    whenever adding, revising, removing, interpreting, or changing the binding
    level of any Constitution item. It requires one question, the founder's
    answer, a Companion rephrase, and explicit final confirmation.
+10. Use [`happiness-index/README.md`](happiness-index/README.md) for the
+    founder-private life-index experiment and its Command Center routing
+    boundary.
 
 ## Two planes
 

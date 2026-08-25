@@ -1,6 +1,6 @@
 # Environment Foundry
 
-> Working name. No trademark or domain claim has been made.
+> Working name: Environment Foundry. Codename: `frogstar`. No trademark or domain claim has been made.
 
 Environment Foundry turns authorized company operations into bounded environments in which AI can observe, act, and be evaluated. It is an independent company repository and a file-native Company OS for humans and coding agents.
 

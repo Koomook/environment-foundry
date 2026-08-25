@@ -1,0 +1,16 @@
+receipt_id: ai-chip-foundry-synthetic-v1
+source_type: synthetic
+owner: Environment Foundry
+access: allowed
+operations: allowed
+evaluation: allowed
+training: allowed
+derivative: allowed
+resale: not_granted
+export: allowed
+retention: allowed
+revocation: "delete this experiment package and derived local results"
+deletion: supported
+contains_private_payload: false
+contains_pdk: false
+contains_company_rtl: false

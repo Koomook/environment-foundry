@@ -1,0 +1,34 @@
+{
+  "iteration": 1,
+  "hypothesis": "A real compiler transition is enough to reject structurally invalid actions.",
+  "artifact": "Icarus Verilog compile results",
+  "metric": "compile pass/fail",
+  "stop_rule": "Stop if the known syntax error compiles or valid candidates fail.",
+  "results": {
+    "syntax_broken": {
+      "passed": false,
+      "returncode": 2,
+      "stdout_tail": "",
+      "stderr_tail": "/Users/bong/environment-foundry/knowledge/lab/experiments/ai-chip-foundry/rtl/syntax_broken.v:11: syntax error\n/Users/bong/environment-foundry/knowledge/lab/experiments/ai-chip-foundry/rtl/syntax_broken.v:11: Syntax in assignment statement l-value.\n"
+    },
+    "visible_gamer": {
+      "passed": true,
+      "returncode": 0,
+      "stdout_tail": "",
+      "stderr_tail": ""
+    },
+    "correct_verbose": {
+      "passed": true,
+      "returncode": 0,
+      "stdout_tail": "",
+      "stderr_tail": ""
+    },
+    "correct_compact": {
+      "passed": true,
+      "returncode": 0,
+      "stdout_tail": "",
+      "stderr_tail": ""
+    }
+  },
+  "next_hypothesis": "Compilation is necessary but cannot establish functional correctness."
+}

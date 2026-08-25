@@ -1,0 +1,18 @@
+{
+  "status": "OBSERVED",
+  "capability": "deterministic local replay environment",
+  "not_yet": [
+    "validated simulator",
+    "physical-design PPA correlation",
+    "company-data utility",
+    "held-out company transfer",
+    "foundry economics"
+  ],
+  "iterations": [
+    "results/iteration-1.json",
+    "results/iteration-2.json",
+    "results/iteration-3.json",
+    "results/iteration-4.json",
+    "results/iteration-5.json"
+  ]
+}

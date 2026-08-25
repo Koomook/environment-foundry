@@ -1,0 +1,13 @@
+task_id: ai-chip-foundry-sat-add8-v1
+artifact_class: interactive_environment
+observation_cutoff: "spec.md and candidate RTL before the terminal submission"
+actions:
+  - replace_rtl
+  - run_local_grader
+  - abstain
+transition: "compile, exhaustive RTL simulation, then generic Yosys synthesis"
+termination: "one candidate submission, abstention, or hard failure"
+grader: "functional pass is mandatory; generic synthesized cell count is diagnostic"
+rights_receipt: "rights-receipt.yaml"
+holdout: "none in iteration 1"
+stop_rule: "stop if the grader is nondeterministic or fails to reject the injected overflow bug"

@@ -1,6 +1,6 @@
 # Environment Foundry — Company OS
 
-This repository is the operating system of an independent company. The working name is Environment Foundry. Do not import Team Attention's mission, people, customers, or claims as this company's truth.
+This repository is the operating system of an independent company. The working name is Environment Foundry and the project codename is `frogstar`; Morphospace is not a valid name for this project. Do not import Team Attention's mission, people, customers, or claims as this company's truth.
 
 ## Mission
 

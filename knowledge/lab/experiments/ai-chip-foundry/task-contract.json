@@ -1,0 +1,18 @@
+{
+  "task_id": "rtl-combinational-repair-optimize-v1",
+  "observation_cutoff": "Candidate source, task specification, and only the tests and metrics enabled for the current iteration.",
+  "actions": [
+    "submit_candidate:syntax_broken",
+    "submit_candidate:visible_gamer",
+    "submit_candidate:correct_verbose",
+    "submit_candidate:correct_compact"
+  ],
+  "transition": "Fresh compile and simulation with Icarus Verilog followed, when enabled, by generic Yosys synthesis.",
+  "termination": "Compile failure, functional failure, exploit failure, held-out transfer failure, or successful completion.",
+  "grader": "Vector of compile, visible examples, exhaustive hidden behavior, generic synthesis cell count, exploit checks, and held-out-width transfer.",
+  "rights_receipt": "rights-receipt.json",
+  "owner": "EF-02 environment compiler",
+  "graph_position": "Hypothesis -> Experiment",
+  "next_falsifiable_gate": "A second operator reproduces all five results from a clean checkout.",
+  "stop_rule": "Stop calling this an environment if reset/replay is not deterministic, or stop calling the proxy useful if it fails to rank later-stage outcomes."
+}
