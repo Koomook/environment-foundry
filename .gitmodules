@@ -1,0 +1,6 @@
+[submodule "products/ai-chip-environment-explorer"]
+	path = products/ai-chip-environment-explorer
+	url = https://github.com/Koomook/ai-chip-environment-explorer.git
+[submodule "products/how-ai-learns-chip-design"]
+	path = products/how-ai-learns-chip-design
+	url = https://github.com/Koomook/how-ai-learns-chip-design.git
