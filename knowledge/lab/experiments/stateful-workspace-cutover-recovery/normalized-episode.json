@@ -1,0 +1,81 @@
+{
+  "schema_version": "environment-foundry.normalized-episode.v2",
+  "episode_id": "stateful-workspace-cutover-recovery-visible-eval-v1",
+  "source": {
+    "name": "environment-foundry-synthetic-stateful-cutover",
+    "kind": "pattern-derived-synthetic",
+    "revision": "v1",
+    "upstream_schema": "terminal-bench-3-harbor-task-and-hud-v6-task-row"
+  },
+  "split": "visible_eval",
+  "capability_level": 3,
+  "task": {
+    "family": "stateful-service-recovery-and-cutover",
+    "instruction": "Repair a split-brain local service, preserve active authoritative state, and perform a guarded one-time shared-workspace cutover."
+  },
+  "observation": {
+    "initial": "Buggy Python runtime, synthetic populated source database, empty isolated database, revision-0 mock remote, credential input, redacted status CLI, and visible smoke tests.",
+    "boundary": "The policy may inspect and modify only the sandbox; hidden verifier fixtures, oracle, private source task, and host systems are unavailable.",
+    "partial_observability": "Hidden fixture seeds and verifier assertions are not visible during a normal agent run; candidate-code isolation from verifier files remains a release gate."
+  },
+  "action_space": [
+    {
+      "name": "edit_candidate",
+      "input": "/app/workspace_runtime.py",
+      "effect": "Changes recovery, validation, state transition, and redaction behavior."
+    },
+    {
+      "name": "run_command",
+      "input": "Bounded local terminal command",
+      "effect": "Inspects or exercises the disposable sandbox."
+    },
+    {
+      "name": "fail_closed",
+      "input": "Precondition error code",
+      "effect": "Terminates a prohibited transition while preserving authority."
+    }
+  ],
+  "transition": {
+    "mode": "interactive-terminal-evaluation",
+    "implementation": "Python standard library, SQLite, atomic local files, deterministic mock remote, and separate-verifier-format tests.",
+    "reset": "New temporary fixture directory per verifier case.",
+    "state_restore": "Immutable fixture factory plus seed recreates source, isolated, remote, authority, credential, and journal state."
+  },
+  "termination": {
+    "conditions": [
+      "all hidden gates pass",
+      "timeout",
+      "integrity or secrecy hard failure",
+      "candidate completion"
+    ]
+  },
+  "grader": {
+    "metric": "binary reward with diagnostic integrity/secrecy/mutation axes",
+    "hidden_reference": "terminal-bench/stateful-workspace-cutover/tests/test_runtime.py",
+    "reference_visible_to_policy": false,
+    "upstream_implementation": "newly authored Environment Foundry verifier modeled on Harbor separate-verifier semantics",
+    "model_judge_required": false
+  },
+  "rights": {
+    "license": "internal synthetic receipt rr-stateful-workspace-cutover-synthetic-v1",
+    "commercial_use": false,
+    "training_permission": "denied pending EF-03; this visible evaluation episode is evaluation-only"
+  },
+  "raw_ref": {
+    "path": "private source locator retained outside Git",
+    "row_selector": "abstract invariant set only",
+    "raw": false
+  },
+  "provenance": [
+    "New synthetic code and fixtures authored 2026-08-28",
+    "Terminal-Bench v3.0.0 public format research",
+    "HUD Python v0.6.15 public task/training contract research",
+    "Private Codex task used only as non-reconstructive pattern evidence"
+  ],
+  "limitations": [
+    "No model rollout or training result exists.",
+    "HUD actor/verifier environments are not deployed.",
+    "Harbor container oracle/nop execution passed; second-operator reproduction is pending.",
+    "Deterministic reset is observed; action-receipt replay and prospective simulator validity are not."
+  ]
+}

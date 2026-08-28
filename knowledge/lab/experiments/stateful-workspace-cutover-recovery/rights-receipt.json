@@ -1,0 +1,38 @@
+{
+  "receipt_id": "rr-stateful-workspace-cutover-synthetic-v1",
+  "status": "pending_ef03",
+  "purpose": "Internal construction and local evaluation of a pattern-derived synthetic stateful recovery task family; rollout collection and training remain unapproved",
+  "grants": {
+    "access": true,
+    "operations": true,
+    "evaluation": true,
+    "training": false,
+    "derivative": true,
+    "resale": false,
+    "export": false
+  },
+  "scopes": {
+    "training": "Denied pending a superseding EF-03-accepted receipt. Candidate rows are design inputs, not authorized training data.",
+    "evaluation": "Local, offline evaluation only. The canaried terminal-bench package and visible_eval rows are excluded from training, solution exposure, and trajectory distillation.",
+    "derivative": "Synthetic variants may be created only if they remain non-reconstructive of the private source task and preserve the split boundary.",
+    "export": "No external publication, hosted deployment, dataset upload, or third-party training transfer without a superseding founder-approved receipt."
+  },
+  "retention": "Synthetic source, manifests, verifier logic, aggregate grades, and redacted traces may remain in Git; raw model traces stay outside Git until separately reviewed.",
+  "revocation": "Remove affected rows from future dataset builds, stop new rollouts, and supersede this receipt. Quarantine derived checkpoints until deletion or approved retraining is complete.",
+  "deletion_propagation": "Delete local rollout artifacts and future manifests derived from a revoked row; record checkpoint disposition outside the public repository.",
+  "reviewed_at": "2026-08-28T17:00:00+09:00",
+  "review_kind": "construction_audit_not_rights_approval",
+  "approval_authority": "EF-03 Rights OS plus founder approval for external processors or training",
+  "approved_by": null,
+  "effective_from": null,
+  "supersedes": null,
+  "source_grant_basis": "The user authorized creation of a non-reconstructive synthetic benchmark from the private session pattern; the private session payload itself is excluded.",
+  "source_class": "pattern-derived-synthetic",
+  "limitations": [
+    "The originating Codex task is private evidence intake and is not licensed into this repository.",
+    "No private payload, credential, source database, personal record, screenshot, or source-repository code is included.",
+    "Terminal-Bench and HUD upstream code, services, names, and marks retain their own licenses and terms.",
+    "EF-03 acceptance and a superseding receipt are required before any rollout collection or training.",
+    "Do not set HUD_API_KEY, enable HUD telemetry/file tracking, call a remote model API, sync, deploy, upload, or use HUD TrainingClient under this receipt."
+  ]
+}

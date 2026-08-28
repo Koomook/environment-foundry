@@ -1,0 +1,43 @@
+{
+  "schema_version": "stateful-workspace-cutover.verification-receipt.v1",
+  "observed_at": "2026-08-28T07:15:08Z",
+  "terminal_bench": {
+    "release": "v3.0.0",
+    "commit": "2b0442c3c583b710ca8da14c8e601b99f2f1f244",
+    "static_shell_checks": "all_passed",
+    "harbor_version": "0.18.0",
+    "oracle": {"trials": 1, "exceptions": 0, "reward": 1.0},
+    "nop": {"trials": 1, "exceptions": 0, "reward": 0.0}
+  },
+  "local_controls": {
+    "hidden_tests": 12,
+    "oracle_passes": 2,
+    "baseline_rejected": true,
+    "mutants_killed": 7,
+    "mutants_total": 7,
+    "security_probe": {"read_tests": false, "wrote_reward": false}
+  },
+  "hud": {
+    "sdk": "0.6.15",
+    "taskset_parse": "passed",
+    "rows": 20,
+    "templates_implemented": false,
+    "execution_permitted_under_current_receipt": false
+  },
+  "digests": {
+    "taskset_jsonl_sha256": "18c502356cf7bd2eaa0e8e6005e89f7737c16f008c2ed31cc7970146437ceada",
+    "task_toml_sha256": "da6d85f69c0458c7ca9047cd10b3145600b6ad22a29c1ca196a0d9a809a57059",
+    "hidden_tests_sha256": "fddfa01846914d62faff1c2f6f6ca56a0d1439609d6bf958cd510b7d2944007a",
+    "oracle_sha256": "32280271fd05f3b9c63b4bbfc4ec88273cb5003fe5030c7e9a5e306f4d4a8c53",
+    "local_agent_image_id": "sha256:a0bdc34cc02e19867153a483e523d8e974aad8e25daf1db732860abc172738bc",
+    "local_verifier_image_id": "sha256:a983518b861f27268fb1dcf1a8fb07f9d15052a55f36c720412601402f4dd213"
+  },
+  "not_yet": [
+    "second-operator reproduction",
+    "digest-equality action replay",
+    "implemented HUD actor/verifier templates and profile registry",
+    "rights-approved rollout collection",
+    "model reward-spread calibration",
+    "RLVR training or held-out lift"
+  ]
+}

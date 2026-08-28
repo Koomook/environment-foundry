@@ -1,0 +1,25 @@
+{
+  "task_id": "stateful-workspace-cutover-recovery-v1",
+  "observation_cutoff": "Synthetic task instruction, mutable candidate runtime, synthetic source and isolated databases, redacted local status, mock remote state, credential input, and visible smoke tests. Hidden verifier fixtures and oracle remain unavailable to the policy.",
+  "actions": [
+    "inspect_sandbox",
+    "edit:/app/workspace_runtime.py",
+    "run_local_command",
+    "recover_compat_local",
+    "attempt_guarded_cutover",
+    "fail_closed",
+    "submit_candidate"
+  ],
+  "transition": "Candidate code changes synthetic SQLite, authority metadata, immutable export, mock remote revision state, fresh pull cache, and redacted action journal inside a disposable sandbox.",
+  "termination": "Binary verifier success, timeout, prohibited integrity or secrecy failure, or candidate completion.",
+  "grader": "Separate Harbor verifier: submitted Python runs as a low-privilege black-box subprocess unable to read root-only tests or write reward logs. Gates cover semantic continuity, source immutability, active-job preservation, migration/head/device checks, ordered export-enroll-CAS-pull-switch transition, idempotency, token non-disclosure, pull mismatch handling, and mutation audit.",
+  "rights_receipt": "rights-receipt.json",
+  "owner": "EF-02 environment compiler",
+  "graph_position": "Hypothesis -> Experiment",
+  "reset": "Fresh temporary directory from deterministic synthetic fixture factory for every case.",
+  "replay": "NOT YET: deterministic fixture reset and repeated oracle outcome are observed, but a per-run action receipt and digest-equality replay have not been implemented.",
+  "primary_reward": "1.0 only when every hard gate passes; otherwise 0.0.",
+  "diagnostic_reward": "Per-gate pass/fail and mutation-kill metrics are diagnostics only and cannot override a hard failure.",
+  "next_falsifiable_gate": "Second-operator Harbor reproduction, executable HUD templates/profile registry, EF-03 approval, and a physically separated future train build before any model rollout.",
+  "stop_rule": "Stop RLVR packaging if a verifier exploit succeeds, any integrity/secrecy mutant survives, reset drifts, rights approval fails, or a future training split exposes canaried or sealed evaluation content."
+}

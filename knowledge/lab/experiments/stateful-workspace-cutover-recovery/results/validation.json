@@ -1,0 +1,191 @@
+{
+  "baseline": {
+    "name": "nop-buggy-starter",
+    "output_tail": [
+      "FAILED knowledge/lab/experiments/stateful-workspace-cutover-recovery/terminal-bench/stateful-workspace-cutover/tests/test_runtime.py::test_semantic_hash_is_independent_of_sqlite_page_history",
+      "FAILED knowledge/lab/experiments/stateful-workspace-cutover-recovery/terminal-bench/stateful-workspace-cutover/tests/test_runtime.py::test_active_recovery_uses_source_without_touching_lineage",
+      "FAILED knowledge/lab/experiments/stateful-workspace-cutover-recovery/terminal-bench/stateful-workspace-cutover/tests/test_runtime.py::test_successful_cutover_is_ordered_secret_safe_and_idempotent",
+      "FAILED knowledge/lab/experiments/stateful-workspace-cutover-recovery/terminal-bench/stateful-workspace-cutover/tests/test_runtime.py::test_competing_writer_wins_atomic_revision_cas",
+      "FAILED knowledge/lab/experiments/stateful-workspace-cutover-recovery/terminal-bench/stateful-workspace-cutover/tests/test_runtime.py::test_preconditions_fail_before_export_or_remote_mutation[fixture_changes0-migration_missing]",
+      "FAILED knowledge/lab/experiments/stateful-workspace-cutover-recovery/terminal-bench/stateful-workspace-cutover/tests/test_runtime.py::test_preconditions_fail_before_export_or_remote_mutation[fixture_changes1-remote_head_not_empty]",
+      "FAILED knowledge/lab/experiments/stateful-workspace-cutover-recovery/terminal-bench/stateful-workspace-cutover/tests/test_runtime.py::test_preconditions_fail_before_export_or_remote_mutation[fixture_changes2-invalid_device_identity]",
+      "FAILED knowledge/lab/experiments/stateful-workspace-cutover-recovery/terminal-bench/stateful-workspace-cutover/tests/test_runtime.py::test_conflicting_device_identity_fails_before_export",
+      "FAILED knowledge/lab/experiments/stateful-workspace-cutover-recovery/terminal-bench/stateful-workspace-cutover/tests/test_runtime.py::test_partial_export_and_symlink_export_fail_closed",
+      "FAILED knowledge/lab/experiments/stateful-workspace-cutover-recovery/terminal-bench/stateful-workspace-cutover/tests/test_runtime.py::test_stale_cas_after_enrollment_never_seeds_or_switches",
+      "FAILED knowledge/lab/experiments/stateful-workspace-cutover-recovery/terminal-bench/stateful-workspace-cutover/tests/test_runtime.py::test_pullback_mismatch_keeps_local_authority_and_redacts_secret",
+      "11 failed, 1 passed in 5.70s"
+    ],
+    "passed": false,
+    "returncode": 1
+  },
+  "mutants": [
+    {
+      "killed": true,
+      "name": "split-lineage-recovery",
+      "output_tail": [
+        "E             - compat-local",
+        "E             + isolated",
+        "",
+        "knowledge/lab/experiments/stateful-workspace-cutover-recovery/terminal-bench/stateful-workspace-cutover/tests/test_runtime.py:513: AssertionError",
+        "----------------------------- Captured stderr call -----------------------------",
+        "pullback_hash_mismatch",
+        "=========================== short test summary info ============================",
+        "FAILED knowledge/lab/experiments/stateful-workspace-cutover-recovery/terminal-bench/stateful-workspace-cutover/tests/test_runtime.py::test_active_recovery_uses_source_without_touching_lineage",
+        "FAILED knowledge/lab/experiments/stateful-workspace-cutover-recovery/terminal-bench/stateful-workspace-cutover/tests/test_runtime.py::test_competing_writer_wins_atomic_revision_cas",
+        "FAILED knowledge/lab/experiments/stateful-workspace-cutover-recovery/terminal-bench/stateful-workspace-cutover/tests/test_runtime.py::test_stale_cas_after_enrollment_never_seeds_or_switches",
+        "FAILED knowledge/lab/experiments/stateful-workspace-cutover-recovery/terminal-bench/stateful-workspace-cutover/tests/test_runtime.py::test_pullback_mismatch_keeps_local_authority_and_redacts_secret",
+        "4 failed, 8 passed in 0.94s"
+      ],
+      "passed": false,
+      "returncode": 1
+    },
+    {
+      "killed": true,
+      "name": "ignore-active-job",
+      "output_tail": [
+        "            before = {",
+        "                name: (root / name).read_bytes()",
+        "                for name in (\"source.db\", \"remote_state.json\", \"authority.json\", \"journal.jsonl\")",
+        "            }",
+        ">           with pytest.raises(Exception) as raised:",
+        "                 ^^^^^^^^^^^^^^^^^^^^^^^^",
+        "E           Failed: DID NOT RAISE <class 'Exception'>",
+        "",
+        "knowledge/lab/experiments/stateful-workspace-cutover-recovery/terminal-bench/stateful-workspace-cutover/tests/test_runtime.py:311: Failed",
+        "=========================== short test summary info ============================",
+        "FAILED knowledge/lab/experiments/stateful-workspace-cutover-recovery/terminal-bench/stateful-workspace-cutover/tests/test_runtime.py::test_active_cutover_is_a_zero_mutation_failure",
+        "1 failed, 11 passed in 1.01s"
+      ],
+      "passed": false,
+      "returncode": 1
+    },
+    {
+      "killed": true,
+      "name": "store-raw-token",
+      "output_tail": [
+        "        inspected = \"\\n\".join((output_text(root), captured, exception))",
+        "        forbidden = [expected[\"token\"], *[row[2] for row in expected[\"rows\"]]]",
+        ">       assert all(value not in inspected for value in forbidden)",
+        "E       assert False",
+        "E        +  where False = all(<generator object assert_no_metadata_leak.<locals>.<genexpr> at 0x10ab8b510>)",
+        "",
+        "knowledge/lab/experiments/stateful-workspace-cutover-recovery/terminal-bench/stateful-workspace-cutover/tests/test_runtime.py:251: AssertionError",
+        "=========================== short test summary info ============================",
+        "FAILED knowledge/lab/experiments/stateful-workspace-cutover-recovery/terminal-bench/stateful-workspace-cutover/tests/test_runtime.py::test_successful_cutover_is_ordered_secret_safe_and_idempotent",
+        "FAILED knowledge/lab/experiments/stateful-workspace-cutover-recovery/terminal-bench/stateful-workspace-cutover/tests/test_runtime.py::test_stale_cas_after_enrollment_never_seeds_or_switches",
+        "FAILED knowledge/lab/experiments/stateful-workspace-cutover-recovery/terminal-bench/stateful-workspace-cutover/tests/test_runtime.py::test_pullback_mismatch_keeps_local_authority_and_redacts_secret",
+        "3 failed, 9 passed in 0.81s"
+      ],
+      "passed": false,
+      "returncode": 1
+    },
+    {
+      "killed": true,
+      "name": "skip-pullback-verification",
+      "output_tail": [
+        "            expected = make_fixture(root, active=False, seed=701, faults={\"pull_corrupt\": True})",
+        "            runtime = submitted.WorkspaceRuntime(root)",
+        "            runtime.recover()",
+        "            source_before = bytes_hash(root / \"source.db\")",
+        ">           with pytest.raises(Exception) as raised:",
+        "                 ^^^^^^^^^^^^^^^^^^^^^^^^",
+        "E           Failed: DID NOT RAISE <class 'Exception'>",
+        "",
+        "knowledge/lab/experiments/stateful-workspace-cutover-recovery/terminal-bench/stateful-workspace-cutover/tests/test_runtime.py:510: Failed",
+        "=========================== short test summary info ============================",
+        "FAILED knowledge/lab/experiments/stateful-workspace-cutover-recovery/terminal-bench/stateful-workspace-cutover/tests/test_runtime.py::test_pullback_mismatch_keeps_local_authority_and_redacts_secret",
+        "1 failed, 11 passed in 0.88s"
+      ],
+      "passed": false,
+      "returncode": 1
+    },
+    {
+      "killed": true,
+      "name": "overwrite-populated-head",
+      "output_tail": [
+        ">           assert error_code(raised) == expected_code",
+        "E           AssertionError: assert 'stale_remote_head' == 'remote_head_not_empty'",
+        "E             ",
+        "E             - remote_head_not_empty",
+        "E             + stale_remote_head",
+        "",
+        "knowledge/lab/experiments/stateful-workspace-cutover-recovery/terminal-bench/stateful-workspace-cutover/tests/test_runtime.py:433: AssertionError",
+        "----------------------------- Captured stderr call -----------------------------",
+        "stale_remote_head",
+        "=========================== short test summary info ============================",
+        "FAILED knowledge/lab/experiments/stateful-workspace-cutover-recovery/terminal-bench/stateful-workspace-cutover/tests/test_runtime.py::test_preconditions_fail_before_export_or_remote_mutation[fixture_changes1-remote_head_not_empty]",
+        "1 failed, 11 passed in 0.86s"
+      ],
+      "passed": false,
+      "returncode": 1
+    },
+    {
+      "killed": true,
+      "name": "count-only-semantic-hash",
+      "output_tail": [
+        "E           AssertionError: assert '14' != '14'",
+        "E            +  where '14' = <function SubmittedWorkspaceRuntime.semantic_hash at 0x108cc6d40>(PosixPath('/var/folders/x2/4jx12y595v5_2rdk2fxtf8q00000gn/T/tmpkktag5p6/first.db'))",
+        "E            +    where <function SubmittedWorkspaceRuntime.semantic_hash at 0x108cc6d40> = <class 'test_runtime.SubmittedWorkspaceRuntime'>.semantic_hash",
+        "E            +      where <class 'test_runtime.SubmittedWorkspaceRuntime'> = <test_runtime.SubmittedModule object at 0x108732f90>.WorkspaceRuntime",
+        "E            +  and   '14' = <function SubmittedWorkspaceRuntime.semantic_hash at 0x108cc6d40>(PosixPath('/var/folders/x2/4jx12y595v5_2rdk2fxtf8q00000gn/T/tmpkktag5p6/second.db'))",
+        "E            +    where <function SubmittedWorkspaceRuntime.semantic_hash at 0x108cc6d40> = <class 'test_runtime.SubmittedWorkspaceRuntime'>.semantic_hash",
+        "E            +      where <class 'test_runtime.SubmittedWorkspaceRuntime'> = <test_runtime.SubmittedModule object at 0x108732f90>.WorkspaceRuntime",
+        "",
+        "knowledge/lab/experiments/stateful-workspace-cutover-recovery/terminal-bench/stateful-workspace-cutover/tests/test_runtime.py:268: AssertionError",
+        "=========================== short test summary info ============================",
+        "FAILED knowledge/lab/experiments/stateful-workspace-cutover-recovery/terminal-bench/stateful-workspace-cutover/tests/test_runtime.py::test_semantic_hash_is_independent_of_sqlite_page_history",
+        "1 failed, 11 passed in 0.84s"
+      ],
+      "passed": false,
+      "returncode": 1
+    },
+    {
+      "killed": true,
+      "name": "remove-remote-lock",
+      "output_tail": [
+        "                fcntl.flock(lock_stream.fileno(), fcntl.LOCK_UN)",
+        "                worker.join(timeout=5)",
+        "    ",
+        "            assert not worker.is_alive()",
+        ">           assert len(outcome) == 1",
+        "E           assert 0 == 1",
+        "E            +  where 0 = len([])",
+        "",
+        "knowledge/lab/experiments/stateful-workspace-cutover-recovery/terminal-bench/stateful-workspace-cutover/tests/test_runtime.py:406: AssertionError",
+        "=========================== short test summary info ============================",
+        "FAILED knowledge/lab/experiments/stateful-workspace-cutover-recovery/terminal-bench/stateful-workspace-cutover/tests/test_runtime.py::test_competing_writer_wins_atomic_revision_cas",
+        "1 failed, 11 passed in 0.86s"
+      ],
+      "passed": false,
+      "returncode": 1
+    }
+  ],
+  "oracle_runs": [
+    {
+      "name": "oracle-1",
+      "output_tail": [
+        "............                                                             [100%]",
+        "12 passed in 0.86s"
+      ],
+      "passed": true,
+      "returncode": 0
+    },
+    {
+      "name": "oracle-2",
+      "output_tail": [
+        "............                                                             [100%]",
+        "12 passed in 0.83s"
+      ],
+      "passed": true,
+      "returncode": 0
+    }
+  ],
+  "passed": true,
+  "schema_version": "stateful-workspace-cutover.validation.v1",
+  "summary": {
+    "baseline_rejected": true,
+    "mutants_killed": 7,
+    "mutants_total": 7,
+    "oracle_deterministic_pass": true
+  }
+}

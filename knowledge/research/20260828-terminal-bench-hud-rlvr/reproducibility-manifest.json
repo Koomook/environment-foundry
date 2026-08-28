@@ -1,0 +1,28 @@
+{
+  "research_date": "2026-08-28",
+  "terminal_bench": {
+    "release": "v3.0.0",
+    "commit": "2b0442c3c583b710ca8da14c8e601b99f2f1f244",
+    "task_count": 74,
+    "harbor_runtime": "0.18.0",
+    "public_run_alias": "terminal-bench/terminal-bench@3.0.0",
+    "latest_release_observed": "v4.0.0"
+  },
+  "hud": {
+    "stable_release": "0.6.15",
+    "stable_release_date": "2026-08-21",
+    "stable_release_commit": "ce1cb51f37443ae66153c7896d93e89f2da1e792",
+    "main_commit_inspected": "8252454aa256d1788862de80265a7b0ae0f0e124",
+    "main_version": "0.6.16.dev2",
+    "archived_rlvr_adapter_commit": "06ccc013201c300b70ceab2fa0ce29ea0c910d65"
+  },
+  "pilot": {
+    "task_id": "stateful-workspace-cutover-recovery-v1",
+    "terminal_bench_static_target": "v3.0.0",
+    "hud_task_rows": 20,
+    "splits": {"train_candidate": 12, "dev": 4, "visible_eval": 4},
+    "catalog_status": "schema-valid-unimplemented-templates",
+    "primary_reward": "binary",
+    "private_payload_copied": false
+  }
+}
