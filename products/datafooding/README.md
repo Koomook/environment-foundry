@@ -6,7 +6,9 @@ datafooding은 Environment Foundry의 데이터 입력 엔진이다.
 - current working tree: `/Users/bong/team-attention/code-repos/datafooding`
 - source repository: `https://github.com/Koomook/datafooding.git`
 - recoverable branch: `codex/agent-session-vault`
-- validated commit: `555d360 feat: build private agent session vault`
+- validated commits:
+  - `555d360 feat: build private agent session vault`
+  - `fc2cf23 fix: close vault capture and configuration races`
 - migration state: `recoverable-branch-physical-move-deferred`
 
 현재 구현은 커밋·원격 branch로 복구 가능하며 로컬 테스트, 실제 GCS
